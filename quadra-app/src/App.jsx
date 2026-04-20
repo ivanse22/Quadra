@@ -69,7 +69,22 @@ const SCREENS = {
 }
 
 export default function App() {
-  const { currentScreen, theme, session, setSession } = useAppStore()
+  const { currentScreen, theme, session, setSession, showToast } = useAppStore()
+
+  // Catch PWA Install Prompt
+  useEffect(() => {
+    const handleInstallPrompt = (e) => {
+      // Prevent Chrome 67+ from automatically showing the prompt
+      e.preventDefault()
+      // Show our custom unified toast
+      showToast({ 
+        type: 'success', 
+        message: 'Quadra está lista para instalar. Toca "Agregar a inicio" en tu navegador.' 
+      })
+    }
+    window.addEventListener('beforeinstallprompt', handleInstallPrompt)
+    return () => window.removeEventListener('beforeinstallprompt', handleInstallPrompt)
+  }, [showToast])
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)

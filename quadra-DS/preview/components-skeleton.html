@@ -1,0 +1,51 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Bold.otf') format('opentype');font-weight:700;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Black.otf') format('opentype');font-weight:900;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Regular.otf') format('opentype');font-weight:400;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Satoshi',sans-serif;background:#F8F9F8;padding:20px;display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;}
+
+/* Skeleton shimmer */
+@keyframes sk{from{background-position:200% 0}to{background-position:-200% 0}}
+.skel{display:block;border-radius:8px;animation:sk 1.5s ease-in-out infinite;background:linear-gradient(90deg,#ECEEED 25%,#E4E6E3 50%,#ECEEED 75%);background-size:200% 100%;}
+
+.card{flex:1;min-width:200px;background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:24px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.07);}
+
+/* Skeleton hero */
+.sk-hero{padding:20px;}
+.sk-label{margin-bottom:6px;}
+.sk-amount{margin-bottom:4px;}
+.sk-sub{margin-bottom:16px;}
+.sk-divider{height:1px;background:rgba(0,0,0,.07);margin:14px 0;}
+.sk-row{display:flex;gap:20px;}
+
+/* Skeleton list */
+.sk-list-header{padding:10px 20px;background:#F8F9F8;border-bottom:1px solid rgba(0,0,0,.07);}
+.sk-list-row{display:flex;align-items:center;gap:12px;padding:13px 20px;border-bottom:1px solid rgba(0,0,0,.05);}
+.sk-list-row:last-child{border-bottom:none;}
+.sk-circle{border-radius:50%;flex-shrink:0;}
+.sk-lines{flex:1;display:flex;flex-direction:column;gap:6px;}
+</style></head><body>
+<!-- Hero card skeleton -->
+<div class="card">
+  <div class="sk-hero">
+    <div class="sk-label skel" style="width:80px;height:9px;margin-bottom:8px;"></div>
+    <div class="sk-amount skel" style="width:160px;height:38px;border-radius:10px;margin-bottom:6px;"></div>
+    <div class="skel" style="width:120px;height:10px;margin-bottom:16px;"></div>
+    <div class="sk-divider"></div>
+    <div class="sk-row">
+      <div style="flex:1;display:flex;flex-direction:column;gap:5px;"><div class="skel" style="width:50px;height:8px;"></div><div class="skel" style="width:70px;height:12px;border-radius:6px;"></div></div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:5px;"><div class="skel" style="width:50px;height:8px;"></div><div class="skel" style="width:70px;height:12px;border-radius:6px;"></div></div>
+      <div style="flex:1;display:flex;flex-direction:column;gap:5px;"><div class="skel" style="width:50px;height:8px;"></div><div class="skel" style="width:70px;height:12px;border-radius:6px;"></div></div>
+    </div>
+  </div>
+</div>
+<!-- List skeleton -->
+<div class="card">
+  <div class="sk-list-header"><div class="skel" style="width:90px;height:9px;"></div></div>
+  <div class="sk-list-row"><div class="skel sk-circle" style="width:38px;height:38px;"></div><div class="sk-lines"><div class="skel" style="width:140px;height:12px;border-radius:6px;"></div><div class="skel" style="width:90px;height:9px;"></div></div><div class="skel" style="width:60px;height:12px;border-radius:6px;flex-shrink:0;"></div></div>
+  <div class="sk-list-row"><div class="skel sk-circle" style="width:38px;height:38px;"></div><div class="sk-lines"><div class="skel" style="width:110px;height:12px;border-radius:6px;"></div><div class="skel" style="width:80px;height:9px;"></div></div><div class="skel" style="width:55px;height:12px;border-radius:6px;flex-shrink:0;"></div></div>
+  <div class="sk-list-row"><div class="skel sk-circle" style="width:38px;height:38px;"></div><div class="sk-lines"><div class="skel" style="width:130px;height:12px;border-radius:6px;"></div><div class="skel" style="width:70px;height:9px;"></div></div><div class="skel" style="width:65px;height:12px;border-radius:6px;flex-shrink:0;"></div></div>
+</div>
+</body></html>

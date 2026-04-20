@@ -1,0 +1,33 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Light.otf') format('opentype');font-weight:300;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Regular.otf') format('opentype');font-weight:400;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Medium.otf') format('opentype');font-weight:500;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Bold.otf') format('opentype');font-weight:700;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Black.otf') format('opentype');font-weight:900;font-style:normal;}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#F8F9F8;padding:20px;display:flex;flex-direction:column;gap:14px;}
+.label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#9DAD9F;margin-bottom:6px;}
+.field{display:flex;flex-direction:column;gap:4px;}
+.field-label{font-family:'Satoshi',sans-serif;font-size:15px;font-weight:700;color:#0F1410;letter-spacing:-.015em;}
+.field-helper{font-size:11px;color:#6B7B6D;margin-top:2px;}
+.field-helper.err{color:#DC2626;font-weight:600;}
+.field-helper.ok{color:#16A34A;font-weight:600;}
+.q-input{width:100%;height:52px;padding:0 16px;background:#F3F4F2;border:1.5px solid rgba(0,0,0,.12);border-radius:14px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;color:#0F1410;outline:none;}
+.q-input.focus{background:#fff;border-color:#3D5200;box-shadow:0 0 0 3px rgba(189,243,0,.08);}
+.q-input.err{border-color:#DC2626;background:rgba(220,38,38,.07);}
+.q-input.ok{border-color:#16A34A;}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+</style></head><body>
+<div class="row">
+  <div class="field"><div class="label">Default</div><div class="field-label">Cliente</div><input class="q-input" placeholder="Buscar cliente…"></div>
+  <div class="field"><div class="label">Focused</div><div class="field-label">Cliente</div><input class="q-input focus" value="Martínez Corp"></div>
+</div>
+<div class="row">
+  <div class="field"><div class="label">Error</div><div class="field-label">Monto</div><input class="q-input err" value="0.00"><div class="field-helper err">El monto debe ser mayor a $0</div></div>
+  <div class="field"><div class="label">Valid</div><div class="field-label">Monto</div><input class="q-input ok" value="$4,200.00"><div class="field-helper ok">Monto válido</div></div>
+</div>
+</body></html>

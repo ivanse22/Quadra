@@ -1,0 +1,49 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Light.otf') format('opentype');font-weight:300;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Regular.otf') format('opentype');font-weight:400;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Medium.otf') format('opentype');font-weight:500;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Bold.otf') format('opentype');font-weight:700;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Black.otf') format('opentype');font-weight:900;font-style:normal;}
+</style>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Satoshi',sans-serif;background:#F8F9F8;padding:20px;display:flex;gap:12px;flex-wrap:wrap;}
+.chip{flex:1;min-width:150px;border-radius:18px;overflow:hidden;border:1px solid rgba(0,0,0,.07);box-shadow:0 1px 4px rgba(0,0,0,.05);}
+.chip-top{padding:12px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(0,0,0,.07);}
+.chip-icon{width:30px;height:30px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:14px;}
+.chip-body{background:#fff;padding:10px 14px;}
+.chip-name{font-weight:700;font-size:11px;color:#0F1410;}
+.chip-var{font-size:10px;font-family:monospace;color:#6B7B6D;margin-top:1px;}
+.chip-hex{font-size:10px;font-family:monospace;color:#9DAD9F;}
+.chip-note{font-size:10px;color:#3D4A3F;line-height:1.5;margin-top:6px;}
+</style></head><body>
+<div class="chip">
+  <div class="chip-top" style="background:rgba(22,163,74,.07);">
+    <div class="chip-icon" style="background:rgba(22,163,74,.15);">↑</div>
+    <div><div class="chip-name">Income</div><div class="chip-var">--fin-income</div></div>
+  </div>
+  <div class="chip-body"><div class="chip-hex">#16A34A · dark: #4ADE80</div><div class="chip-note">Ingresos — incoming payments, positive balance changes</div></div>
+</div>
+<div class="chip">
+  <div class="chip-top" style="background:rgba(220,38,38,.07);">
+    <div class="chip-icon" style="background:rgba(220,38,38,.15);">↓</div>
+    <div><div class="chip-name">Deduct</div><div class="chip-var">--fin-deduct</div></div>
+  </div>
+  <div class="chip-body"><div class="chip-hex">#DC2626 · dark: #F87171</div><div class="chip-note">Gastos — expenses, deductions, overdue amounts</div></div>
+</div>
+<div class="chip">
+  <div class="chip-top" style="background:rgba(180,83,9,.07);">
+    <div class="chip-icon" style="background:rgba(180,83,9,.15);">⏳</div>
+    <div><div class="chip-name">Reserve</div><div class="chip-var">--fin-reserve</div></div>
+  </div>
+  <div class="chip-body"><div class="chip-hex">#B45309 · dark: #FBBF24</div><div class="chip-note">Reservado — pending, held, awaiting confirmation</div></div>
+</div>
+<div class="chip">
+  <div class="chip-top" style="background:rgba(189,243,0,.08);">
+    <div class="chip-icon" style="background:rgba(189,243,0,.2);">✓</div>
+    <div><div class="chip-name">Available</div><div class="chip-var">--fin-available</div></div>
+  </div>
+  <div class="chip-body"><div class="chip-hex">#3D5200 · dark: #BDF300</div><div class="chip-note">Disponible Real — confirmed available balance</div></div>
+</div>
+</body></html>

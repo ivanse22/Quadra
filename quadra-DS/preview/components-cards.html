@@ -1,0 +1,42 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Light.otf') format('opentype');font-weight:300;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Regular.otf') format('opentype');font-weight:400;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Medium.otf') format('opentype');font-weight:500;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Bold.otf') format('opentype');font-weight:700;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Black.otf') format('opentype');font-weight:900;font-style:normal;}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#F3F4F2;padding:20px;display:flex;gap:12px;flex-wrap:wrap;align-items:flex-start;}
+.card{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:24px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.07),0 2px 8px rgba(0,0,0,.04);flex:1;min-width:180px;}
+.card-title{font-family:'Satoshi',sans-serif;font-size:13px;font-weight:700;color:#0F1410;letter-spacing:-.015em;}
+.card-sub{font-size:11px;color:#9DAD9F;margin-top:2px;}
+.card-divider{height:1px;background:rgba(0,0,0,.07);margin:12px 0;}
+.hero-card{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:24px;padding:20px;box-shadow:0 8px 32px rgba(0,0,0,.10),0 2px 8px rgba(0,0,0,.06);flex:1;min-width:180px;position:relative;overflow:hidden;}
+.hero-card::after{content:'';position:absolute;bottom:-20px;right:-20px;width:100px;height:100px;background:radial-gradient(circle,rgba(189,243,0,.1) 0%,transparent 70%);pointer-events:none;}
+.hero-eye{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#6B7B6D;margin-bottom:6px;}
+.hero-amount{font-family:'Satoshi',sans-serif;font-size:32px;font-weight:900;letter-spacing:-.05em;line-height:1;color:#3D5200;margin-bottom:4px;font-variant-numeric:tabular-nums;}
+.hero-sub{font-size:11px;color:#9DAD9F;margin-bottom:12px;}
+.breakdown{display:flex;gap:16px;padding-top:10px;border-top:1px solid rgba(0,0,0,.07);}
+.bk-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9DAD9F;margin-bottom:2px;}
+.bk-val{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums;color:#3D4A3F;}
+</style></head><body>
+<div class="card">
+  <div class="card-title">Diseño web — Fase 2</div>
+  <div class="card-sub">Martínez Corp · Vence 20 ene</div>
+  <div class="card-divider"></div>
+  <div class="card-sub">Base card — shadow-sm, r-2xl</div>
+</div>
+<div class="hero-card">
+  <div class="hero-eye">Disponible Real</div>
+  <div class="hero-amount">$8.400.000<span style="color:rgba(15,20,16,.22)"></span></div>
+  <div class="hero-sub">COP · Actualizado ahora</div>
+  <div class="breakdown">
+    <div><div class="bk-lbl">Ingreso</div><div class="bk-val" style="color:#16A34A;">+$12,600</div></div>
+    <div><div class="bk-lbl">Gastos</div><div class="bk-val" style="color:#DC2626;">−$4,200</div></div>
+    <div><div class="bk-lbl">Reservado</div><div class="bk-val" style="color:#B45309;">$1,800</div></div>
+  </div>
+</div>
+</body></html>

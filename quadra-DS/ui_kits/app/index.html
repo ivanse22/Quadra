@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quadra — UI Kit</title>
+<style>
+@font-face{font-family:'Satoshi';src:url('../../fonts/Satoshi-Light.otf') format('opentype');font-weight:300;}
+@font-face{font-family:'Satoshi';src:url('../../fonts/Satoshi-Regular.otf') format('opentype');font-weight:400;}
+@font-face{font-family:'Satoshi';src:url('../../fonts/Satoshi-Medium.otf') format('opentype');font-weight:500;}
+@font-face{font-family:'Satoshi';src:url('../../fonts/Satoshi-Bold.otf') format('opentype');font-weight:700;}
+@font-face{font-family:'Satoshi';src:url('../../fonts/Satoshi-Black.otf') format('opentype');font-weight:900;}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:#0F1410;
+  min-height:100vh;
+  display:flex;flex-direction:column;align-items:center;
+  padding:32px 20px 60px;gap:28px;
+  transition:background .3s cubic-bezier(.16,1,.3,1);
+}
+body.dark-stage{background:#060907;}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;width:100%;max-width:960px;flex-wrap:wrap;gap:12px;}
+.topbar-brand{display:flex;align-items:center;gap:10px;}
+.topbar-name{font-family:'Satoshi',sans-serif;font-size:16px;font-weight:900;letter-spacing:-.05em;color:#F1F2EF;}
+.topbar-tag{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:#BDF300;color:#1A2400;padding:2px 7px;border-radius:9999px;}
+
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
+.screen-btn{height:32px;padding:0 14px;border-radius:9999px;border:none;font-family:'Satoshi',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .16s;}
+.screen-btn.active{background:#BDF300;color:#1A2400;}
+.screen-btn:not(.active){background:rgba(241,242,239,.08);color:rgba(241,242,239,.45);}
+.screen-btn:not(.active):hover{background:rgba(241,242,239,.14);color:rgba(241,242,239,.8);}
+
+.dark-toggle{height:32px;padding:0 14px;border-radius:9999px;border:1px solid rgba(241,242,239,.15);background:transparent;color:rgba(241,242,239,.5);font-family:'Satoshi',sans-serif;font-size:11px;font-weight:700;cursor:pointer;transition:all .16s;display:flex;align-items:center;gap:6px;}
+.dark-toggle:hover{border-color:rgba(241,242,239,.3);color:rgba(241,242,239,.8);}
+.dark-toggle.on{background:#172014;border-color:rgba(189,243,0,.2);color:#BDF300;}
+
+.stage{display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;justify-content:center;}
+
+@keyframes spin{to{transform:rotate(360deg);}}
+@keyframes resultPop{0%{transform:scale(.9);opacity:0;}60%{transform:scale(1.04);}100%{transform:scale(1);opacity:1;}}
+@keyframes toastIn{from{transform:translateY(-6px);opacity:0;}to{transform:none;opacity:1;}}
+@keyframes springPop{0%{transform:scale(.95);}60%{transform:scale(1.03);}100%{transform:scale(1);}}
+</style>
+</head>
+<body id="stageBody">
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <svg width="28" height="28" viewBox="0 0 310 310" fill="none">
+      <path d="M78 161C78 157.686 80.686 155 84 155H139C142.314 155 145 157.686 145 161V217C145 220.314 142.314 223 139 223H120C96.804 223 78 204.196 78 181V161Z" fill="#F1F2EF"/>
+      <path d="M155 83C155 79.686 157.686 77 161 77H180C203.196 77 222 95.804 222 119V139C222 142.314 219.314 145 216 145H161C157.686 145 155 142.314 155 139V83Z" fill="#F1F2EF"/>
+      <path d="M155 197C155 173.804 173.804 155 197 155L216 155C219.314 155 222 157.686 222 161L222 247C222 250.314 219.314 253 216 253L161 253C157.686 253 155 250.314 155 247L155 197Z" fill="#BDF300"/>
+      <path d="M78 119C78 95.804 96.804 77 120 77H139C142.314 77 145 79.686 145 83V139C145 142.314 142.314 145 139 145H84C80.686 145 78 142.314 78 139V119Z" fill="#F1F2EF"/>
+    </svg>
+    <span class="topbar-name">Quadra</span>
+    <span class="topbar-tag">UI Kit v7</span>
+  </div>
+  <div class="controls">
+    <div id="screenBtns" style="display:flex;gap:4px;flex-wrap:wrap;"></div>
+    <button class="dark-toggle" id="darkToggle">◐ Dark</button>
+  </div>
+</div>
+
+<div class="stage" id="stage"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="AppShell.jsx"></script>
+<script type="text/babel" src="HomeScreen.jsx"></script>
+<script type="text/babel" src="InvoiceScreen.jsx"></script>
+<script type="text/babel" src="TransactionScreen.jsx"></script>
+<script type="text/babel" src="OnboardingScreen.jsx"></script>
+<script type="text/babel" src="ProfileScreen.jsx"></script>
+<script type="text/babel" src="NotificationsScreen.jsx"></script>
+<script type="text/babel" src="InvoiceDetailScreen.jsx"></script>
+
+<script type="text/babel">
+const SCREENS = ['Onboarding','Inicio','Cobrar','Historial','Cobro','Notifs','Perfil'];
+const SCREEN_LABELS = { Onboarding:'Onboarding', Inicio:'Inicio', Cobrar:'Cobrar', Historial:'Historial', Cobro:'Cobro', Notifs:'Notificaciones', Perfil:'Perfil' };
+
+// Dark mode CSS vars injected into phone
+function getDarkVars() {
+  return `
+    --bg:#090D0B;--bg-subtle:#0D1410;--surf-1:#111810;--surf-2:#172014;--surf-3:#1E2B1A;
+    --border:rgba(189,243,0,0.06);--border-s:rgba(189,243,0,0.10);
+    --txt:#F1F2EF;--txt-2:#A0B3A2;--txt-m:#617063;--txt-f:#344038;--txt-inv:#0F1410;
+    --volt-text:#BDF300;--fin-income:#4ADE80;--fin-deduct:#F87171;--fin-reserve:#FBBF24;
+  `;
+}
+
+function RootApp() {
+  const savedScreen = localStorage.getItem('quadra_screen') || 'Inicio';
+  const savedDark   = localStorage.getItem('quadra_dark') === '1';
+  const [screen, setScreen]   = React.useState(savedScreen);
+  const [dark, setDark]       = React.useState(savedDark);
+
+  // Expose setters for external buttons
+  window.__quadraSetScreen = (s) => { setScreen(s); localStorage.setItem('quadra_screen', s); };
+  window.__quadraSetDark   = (d) => { setDark(d);   localStorage.setItem('quadra_dark', d?'1':'0'); };
+
+  // Sync button highlights
+  React.useEffect(() => {
+    document.querySelectorAll('[data-screen]').forEach(b => {
+      b.className = 'screen-btn' + (b.dataset.screen === screen ? ' active' : '');
+    });
+    const dt = document.getElementById('darkToggle');
+    if (dt) dt.className = 'dark-toggle' + (dark ? ' on' : '');
+    document.getElementById('stageBody').className = dark ? 'dark-stage' : '';
+  }, [screen, dark]);
+
+  const go = (s) => { setScreen(s); localStorage.setItem('quadra_screen', s); };
+
+  const tabActive = screen==='Inicio'?'home': screen==='Cobrar'?'invoice': screen==='Historial'?'history': screen==='Perfil'?'profile': screen==='Notifs'?'notifs': 'home';
+
+  function makeNav() {
+    const fn = (id) => {
+      const map = {home:'Inicio',invoice:'Cobrar',history:'Historial',profile:'Perfil',notifs:'Notifs'};
+      go(map[id] || 'Inicio');
+    };
+    fn._active = tabActive;
+    return fn;
+  }
+
+  const darkStyles = dark ? {
+    '--bg':'#090D0B','--bg-subtle':'#0D1410','--surf-1':'#111810','--surf-2':'#172014','--surf-3':'#1E2B1A',
+    '--txt':'#F1F2EF','--txt-2':'#A0B3A2','--txt-m':'#617063','--txt-f':'#344038',
+  } : {};
+
+  // Phone style with dark mode tokens
+  const phoneStyle = dark ? {
+    background:'#090D0B',
+    borderColor:'rgba(189,243,0,.10)',
+    boxShadow:'0 20px 60px rgba(0,0,0,.8),0 0 0 1px rgba(189,243,0,.08)',
+  } : {};
+
+  let content;
+  if (screen==='Onboarding')  content = <OnboardingScreen onDone={() => go('Inicio')} dark={dark}/>;
+  else if (screen==='Inicio') content = <HomeScreen onNav={makeNav()} onTxClick={() => go('Historial')} dark={dark}/>;
+  else if (screen==='Cobrar') content = <InvoiceScreen onBack={() => go('Inicio')} onNav={go} dark={dark}/>;
+  else if (screen==='Historial') content = <TransactionScreen onBack={() => go('Inicio')} dark={dark}/>;
+  else if (screen==='Cobro') content = <InvoiceDetailScreen onBack={() => go('Historial')} dark={dark}/>;
+  else if (screen==='Notifs') content = <NotificationsScreen dark={dark}/>;
+  else if (screen==='Perfil') content = <ProfileScreen darkMode={dark} onToggleDark={() => { setDark(d => { const nd=!d; localStorage.setItem('quadra_dark',nd?'1':'0'); return nd; }); }} />;
+
+  const showNav = screen !== 'Onboarding';
+
+  return (
+    <div style={{position:'relative'}}>
+      <div style={{width:375,height:812,background:dark?'#090D0B':'#fff',borderRadius:44,border:`1px solid ${dark?'rgba(189,243,0,.10)':'rgba(0,0,0,.1)'}`,boxShadow:dark?'0 20px 60px rgba(0,0,0,.8),0 0 0 1px rgba(189,243,0,.08)':'0 20px 60px rgba(0,0,0,.18),0 4px 16px rgba(0,0,0,.08)',display:'flex',flexDirection:'column',overflow:'hidden',flexShrink:0,transition:'background .3s cubic-bezier(.16,1,.3,1),border-color .3s,box-shadow .3s'}}>
+        {/* Status bar */}
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'14px 24px 6px',flexShrink:0}}>
+          <span style={{fontSize:13,fontWeight:700,fontFamily:"'Satoshi',sans-serif",color:dark?'#F1F2EF':'#0F1410'}}>9:41</span>
+          <div style={{display:'flex',gap:6,alignItems:'center',color:dark?'#F1F2EF':'#0F1410'}}>
+            <svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor"><rect x="0" y="4" width="3" height="8" rx="1"/><rect x="4.5" y="2.5" width="3" height="9.5" rx="1"/><rect x="9" y="0.5" width="3" height="11.5" rx="1"/><rect x="13.5" y="0" width="2" height="12" rx="1" opacity=".3"/></svg>
+            <svg width="16" height="12" viewBox="0 0 24 16" fill="none" stroke="currentColor" strokeWidth="1.5"><rect x="0" y="3" width="20" height="10" rx="2.5" fill="none"/><rect x="1.5" y="4.5" width="14" height="7" rx="1.5" fill="currentColor" stroke="none"/><rect x="21" y="6" width="3" height="4" rx="1" fill="currentColor" stroke="none" opacity=".5"/></svg>
+          </div>
+        </div>
+
+        {/* Screen */}
+        <div style={{flex:1,overflowY:'auto',overflowX:'hidden',color:dark?'#F1F2EF':'#0F1410'}}>
+          {/* Dark mode CSS injection */}
+          {dark && <style>{`
+            .dark-screen{background:#090D0B!important;}
+            .dark-screen *{transition:background .25s,color .25s,border-color .25s;}
+          `}</style>}
+          <div style={{minHeight:'100%',background:dark?'#090D0B':'#fff',transition:'background .3s'}}>
+            {/* Re-color key surfaces for dark mode via inline style override on a wrapper */}
+            <DarkWrapper dark={dark}>{content}</DarkWrapper>
+          </div>
+        </div>
+
+        {/* Bottom nav */}
+        {showNav && <DarkBottomNav dark={dark} active={tabActive} onNav={makeNav()} />}
+      </div>
+    </div>
+  );
+}
+
+// Wraps content and injects dark-mode color overrides via CSS custom properties
+function DarkWrapper({ dark, children }) {
+  const s = dark ? {
+    '--bg':'#090D0B','--bg-subtle':'#0D1410','--surf-1':'#111810',
+    '--surf-2':'#172014','--surf-3':'#1E2B1A',
+    '--txt':'#F1F2EF','--txt-2':'#A0B3A2','--txt-m':'#617063','--txt-f':'#344038',
+    '--border':'rgba(189,243,0,0.06)','--border-s':'rgba(189,243,0,0.10)',
+    '--volt-text':'#BDF300','--fin-income':'#4ADE80',
+    '--fin-deduct':'#F87171','--fin-reserve':'#FBBF24',
+    color:'#F1F2EF', background:'#090D0B',
+  } : { background:'#fff', color:'#0F1410' };
+  return <div style={{...s,minHeight:'100%',transition:'background .3s,color .3s'}}>{children}</div>;
+}
+
+function DarkBottomNav({ dark, active, onNav }) {
+  const bg     = dark ? '#111810' : '#fff';
+  const border = dark ? 'rgba(189,243,0,0.08)' : 'rgba(0,0,0,0.07)';
+  const onCol  = dark ? '#BDF300' : '#3D5200';
+  const offCol = dark ? '#617063' : '#6B7B6D';
+
+  const tabs = [
+    { id:'home',    label:'Inicio',   icon: (on) => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={on?onCol:offCol} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg> },
+    { id:'invoice', label:'Cobrar',   icon: (on) => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={on?onCol:offCol} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg> },
+    { id:'history', label:'Historial',icon: (on) => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={on?onCol:offCol} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg> },
+    { id:'notifs',  label:'Alertas',  icon: (on) => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={on?onCol:offCol} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg> },
+    { id:'profile', label:'Perfil',   icon: (on) => <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke={on?onCol:offCol} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg> },
+  ];
+
+  return (
+    <div style={{background:bg,borderTop:`1px solid ${border}`,padding:'8px 4px 20px',display:'flex',justifyContent:'space-around',boxShadow:'0 -4px 16px rgba(0,0,0,.04)',flexShrink:0,transition:'background .3s,border-color .3s'}}>
+      {tabs.map(t => {
+        const on = active === t.id;
+        return (
+          <div key={t.id} onClick={() => onNav(t.id)} style={{display:'flex',flexDirection:'column',alignItems:'center',gap:4,padding:'6px 10px',borderRadius:14,cursor:'pointer',minWidth:44}}>
+            {t.icon(on)}
+            <span style={{fontSize:10,fontWeight:on?700:500,color:on?onCol:offCol,fontFamily:"'Satoshi',sans-serif",transition:'color .2s'}}>{t.label}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// Boot
+const root = ReactDOM.createRoot(document.getElementById('stage'));
+root.render(<RootApp />);
+
+// Screen buttons
+const btnContainer = document.getElementById('screenBtns');
+SCREENS.forEach(s => {
+  const btn = document.createElement('button');
+  btn.dataset.screen = s;
+  btn.className = 'screen-btn' + (s === (localStorage.getItem('quadra_screen')||'Inicio') ? ' active' : '');
+  btn.textContent = SCREEN_LABELS[s];
+  btn.onclick = () => window.__quadraSetScreen && window.__quadraSetScreen(s);
+  btnContainer.appendChild(btn);
+});
+
+// Dark toggle
+document.getElementById('darkToggle').onclick = () => {
+  const d = localStorage.getItem('quadra_dark') !== '1';
+  window.__quadraSetDark && window.__quadraSetDark(d);
+};
+</script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+/* ================================================================
+   QUADRA DESIGN SYSTEM v7 — CSS TOKENS
+   Single source of truth for all design decisions.
+   Usage: import this file globally, then apply vars in components.
+   ================================================================ */
+
+/* Satoshi — local font files */
+@font-face { font-family: 'Satoshi'; src: url('fonts/Satoshi-Light.otf') format('opentype'); font-weight: 300; font-style: normal; }
+@font-face { font-family: 'Satoshi'; src: url('fonts/Satoshi-LightItalic.otf') format('opentype'); font-weight: 300; font-style: italic; }
+@font-face { font-family: 'Satoshi'; src: url('fonts/Satoshi-Regular.otf') format('opentype'); font-weight: 400; font-style: normal; }
+@font-face { font-family: 'Satoshi'; src: url('fonts/Satoshi-Italic.otf') format('opentype'); font-weight: 400; font-style: italic; }
+@font-face { font-family: 'Satoshi'; src: url('fonts/Satoshi-Medium.otf') format('opentype'); font-weight: 500; font-style: normal; }
+@font-face { font-family: 'Satoshi'; src: url('fonts/Satoshi-MediumItalic.otf') format('opentype'); font-weight: 500; font-style: italic; }
+@font-face { font-family: 'Satoshi'; src: url('fonts/Satoshi-Bold.otf') format('opentype'); font-weight: 700; font-style: normal; }
+@font-face { font-family: 'Satoshi'; src: url('fonts/Satoshi-BoldItalic.otf') format('opentype'); font-weight: 700; font-style: italic; }
+@font-face { font-family: 'Satoshi'; src: url('fonts/Satoshi-Black.otf') format('opentype'); font-weight: 900; font-style: normal; }
+@font-face { font-family: 'Satoshi'; src: url('fonts/Satoshi-BlackItalic.otf') format('opentype'); font-weight: 900; font-style: italic; }
+
+/* DM Sans — Google Fonts (no local file provided) */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap');
+
+/* ----------------------------------------------------------------
+   ROOT — LIGHT MODE (default)
+   ---------------------------------------------------------------- */
+:root {
+
+  /* ── Brand ── */
+  --volt:         #BDF300;          /* lime-electric; 10% max per viewport */
+  --volt-on:      #1A2400;          /* text on volt bg */
+  --volt-text:    #3D5200;          /* volt-colored text on white; AA 6.1:1 */
+  --volt-dim:     rgba(189,243,0,0.08);
+  --volt-border:  rgba(189,243,0,0.20);
+
+  /* ── Financial semantic ── */
+  --fin-income:        #16A34A;     /* green; AA 5.1:1 */
+  --fin-income-dim:    rgba(22,163,74,0.07);
+  --fin-income-border: rgba(22,163,74,0.18);
+  --fin-deduct:        #DC2626;     /* red; AA 5.9:1 */
+  --fin-deduct-dim:    rgba(220,38,38,0.07);
+  --fin-deduct-border: rgba(220,38,38,0.16);
+  --fin-reserve:       #B45309;     /* amber; AA 5.3:1 */
+  --fin-reserve-dim:   rgba(180,83,9,0.07);
+  --fin-reserve-border:rgba(180,83,9,0.18);
+  --fin-available:     #3D5200;     /* volt-dark for "available" in light mode */
+
+  /* ── Surfaces — light mode ── */
+  --bg:         #FFFFFF;
+  --bg-subtle:  #F8F9F8;
+  --surf-1:     #F3F4F2;            /* nav, sidebars */
+  --surf-2:     #ECEEED;            /* input bg, chips */
+  --surf-3:     #E4E6E3;            /* pressed states */
+  --surf-inv:   #111410;            /* inverse (code blocks) */
+
+  /* ── Borders ── */
+  --border:     rgba(0,0,0,0.07);
+  --border-s:   rgba(0,0,0,0.12);
+  --border-m:   rgba(0,0,0,0.18);
+
+  /* ── Text ── */
+  --txt:        #0F1410;            /* near-black with green warmth */
+  --txt-2:      #3D4A3F;            /* secondary */
+  --txt-m:      #6B7B6D;            /* muted */
+  --txt-f:      #9DAD9F;            /* faint/placeholder */
+  --txt-inv:    #F1F2EF;            /* on dark surfaces */
+
+  /* ── Shadows ── */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.07), 0 2px 8px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.05);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
+  --shadow-xl: 0 20px 48px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.07);
+
+  /* ── Motion ── */
+  --motion-instant: 80ms;
+  --motion-fast:   160ms;
+  --motion-base:   260ms;
+  --motion-slow:   400ms;
+  --motion-xslow:  580ms;
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-in:     cubic-bezier(0.4, 0, 1, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* ── Typography — font families ── */
+  --font-display: 'Satoshi', system-ui, -apple-system, sans-serif;
+  --font-body:    'DM Sans', system-ui, -apple-system, sans-serif;
+  --font-mono:    'Courier New', monospace;
+  --font:         var(--font-display);  /* legacy alias */
+
+  /* ── Type scale (fluid / clamp) ── */
+  --t-xs:   clamp(0.625rem,  0.60rem  + 0.13vw, 0.6875rem);  /* 10–11px  meta/caps labels */
+  --t-sm:   clamp(0.75rem,   0.72rem  + 0.15vw, 0.8125rem);  /* 12–13px  helpers, dates */
+  --t-base: clamp(0.8125rem, 0.78rem  + 0.16vw, 0.875rem);   /* 13–14px  body copy */
+  --t-md:   clamp(0.9375rem, 0.90rem  + 0.19vw, 1rem);       /* 15–16px  field labels */
+  --t-lg:   clamp(1.0625rem, 1rem     + 0.31vw, 1.1875rem);  /* 17–19px  section titles */
+  --t-xl:   clamp(1.375rem,  1.2rem   + 0.88vw, 1.75rem);    /* 22–28px  page headings */
+  --t-2xl:  clamp(1.75rem,   1.4rem   + 1.75vw, 2.25rem);    /* 28–36px  sub-hero nums */
+  --t-3xl:  clamp(2.25rem,   1.8rem   + 2.25vw, 3rem);       /* 36–48px  available disp */
+  --t-hero: clamp(3.5rem,    2.8rem   + 3.5vw,  5rem);       /* 56–80px  hero number */
+
+  /* ── Semantic typography assignments ── */
+  /* H1 — hero page title */
+  --h1-font:    var(--font-display);
+  --h1-size:    var(--t-xl);
+  --h1-weight:  900;
+  --h1-spacing: -0.05em;
+  --h1-lh:      1.0;
+
+  /* H2 — section title */
+  --h2-font:    var(--font-display);
+  --h2-size:    var(--t-lg);
+  --h2-weight:  700;
+  --h2-spacing: -0.02em;
+  --h2-lh:      1.1;
+
+  /* H3 — sub-section / card title */
+  --h3-font:    var(--font-display);
+  --h3-size:    var(--t-md);
+  --h3-weight:  700;
+  --h3-spacing: -0.015em;
+  --h3-lh:      1.2;
+
+  /* Body */
+  --body-font:    var(--font-body);
+  --body-size:    var(--t-base);
+  --body-weight:  400;
+  --body-spacing: -0.01em;
+  --body-lh:      1.6;
+
+  /* Label / UI text */
+  --label-font:    var(--font-body);
+  --label-size:    var(--t-sm);
+  --label-weight:  500;
+  --label-spacing: 0;
+  --label-lh:      1.4;
+
+  /* Caption / meta */
+  --caption-font:    var(--font-body);
+  --caption-size:    var(--t-xs);
+  --caption-weight:  400;
+  --caption-spacing: 0.01em;
+  --caption-lh:      1.5;
+
+  /* Number display */
+  --num-font:    var(--font-display);
+  --num-weight:  900;
+  --num-spacing: -0.05em;
+  --num-numeric: tabular-nums;
+
+  /* Eyebrow / overline */
+  --eyebrow-font:    var(--font-display);
+  --eyebrow-size:    10px;
+  --eyebrow-weight:  700;
+  --eyebrow-spacing: 0.12em;
+  --eyebrow-transform: uppercase;
+
+  /* Code */
+  --code-font: var(--font-mono);
+  --code-size: 0.83em;
+
+  /* ── Border radii ── */
+  --r-xs:   4px;
+  --r-sm:   6px;
+  --r-md:   10px;
+  --r-lg:   14px;
+  --r-xl:   18px;
+  --r-2xl:  24px;
+  --r-3xl:  32px;
+  --r-full: 9999px;
+
+  /* ── Spacing scale ── */
+  --s1:  4px;
+  --s2:  8px;
+  --s3:  12px;
+  --s4:  16px;
+  --s5:  20px;
+  --s6:  24px;
+  --s7:  28px;
+  --s8:  32px;
+  --s10: 40px;
+  --s12: 48px;
+  --s14: 56px;
+  --s16: 64px;
+  --s18: 72px;
+  --s20: 80px;
+
+  /* ── Semantic spacing ── */
+  --space-section:       32px;   /* between major screen sections */
+  --space-section-lg:    48px;   /* hero sections */
+  --space-between-cards: 12px;   /* card gaps */
+  --space-card:          24px;   /* card internal padding */
+  --space-card-sm:       16px;   /* compact card */
+  --space-form-gap:      24px;   /* between form field groups */
+  --space-field-gap:     8px;    /* label to input */
+  --space-label-sub:     4px;    /* label to sublabel */
+  --space-icon-text:     8px;    /* icon to its label */
+  --space-inline:        6px;    /* inline elements */
+  --screen-px:           20px;   /* mobile horizontal padding */
+  --screen-px-lg:        24px;   /* tablet+ horizontal padding */
+  --screen-pt:           16px;   /* padding-top below header */
+  --screen-pb:           32px;   /* padding-bottom above nav */
+}
+
+/* ----------------------------------------------------------------
+   DARK MODE
+   ---------------------------------------------------------------- */
+[data-theme="dark"] {
+  --bg:        #090D0B;           /* near-black, warm green undertone */
+  --bg-subtle: #0D1410;
+  --surf-1:    #111810;
+  --surf-2:    #172014;
+  --surf-3:    #1E2B1A;
+  --surf-inv:  #F1F2EF;
+  --border:    rgba(189,243,0,0.06);
+  --border-s:  rgba(189,243,0,0.10);
+  --border-m:  rgba(189,243,0,0.16);
+  --txt:       #F1F2EF;
+  --txt-2:     #A0B3A2;
+  --txt-m:     #617063;
+  --txt-f:     #344038;
+  --txt-inv:   #0F1410;
+  --volt-text: #BDF300;           /* volt is its own text color in dark mode */
+  --fin-available: #BDF300;
+  --fin-income:    #4ADE80;
+  --fin-deduct:    #F87171;
+  --fin-reserve:   #FBBF24;
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.4);
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.5), 0 0 0 1px rgba(189,243,0,0.04);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.6), 0 0 0 1px rgba(189,243,0,0.05);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.7), 0 0 0 1px rgba(189,243,0,0.06);
+  --shadow-xl: 0 20px 48px rgba(0,0,0,0.8), 0 0 0 1px rgba(189,243,0,0.07);
+}

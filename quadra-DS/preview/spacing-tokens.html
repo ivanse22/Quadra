@@ -1,0 +1,28 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Light.otf') format('opentype');font-weight:300;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Regular.otf') format('opentype');font-weight:400;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Medium.otf') format('opentype');font-weight:500;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Bold.otf') format('opentype');font-weight:700;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Black.otf') format('opentype');font-weight:900;font-style:normal;}
+</style>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Satoshi',sans-serif;background:#fff;padding:20px 24px;display:flex;flex-direction:column;gap:6px;}
+.row{display:flex;align-items:center;gap:12px;}
+.bar{background:#BDF300;height:16px;border-radius:4px;flex-shrink:0;}
+.token{font-size:10px;font-weight:700;color:#3D5200;font-family:monospace;width:36px;}
+.val{font-size:10px;color:#6B7B6D;width:32px;}
+.use{font-size:10px;color:#9DAD9F;}
+</style></head><body>
+<div class="row"><span class="token">--s1</span><div class="bar" style="width:4px;"></div><span class="val">4px</span><span class="use">icon gap, micro</span></div>
+<div class="row"><span class="token">--s2</span><div class="bar" style="width:8px;"></div><span class="val">8px</span><span class="use">inline gap, icon-text</span></div>
+<div class="row"><span class="token">--s3</span><div class="bar" style="width:12px;"></div><span class="val">12px</span><span class="use">list item gaps</span></div>
+<div class="row"><span class="token">--s4</span><div class="bar" style="width:16px;"></div><span class="val">16px</span><span class="use">compact padding</span></div>
+<div class="row"><span class="token">--s5</span><div class="bar" style="width:20px;"></div><span class="val">20px</span><span class="use">screen-px (mobile)</span></div>
+<div class="row"><span class="token">--s6</span><div class="bar" style="width:24px;"></div><span class="val">24px</span><span class="use">card padding, form gap</span></div>
+<div class="row"><span class="token">--s8</span><div class="bar" style="width:32px;"></div><span class="val">32px</span><span class="use">section spacing</span></div>
+<div class="row"><span class="token">--s10</span><div class="bar" style="width:40px;"></div><span class="val">40px</span><span class="use">sub-section gap</span></div>
+<div class="row"><span class="token">--s12</span><div class="bar" style="width:48px;"></div><span class="val">48px</span><span class="use">section-lg</span></div>
+<div class="row"><span class="token">--s16</span><div class="bar" style="width:64px;"></div><span class="val">64px</span><span class="use">page padding</span></div>
+</body></html>

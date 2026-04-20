@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="es" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="description" content="Quadra — Gestión financiera para freelancers colombianos. Calcula tu disponible real." />
+    <meta name="theme-color" content="#BDF300" />
+    <!-- iOS PWA Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="Quadra" />
+    
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon-180x180.png" />
+    <title>Quadra — Sin enredos. Todo cuadra.</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+    <script>
+      window.addEventListener('error', (event) => {
+        document.body.innerHTML += `<div style="position:fixed;top:0;left:0;right:0;background:red;color:white;z-index:9999;padding:20px;font-family:monospace;white-space:pre-wrap;font-size:12px;"><strong>Error:</strong> ${event.message}<br/>${event.filename}:${event.lineno}</div>`;
+      });
+      window.addEventListener('unhandledrejection', (event) => {
+        document.body.innerHTML += `<div style="position:fixed;top:50%;left:0;right:0;background:red;color:white;z-index:9999;padding:20px;font-family:monospace;white-space:pre-wrap;font-size:12px;"><strong>Promise Rejection:</strong> ${event.reason?.message || event.reason}</div>`;
+      });
+    </script>
+  </body>
+</html>

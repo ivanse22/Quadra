@@ -1,0 +1,105 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Bold.otf') format('opentype');font-weight:700;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Black.otf') format('opentype');font-weight:900;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Regular.otf') format('opentype');font-weight:400;}
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'DM Sans',sans-serif;background:#F8F9F8;padding:20px;display:flex;flex-direction:column;gap:12px;}
+
+.eyebrow{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#9DAD9F;margin-bottom:8px;}
+
+/* ── KPI row ── */
+.kpi-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
+.kpi{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:18px;padding:14px 14px 12px;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.kpi-label{font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;color:#9DAD9F;margin-bottom:4px;text-transform:uppercase;letter-spacing:.08em;}
+.kpi-value{font-family:'Satoshi',sans-serif;font-size:20px;font-weight:900;letter-spacing:-.04em;font-variant-numeric:tabular-nums;color:#0F1410;line-height:1;margin-bottom:6px;}
+.kpi-badge{display:inline-flex;align-items:center;gap:3px;font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;padding:2px 7px;border-radius:9999px;}
+
+/* ── Tendencias — estilo lista como tx rows ── */
+.list-card{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:20px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.list-header{padding:10px 16px;background:#F8F9F8;border-bottom:1px solid rgba(0,0,0,.06);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#9DAD9F;}
+.trend-row{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid rgba(0,0,0,.05);gap:12px;}
+.trend-row:last-child{border-bottom:none;}
+.trend-left{display:flex;align-items:center;gap:10px;flex:1;min-width:0;}
+.trend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.trend-desc{font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#3D4A3F;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.trend-period{font-family:'DM Sans',sans-serif;font-size:10px;color:#9DAD9F;flex-shrink:0;}
+.trend-amount{font-family:'Satoshi',sans-serif;font-size:14px;font-weight:700;font-variant-numeric:tabular-nums;flex-shrink:0;text-align:right;}
+
+/* ── Desglose ── */
+.desglose{background:#fff;border:1px solid rgba(0,0,0,.07);border-radius:20px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.04);}
+.drow{display:flex;align-items:baseline;justify-content:space-between;padding:10px 16px;border-bottom:1px solid rgba(0,0,0,.05);gap:8px;}
+.drow:last-of-type{border-bottom:none;}
+.drow-l{display:flex;align-items:center;gap:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:400;color:#6B7B6D;}
+.drow-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+.drow-v{font-family:'Satoshi',sans-serif;font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;color:#0F1410;}
+.dtotal{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:rgba(189,243,0,.06);border-top:1px solid rgba(189,243,0,.14);}
+.dtotal-l{font-family:'Satoshi',sans-serif;font-size:13px;font-weight:700;color:#0F1410;}
+.dtotal-v{font-family:'Satoshi',sans-serif;font-size:20px;font-weight:900;font-variant-numeric:tabular-nums;letter-spacing:-.04em;color:#3D5200;}
+</style></head><body>
+
+<div>
+  <div class="eyebrow">KPI · Enero 2025</div>
+  <div class="kpi-row">
+    <div class="kpi">
+      <div class="kpi-label">Cobrado</div>
+      <div class="kpi-value">$12.6M</div>
+      <span class="kpi-badge" style="background:rgba(22,163,74,.09);color:#16A34A;">↑ 18%</span>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Gastos</div>
+      <div class="kpi-value">$4.2M</div>
+      <span class="kpi-badge" style="background:rgba(220,38,38,.07);color:#DC2626;">↓ 5%</span>
+    </div>
+    <div class="kpi">
+      <div class="kpi-label">Pendiente</div>
+      <div class="kpi-value">$6.0M</div>
+      <span class="kpi-badge" style="background:rgba(180,83,9,.07);color:#B45309;">2 cobros</span>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div class="eyebrow">Tendencias</div>
+  <div class="list-card">
+    <div class="list-header">Este mes</div>
+    <div class="trend-row">
+      <div class="trend-left">
+        <div class="trend-dot" style="background:#16A34A;"></div>
+        <span class="trend-desc">Más que el mes anterior</span>
+      </div>
+      <span class="trend-period">Enero</span>
+      <span class="trend-amount" style="color:#16A34A;">+$2.400.000</span>
+    </div>
+    <div class="trend-row">
+      <div class="trend-left">
+        <div class="trend-dot" style="background:#DC2626;"></div>
+        <span class="trend-desc">En suscripciones</span>
+      </div>
+      <span class="trend-period">Ene</span>
+      <span class="trend-amount" style="color:#DC2626;">−$320.000</span>
+    </div>
+    <div class="trend-row">
+      <div class="trend-left">
+        <div class="trend-dot" style="background:#B45309;"></div>
+        <span class="trend-desc">Promedio días para cobrar</span>
+      </div>
+      <span class="trend-period">Prom.</span>
+      <span class="trend-amount" style="color:#B45309;">15 días</span>
+    </div>
+  </div>
+</div>
+
+<div>
+  <div class="eyebrow">Desglose de cobro</div>
+  <div class="desglose">
+    <div class="drow"><div class="drow-l"><div class="drow-dot" style="background:#9DAD9F;"></div>Subtotal</div><div class="drow-v">$4.000.000</div></div>
+    <div class="drow"><div class="drow-l"><div class="drow-dot" style="background:#16A34A;"></div>IVA (19%)</div><div class="drow-v" style="color:#16A34A;">+$760.000</div></div>
+    <div class="drow"><div class="drow-l"><div class="drow-dot" style="background:#DC2626;"></div>Retención en la fuente</div><div class="drow-v" style="color:#DC2626;">−$400.000</div></div>
+    <div class="drow"><div class="drow-l"><div class="drow-dot" style="background:#B45309;"></div>Comisión Quadra</div><div class="drow-v" style="color:#B45309;">−$40.000</div></div>
+    <div class="dtotal"><div class="dtotal-l">Total a recibir</div><div class="dtotal-v">$4.320.000</div></div>
+  </div>
+</div>
+
+</body></html>

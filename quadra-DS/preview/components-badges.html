@@ -1,0 +1,44 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Light.otf') format('opentype');font-weight:300;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Regular.otf') format('opentype');font-weight:400;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Medium.otf') format('opentype');font-weight:500;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Bold.otf') format('opentype');font-weight:700;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Black.otf') format('opentype');font-weight:900;font-style:normal;}
+</style>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Satoshi',sans-serif;background:#F8F9F8;padding:20px;display:flex;flex-direction:column;gap:14px;}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#9DAD9F;margin-bottom:6px;}
+.badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:700;padding:3px 10px;border-radius:9999px;}
+.chip{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:9999px;font-size:12px;font-weight:700;border:1.5px solid;}
+.tag{display:inline-flex;align-items:center;font-size:10px;font-weight:700;padding:2px 8px;border-radius:9999px;text-transform:uppercase;letter-spacing:.06em;}
+</style></head><body>
+<div>
+  <div class="label">Status Badges</div>
+  <div class="row">
+    <span class="badge" style="background:rgba(22,163,74,.09);color:#16A34A;">● Pagado</span>
+    <span class="badge" style="background:rgba(180,83,9,.08);color:#B45309;">● Pendiente</span>
+    <span class="badge" style="background:rgba(220,38,38,.07);color:#DC2626;">● Vencido</span>
+    <span class="badge" style="background:rgba(189,243,0,.08);color:#3D5200;">● Activo</span>
+    <span class="badge" style="background:rgba(0,0,0,.05);color:#6B7B6D;">● Borrador</span>
+  </div>
+</div>
+<div>
+  <div class="label">Currency Chips</div>
+  <div class="row">
+    <span class="chip" style="background:#F3F4F2;border-color:rgba(0,0,0,.12);color:#3D4A3F;">MXN <span style="font-size:10px;color:#9DAD9F;border-left:1px solid rgba(0,0,0,.1);padding-left:8px;margin-left:2px;">$17.2</span></span>
+    <span class="chip" style="background:rgba(189,243,0,.08);border-color:rgba(189,243,0,.20);color:#3D5200;">USD</span>
+    <span class="chip" style="background:#F3F4F2;border-color:rgba(0,0,0,.12);color:#3D4A3F;">EUR</span>
+  </div>
+</div>
+<div>
+  <div class="label">Tags / Eyebrows</div>
+  <div class="row">
+    <span class="tag" style="background:#BDF300;color:#1A2400;">v7</span>
+    <span class="tag" style="background:#F3F4F2;color:#6B7B6D;">Freelance</span>
+    <span class="tag" style="background:rgba(189,243,0,.08);color:#3D5200;">Nuevo</span>
+  </div>
+</div>
+</body></html>

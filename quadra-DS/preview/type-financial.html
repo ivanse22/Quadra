@@ -1,0 +1,32 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Light.otf') format('opentype');font-weight:300;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Regular.otf') format('opentype');font-weight:400;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Medium.otf') format('opentype');font-weight:500;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Bold.otf') format('opentype');font-weight:700;font-style:normal;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Black.otf') format('opentype');font-weight:900;font-style:normal;}
+</style>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Satoshi',sans-serif;background:#fff;padding:24px 28px;display:flex;flex-direction:column;gap:16px;}
+.label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:#6B7B6D;margin-bottom:4px;}
+.hero-num{font-size:clamp(3.5rem,2.8rem+3.5vw,5rem);font-weight:900;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums;display:flex;align-items:baseline;}
+.hero-main{color:#3D5200;}
+.hero-dec{color:rgba(15,20,16,.22);}
+.mid-num{font-size:clamp(2.25rem,1.8rem+2.25vw,3rem);font-weight:900;letter-spacing:-.05em;line-height:1;font-variant-numeric:tabular-nums;color:#3D5200;}
+.tx-row{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid rgba(0,0,0,.06);}
+.tx-name{font-size:13px;font-weight:700;color:#0F1410;}
+.tx-sub{font-size:11px;color:#9DAD9F;}
+.tx-amount{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;}
+</style></head><body>
+<div><div class="label">Hero Amount (two-tone decimals)</div>
+<div class="hero-num"><span class="hero-main">$8.400.000</span><span class="hero-dec"></span></div></div>
+<div><div class="label">Available Display</div>
+<div class="mid-num">$2.150.000</div></div>
+<div>
+<div class="label">Transaction Rows</div>
+<div class="tx-row"><div><div class="tx-name">Diseño web — Martínez</div><div class="tx-sub">15 ene · Transferencia</div></div><span class="tx-amount" style="color:#16A34A;">+$4.200.000</span></div>
+<div class="tx-row"><div><div class="tx-name">Suscripción Figma</div><div class="tx-sub">12 ene · Cargo automático</div></div><span class="tx-amount" style="color:#DC2626;">−$189.000</span></div>
+<div class="tx-row"><div><div class="tx-name">Consultoría — Rivera</div><div class="tx-sub">10 ene · Pendiente</div></div><span class="tx-amount" style="color:#B45309;">$6.000.000</span></div>
+</div>
+</body></html>

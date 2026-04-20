@@ -1,0 +1,83 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Bold.otf') format('opentype');font-weight:700;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Black.otf') format('opentype');font-weight:900;}
+@font-face{font-family:'Satoshi';src:url('../fonts/Satoshi-Regular.otf') format('opentype');font-weight:400;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Satoshi',sans-serif;background:#F8F9F8;padding:20px;display:flex;gap:14px;flex-wrap:wrap;align-items:flex-start;}
+.section{flex:1;min-width:200px;display:flex;flex-direction:column;gap:10px;}
+.label{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:#9DAD9F;margin-bottom:2px;}
+
+.q-toggle{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-radius:18px;background:#fff;border:1px solid rgba(0,0,0,.07);cursor:pointer;gap:14px;user-select:none;transition:background .16s;}
+.q-toggle:hover{background:#F8F9F8;}
+.q-toggle.disabled{opacity:.5;cursor:not-allowed;}
+.q-toggle-title{font-size:13px;font-weight:700;color:#0F1410;}
+.q-toggle-desc{font-size:11px;color:#9DAD9F;margin-top:2px;line-height:1.4;}
+
+.q-switch{width:44px;height:26px;border-radius:13px;position:relative;flex-shrink:0;transition:background .2s cubic-bezier(.16,1,.3,1);}
+.q-switch-thumb{width:20px;height:20px;border-radius:50%;background:#fff;position:absolute;top:3px;left:3px;box-shadow:0 1px 4px rgba(0,0,0,.12);transition:transform .2s cubic-bezier(.16,1,.3,1);}
+.q-switch.on .q-switch-thumb{transform:translateX(18px);}
+.q-switch.off{background:#E4E6E3;}
+.q-switch.on{background:#3D5200;}
+
+.q-select{width:100%;height:52px;padding:0 40px 0 16px;background:#F3F4F2;border:1.5px solid rgba(0,0,0,.12);border-radius:14px;font-family:'Satoshi',sans-serif;font-size:13px;font-weight:500;color:#0F1410;outline:none;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B7B6D' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 14px center;cursor:pointer;transition:border-color .16s,box-shadow .16s;}
+.q-select:focus{background-color:#fff;border-color:#3D5200;box-shadow:0 0 0 3px rgba(189,243,0,.08);}
+
+.q-input-wrap{position:relative;}
+.q-input{width:100%;height:52px;padding:0 16px;background:#F3F4F2;border:1.5px solid rgba(0,0,0,.12);border-radius:14px;font-family:'Satoshi',sans-serif;font-size:13px;font-weight:500;color:#0F1410;outline:none;transition:border-color .16s,box-shadow .16s;}
+.q-input:focus{background:#fff;border-color:#3D5200;box-shadow:0 0 0 3px rgba(189,243,0,.08);}
+.q-input.disabled{opacity:.6;cursor:not-allowed;color:#9DAD9F;}
+.q-input.saved{background:rgba(189,243,0,.05);border-color:rgba(189,243,0,.25);}
+.q-input-icon-r{position:absolute;right:14px;top:50%;transform:translateY(-50%);color:#9DAD9F;display:flex;align-items:center;pointer-events:none;}
+</style></head><body>
+
+<div class="section">
+  <div class="label">Toggle / Switch</div>
+  <div class="q-toggle" id="t1" onclick="toggle('t1')">
+    <div><div class="q-toggle-title">Notificaciones de pago</div><div class="q-toggle-desc">Recibe alertas cuando te paguen</div></div>
+    <div class="q-switch on" id="sw1"><div class="q-switch-thumb"></div></div>
+  </div>
+  <div class="q-toggle" id="t2" onclick="toggle('t2')">
+    <div><div class="q-toggle-title">Recordatorios automáticos</div><div class="q-toggle-desc">Avisar a clientes con cobros pendientes</div></div>
+    <div class="q-switch off" id="sw2"><div class="q-switch-thumb"></div></div>
+  </div>
+  <div class="q-toggle" id="t3" onclick="toggle('t3')">
+    <div><div class="q-toggle-title">Cobros con IVA incluido</div><div class="q-toggle-desc">Agregar 16% automáticamente</div></div>
+    <div class="q-switch off" id="sw3"><div class="q-switch-thumb"></div></div>
+  </div>
+  <div class="q-toggle disabled" id="t4">
+    <div><div class="q-toggle-title">Modo fiscal automático</div><div class="q-toggle-desc">Requiere cuenta verificada</div></div>
+    <div class="q-switch off" id="sw4"><div class="q-switch-thumb"></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="label">Select</div>
+  <select class="q-select">
+    <option>Transferencia bancaria</option>
+    <option>Efectivo</option>
+    <option>Tarjeta de crédito</option>
+  </select>
+
+  <div class="label" style="margin-top:6px;">Input con ícono</div>
+  <div class="q-input-wrap">
+    <input class="q-input" style="padding-right:44px;" placeholder="Buscar transacción…">
+    <div class="q-input-icon-r"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9DAD9F" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+  </div>
+
+  <div class="label" style="margin-top:2px;">Prefilled / saved</div>
+  <input class="q-input saved" value="Martínez Corp">
+
+  <div class="label" style="margin-top:2px;">Disabled</div>
+  <input class="q-input disabled" value="RFC automático" disabled>
+</div>
+
+<script>
+function toggle(id) {
+  const sw = document.getElementById('sw' + id.replace('t',''));
+  const isOn = sw.classList.contains('on');
+  sw.classList.toggle('on', !isOn);
+  sw.classList.toggle('off', isOn);
+}
+</script>
+</body></html>

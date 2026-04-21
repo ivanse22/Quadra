@@ -71,7 +71,7 @@ export default function Header() {
 
   // Header B — Back + title centered
   const titles = {
-    O2:'¿Cómo tributas?', O3:'Retención', O4:'Salud y pensión',
+    O2:'¿Cómo tributas?', O3:'Retención', O4:'Salud y pensión', O5:'Resumen',
     D2:'Entender mis descuentos', D3:'Pagar PILA', D4:'Reserva declaración',
     I2:'Nuevo pago', I3:'Detalle del pago', I5:'Historial PILA',
     A6:'Proyectar ingresos', A7:'Exportar datos',

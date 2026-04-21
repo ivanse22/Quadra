@@ -11,16 +11,18 @@ export default function O5Resultado() {
 
   return (
     <div className="ob-result">
-      <div className="ob-result-icon">
-        <QuadraLogo size={32} color="var(--txt)" />
+      <div className="ob-result-head">
+        <div className="ob-result-icon">
+          <QuadraLogo size={32} color="var(--txt)" />
+        </div>
+        <h1 className="ob-result-title">¡Todo listo,<br />Valentina!</h1>
+        <p className="ob-result-desc">
+          Quadra ya sabe cómo calcular tu disponible real. Registra tu primer pago o explora el resumen.
+        </p>
       </div>
-      <h1 className="ob-result-title">¡Todo listo,<br />Valentina!</h1>
-      <p className="ob-result-desc">
-        Quadra ya sabe cómo calcular tu disponible real. Registra tu primer pago o explora el resumen.
-      </p>
 
       {/* Profile summary card */}
-      <div className="ob-result-card" style={{ width: '100%' }}>
+      <div className="ob-result-card">
         <div className="ob-result-card-lbl">Tu perfil Quadra</div>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s2)', marginTop: 'var(--s3)' }}>
           {[

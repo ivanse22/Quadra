@@ -8,8 +8,8 @@ const OPTIONS = [
 ]
 
 export default function O4PILA() {
-  const { navigate, setProfile } = useAppStore()
-  const [selected, setSelected] = useState('auto')
+  const { navigate, setProfile, profile } = useAppStore()
+  const [selected, setSelected] = useState(profile.pila || 'auto')
 
   const handleContinue = () => {
     setProfile({ pila: selected })
@@ -17,7 +17,7 @@ export default function O4PILA() {
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, padding: 'var(--s5) var(--s5) 0' }}>
+    <div className="ob-screen">
       <div style={{ marginBottom: 'var(--s4)' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 'var(--s2)' }}>
           <span style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--t-xs)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.08em', color: 'var(--txt-m)' }}>Paso 3 de 3</span>
@@ -25,7 +25,7 @@ export default function O4PILA() {
         </div>
         <div className="progress-bar" style={{ margin: 0 }}><div className="progress-fill" style={{ width: '100%' }} /></div>
       </div>
-      <div style={{ flex: 1 }}>
+      <div className="ob-screen-main">
         <h1 className="ob-question">¿Cotizas salud y pensión como independiente?</h1>
         <p className="ob-context">Quadra puede reservar automáticamente este valor cada vez que registras un pago.</p>
         <div className="ob-options">
@@ -46,7 +46,7 @@ export default function O4PILA() {
           ))}
         </div>
       </div>
-      <div style={{ padding: 'var(--s4) 0 var(--s6)' }}>
+      <div className="ob-screen-actions">
         <button className="btn btn-primary btn-full" onClick={handleContinue}>Empezar con Quadra →</button>
       </div>
     </div>

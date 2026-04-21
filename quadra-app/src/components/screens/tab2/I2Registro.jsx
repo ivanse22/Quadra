@@ -2,13 +2,35 @@ import { useState, useMemo } from 'react'
 import { useAppStore } from '../../../store/useAppStore'
 import { calcularPago } from '../../../lib/calculadoraFinanciera'
 import AmountField from '../../ui/AmountField'
-import { IconDelete, IconCheck } from '../../ui/Icons'
+import { IconCalendar, IconCheck } from '../../ui/Icons'
+
+const DAYS = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab']
+const MONTHS = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
+
+const toDateInputValue = (date) => {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  return `${year}-${month}-${day}`
+}
+
+const formatDateLabel = (value) => {
+  const [year, month, day] = value.split('-').map(Number)
+  const date = new Date(year, month - 1, day)
+  return `${DAYS[date.getDay()]} ${day} ${MONTHS[month - 1]} ${year}`
+}
+
+const formatDateButtonLabel = (value) => {
+  const todayValue = toDateInputValue(new Date())
+  return value === todayValue ? `Hoy — ${formatDateLabel(value)}` : formatDateLabel(value)
+}
 
 export default function I2Registro() {
   const { navigate, addPayment, showToast, profile, kpis } = useAppStore()
   const [amount, setAmount] = useState(0)
   const [client, setClient] = useState('Agencia Creativa SAS')
   const [currency, setCurrency] = useState('COP')
+  const [paymentDate, setPaymentDate] = useState(() => toDateInputValue(new Date()))
   const [showDialog, setShowDialog] = useState(false)
   const [btnState, setBtnState] = useState('default') // default | loading | success
 
@@ -41,8 +63,8 @@ export default function I2Registro() {
         pila: calc.pila, 
         reserva: calc.reserva, 
         disponible: calc.disponible,
-        date: new Date().toISOString().split('T')[0], 
-        dateLabel: 'Hoy',
+        date: paymentDate,
+        dateLabel: formatDateLabel(paymentDate),
       })
       showToast({ type: 'success', message: 'Pago guardado correctamente' })
       setTimeout(() => navigate('I2R'), 400)
@@ -61,7 +83,7 @@ export default function I2Registro() {
               </div>
               <div className="dialog-title">¿Confirmar este pago?</div>
               <div className="dialog-desc">
-                <strong>{currency !== 'COP' ? `${currency} ${amount.toLocaleString('es-CO')} ` : ''}${calc.pago_cop.toLocaleString('es-CO')} COP</strong> de <strong>{client}</strong> · Hoy
+                <strong>{currency !== 'COP' ? `${currency} ${amount.toLocaleString('es-CO')} ` : ''}${calc.pago_cop.toLocaleString('es-CO')} COP</strong> de <strong>{client}</strong> · {formatDateButtonLabel(paymentDate)}
                 <br />Quadra calculará tu disponible real al instante.
               </div>
             </div>
@@ -74,10 +96,16 @@ export default function I2Registro() {
       )}
 
       {/* Form */}
-      <div style={{ flex: 1, padding: 'var(--screen-pt) var(--screen-px) 0' }}>
-        <AmountField onChange={setAmount} />
+      <div className="screen-stack screen-stack-compact" style={{ flex: 1, paddingBottom: 'var(--s6)' }}>
+        <div className="section-head">
+          <span className="section-kicker">Nuevo ingreso</span>
+          <h2 className="section-title">Registra el valor bruto del pago</h2>
+          <p className="section-desc">Quadra usa tu configuración fiscal para calcular al instante lo que realmente te queda disponible.</p>
+        </div>
 
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s5)', marginTop: 'var(--s6)' }}>
+        <AmountField onChange={setAmount} showCalculatingHint={btnState === 'loading'} />
+
+        <div className="form-stack">
           {/* Currency */}
           <div className="field">
             <label className="field-label">Moneda</label>
@@ -102,10 +130,17 @@ export default function I2Registro() {
           {/* Date */}
           <div className="field">
             <label className="field-label">Fecha del pago</label>
-            <button className="date-btn" style={{ marginTop: 'var(--s1)' }}>
-              <span className="sel">Hoy — Sab 19 Abr 2026</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
-            </button>
+            <label className="date-btn" style={{ marginTop: 'var(--s1)' }}>
+              <input
+                className="date-native-input"
+                type="date"
+                value={paymentDate}
+                onChange={(e) => setPaymentDate(e.target.value)}
+                aria-label="Seleccionar fecha del pago"
+              />
+              <span className="sel">{formatDateButtonLabel(paymentDate)}</span>
+              <IconCalendar />
+            </label>
           </div>
 
           {/* Live preview interactiva real */}
@@ -145,6 +180,20 @@ export default function I2Registro() {
               )}
             </div>
           )}
+
+          <div className="muted-note">
+            <div className="task-card-icon" style={{ width: 36, height: 36 }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--txt-m)" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <path d="M12 8v4" />
+                <circle cx="12" cy="16" r="1" fill="currentColor" stroke="none" />
+              </svg>
+            </div>
+            <div className="muted-note-copy">
+              <span className="muted-note-title">Consejo</span>
+              <span className="muted-note-text">Registra el valor tal como aparece en tu factura. Si la moneda no es COP, Quadra conserva el original y usa una conversión aproximada para el cálculo.</span>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -158,7 +207,7 @@ export default function I2Registro() {
           {btnState === 'loading' && <span className="spin" />}
           {btnState === 'success' && <IconCheck />}
           {btnState === 'default' && 'Confirmar y calcular'}
-          {btnState === 'loading' && 'Calculando...'}
+          {btnState === 'loading' && 'Calculando tu disponible...'}
           {btnState === 'success' && 'Guardado'}
         </button>
       </div>

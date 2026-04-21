@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect } from 'react'
 import { IconDelete } from './Icons'
 
-export default function AmountField({ onChange }) {
+export default function AmountField({ onChange, showCalculatingHint = false }) {
   const [raw, setRaw] = useState('')
   const [showNumpad, setShowNumpad] = useState(false)
 
@@ -11,10 +11,10 @@ export default function AmountField({ onChange }) {
 
   // Dynamic font size calculator
   const getFontSize = (len) => {
-    if (len <= 4) return 'clamp(3.5rem, 15vw, 5.5rem)'  // Massive single digits
-    if (len <= 6) return 'clamp(2.8rem, 12vw, 4.5rem)'  // Mid size
-    if (len <= 8) return 'clamp(2.2rem, 9vw, 3.5rem)'   // Normal scale
-    return 'clamp(1.8rem, 7vw, 2.5rem)'                 // Min bounds
+    if (len <= 4) return 'var(--t-hero)'
+    if (len <= 6) return 'var(--t-3xl)'
+    if (len <= 8) return 'var(--t-2xl)'
+    return 'var(--t-xl)'
   }
 
   // Notify parent on every keystroke
@@ -103,7 +103,7 @@ export default function AmountField({ onChange }) {
 
       <div className={`amount-divider${raw ? ' focused' : ''}`} />
 
-      {hasVal && (
+      {hasVal && showCalculatingHint && (
         <p style={{
           fontSize: 'var(--t-xs)', color: 'var(--fin-income)',
           fontWeight: 600, marginTop: 'var(--s2)', fontFamily: 'var(--font-body)',

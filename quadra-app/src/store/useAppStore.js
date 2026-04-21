@@ -91,7 +91,7 @@ export const useAppStore = create(
         regimen: 'ordinario', // 'simple' | 'ordinario'
         tipo_ingreso: 'honorarios', // 'honorarios' | 'servicios'
         es_declarante: false,
-        retencion: 10,  // 3.5 | 4 | 6 | 10 | 11
+        retencion: 11,  // 3.5 | 4 | 6 | 10 | 11
         pila: 'auto',   // 'auto' | 'manual' | 'no'
       },
       setProfile: (updates) => set(state => ({
@@ -157,7 +157,7 @@ export const useAppStore = create(
       })),
 
       // Development / test
-      resetStore: () => set({ payments: [], profile: { name: 'Valentina Gómez', regimen: 'ordinario', tipo_ingreso: 'honorarios', es_declarante: false, retencion: 10, pila: 'auto' }, kpis: computeKpis([]), currentScreen: 'O1', screenHistory: [] })
+      resetStore: () => set({ payments: [], profile: { name: 'Valentina Gómez', regimen: 'ordinario', tipo_ingreso: 'honorarios', es_declarante: false, retencion: 11, pila: 'auto' }, kpis: computeKpis([]), currentScreen: 'O1', screenHistory: [] })
     }),
     {
       name: 'quadra-storage', // name of the item in the storage (must be unique)

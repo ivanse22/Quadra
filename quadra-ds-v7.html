@@ -62,6 +62,7 @@
   --shadow-md: 0 4px 16px rgba(0,0,0,0.08), 0 1px 4px rgba(0,0,0,0.05);
   --shadow-lg: 0 8px 32px rgba(0,0,0,0.10), 0 2px 8px rgba(0,0,0,0.06);
   --shadow-xl: 0 20px 48px rgba(0,0,0,0.12), 0 4px 16px rgba(0,0,0,0.07);
+  --focus-ring: rgba(189,243,0,0.26);
 
   /* ── Motion ── */
   --motion-instant: 80ms;
@@ -135,6 +136,7 @@
 
   /* Vertical rhythm */
   --screen-pt:        16px;  /* padding-top below header */
+  --screen-pt-compact:12px;  /* compact screens like home / composer */
   --screen-pb:        32px;  /* padding-bottom above nav */
 }
 
@@ -164,6 +166,7 @@
   --shadow-md: 0 4px 16px rgba(0,0,0,0.6), 0 0 0 1px rgba(189,243,0,0.05);
   --shadow-lg: 0 8px 32px rgba(0,0,0,0.7), 0 0 0 1px rgba(189,243,0,0.06);
   --shadow-xl: 0 20px 48px rgba(0,0,0,0.8), 0 0 0 1px rgba(189,243,0,0.07);
+  --focus-ring: rgba(189,243,0,0.34);
 }
 
 /* ================================================================
@@ -669,6 +672,17 @@ code{
 .btn-sm{height:36px;padding:0 var(--s4);font-size:var(--t-sm);}
 .btn-full{width:100%;}
 .btn:disabled{opacity:.38;cursor:not-allowed;transform:none!important;box-shadow:none!important;}
+.btn-danger{
+  height:52px;padding:0 var(--s6);
+  background:var(--fin-deduct-dim);color:var(--fin-deduct);
+  border:1.5px solid var(--fin-deduct-border);
+}
+.btn-danger:hover{background:rgba(220,38,38,0.10);transform:translateY(-1px);}
+
+:where(button,[role="button"],a,input,select,textarea,.nav-item,.tx-row,.date-btn,.seg-btn,.numpad-key,.year-projection-cta,.task-card,.pressable-card):focus-visible{
+  outline:none;
+  box-shadow:0 0 0 2px var(--bg),0 0 0 5px var(--focus-ring);
+}
 
 /* Confirm button sequence */
 .btn-confirm{
@@ -729,6 +743,40 @@ code{
 }
 .hero-bk-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt-m);margin-bottom:2px;}
 .hero-bk-val{font-size:var(--t-sm);font-weight:700;font-variant-numeric:tabular-nums;color:var(--txt-2);}
+.metric-hero{
+  display:flex;flex-direction:column;gap:var(--s3);
+  padding-bottom:var(--s8);border-bottom:1px solid var(--border);
+}
+.metric-hero-value{
+  font-size:var(--t-hero);font-weight:900;letter-spacing:-0.05em;line-height:.92;
+  font-variant-numeric:tabular-nums;color:var(--volt-text);
+}
+[data-theme="dark"] .metric-hero-value{color:var(--volt);}
+.metric-hero-row{display:flex;align-items:center;justify-content:space-between;gap:var(--s2);flex-wrap:wrap;}
+.metric-hero-meta{font-size:var(--t-sm);color:var(--txt-m);}
+.metrics-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s2);}
+.pressable-card{
+  background:var(--bg-subtle);border:1px solid var(--border);
+  border-radius:var(--r-xl);padding:var(--s4);box-shadow:var(--shadow-xs);
+}
+.pressable-card-kpi{display:flex;flex-direction:column;align-items:flex-start;text-align:left;}
+.task-card{
+  display:flex;align-items:center;gap:var(--s3);
+  padding:var(--s3) var(--s4);background:var(--bg);border:1px solid var(--border);
+  border-radius:var(--r-xl);box-shadow:var(--shadow-sm);
+}
+.task-card-icon{
+  width:44px;height:44px;border-radius:var(--r-md);
+  background:var(--fin-reserve-dim);border:1.5px solid var(--fin-reserve-border);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.task-card-main{flex:1;min-width:0;}
+.task-card-title{font-size:var(--t-sm);font-weight:700;color:var(--txt);line-height:1.3;margin-bottom:2px;}
+.task-card-desc{font-size:var(--t-xs);color:var(--txt-m);}
+.task-card-cta{
+  height:36px;padding:0 var(--s4);border-radius:var(--r-full);
+  background:var(--fin-reserve);color:#fff;font-size:var(--t-xs);font-weight:700;flex-shrink:0;
+}
 
 /* Desglose card — breakdown of a payment */
 .desglose{
@@ -1191,10 +1239,29 @@ code{
 /* ── Scrollable body area ── */
 .q-body {
   flex: 1;
+  display: flex;
+  flex-direction: column;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
 }
 .q-body::-webkit-scrollbar { display: none; }
+.q-body-inner {
+  padding: var(--screen-pt) var(--screen-px) var(--screen-pb);
+}
+.screen-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-section);
+  padding: var(--screen-pt) var(--screen-px) var(--screen-pb);
+}
+.screen-stack-compact { padding-top: var(--screen-pt-compact); }
+.section-head { display: flex; flex-direction: column; gap: var(--s2); }
+.section-inline-action { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s3); }
+.section-kicker { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em; color: var(--txt-m); }
+.section-title { font-size: var(--t-lg); font-weight: 900; letter-spacing: -0.03em; line-height: 1.12; color: var(--txt); }
+.section-desc { font-size: var(--t-sm); line-height: 1.6; color: var(--txt-m); }
+.section-link { font-size: var(--t-xs); font-weight: 700; color: var(--volt-text); white-space: nowrap; }
+[data-theme="dark"] .section-link { color: var(--volt); }
 
 /* ── Safe area annotations ── */
 .area-annotation {
@@ -6823,6 +6890,82 @@ body,
 
   </div>
 
+</section>
+
+<!-- ================================================================
+     23 — PREMIUM REFINEMENTS / SPRINT 1 + 2
+     ================================================================ -->
+<section class="sec" id="s23">
+  <p class="sec-eye">23 · Premium refinements</p>
+  <h2 class="sec-h">Sprint 1 + 2 — base visual y primitives</h2>
+  <p class="sec-p">Estas mejoras consolidan la calidad premium del sistema: menos layout ad-hoc por pantalla, más consistencia entre secciones, mejor jerarquía visual y feedback más nativo en interacciones clave.</p>
+
+  <div class="g2 mb10">
+    <div class="spec">
+      <div class="spec-title">Qué cambia en el sistema</div>
+      <div class="spec-items">
+        <div class="spec-item"><strong>Screen shells</strong> — `q-body` ahora funciona como columna flexible. `q-body-inner`, `screen-stack` y `screen-stack-compact` definen la base de espaciado para pantallas completas.</div>
+        <div class="spec-item"><strong>Section primitives</strong> — `section-kicker`, `section-title`, `section-desc` y `section-inline-action` permiten construir jerarquías editoriales sin repetir estilos inline.</div>
+        <div class="spec-item"><strong>Pressables reutilizables</strong> — KPI cards, task cards y CTAs contextuales comparten estados de presión, elevación y foco.</div>
+        <div class="spec-item"><strong>Accesibilidad</strong> — Se añade anillo de foco consistente y se documenta soporte para `prefers-reduced-motion` en animaciones del sistema.</div>
+      </div>
+    </div>
+    <div class="spec">
+      <div class="spec-title">Pantallas piloto de referencia</div>
+      <div class="spec-items">
+        <div class="spec-item"><strong>Mi Dinero</strong> — usa `metric-hero`, `metrics-grid`, `list-card`, `task-card` y `fab-primary` como blueprint de home premium.</div>
+        <div class="spec-item"><strong>Nuevo pago</strong> — usa `screen-stack compact`, encabezado editorial corto, preview financiera y nota contextual persistente.</div>
+        <div class="spec-item"><strong>Mi Año</strong> — promueve el CTA de proyección con `year-projection-cta` y sube la legibilidad del gráfico.</div>
+        <div class="spec-item"><strong>Mi Cuenta</strong> — introduce jerarquía superior de sección y acciones semánticas con `btn-danger`.</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="sub">Primitives nuevas recomendadas</p>
+  <div style="display:flex;flex-direction:column;gap:var(--s4);margin-bottom:var(--s10);">
+    <div class="card" style="padding:var(--s5);">
+      <div class="section-inline-action">
+        <div class="section-head">
+          <span class="section-kicker">Resumen financiero</span>
+          <div class="section-title">Movimientos</div>
+          <div class="section-desc">Tus últimos ingresos y reservas, ordenados para revisar rápido.</div>
+        </div>
+        <button class="section-link">Ver todo →</button>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--s2);">
+      <button class="pressable-card pressable-card-kpi" style="text-align:left;">
+        <span class="kpi-lbl">Ingresado YTD</span>
+        <span class="kpi-val">$7.4M</span>
+      </button>
+      <button class="pressable-card pressable-card-kpi" style="text-align:left;">
+        <span class="kpi-lbl">Reservado</span>
+        <span class="kpi-val" style="color:var(--fin-reserve);">$1.1M</span>
+      </button>
+    </div>
+
+    <div class="task-card">
+      <div class="task-card-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--fin-reserve)" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="task-card-main">
+        <div class="task-card-title">PILA pendiente</div>
+        <div class="task-card-desc">$570.000 reservados</div>
+      </div>
+      <button class="task-card-cta">Pagar</button>
+    </div>
+  </div>
+
+  <div class="spec">
+    <div class="spec-title">Reglas de calidad para nuevas pantallas</div>
+    <div class="spec-items">
+      <div class="spec-item"><strong>1. Un solo rhythm vertical</strong> — toda pantalla nueva debe arrancar con `q-body-inner` o `screen-stack`; no crear wrappers con paddings sueltos salvo casos excepcionales.</div>
+      <div class="spec-item"><strong>2. CTA clara por bloque</strong> — cada sección debe tener una acción principal visible. Si compite con el título, hay demasiadas acciones.</div>
+      <div class="spec-item"><strong>3. Data con credibilidad</strong> — héroes, charts y breakdowns deben derivarse de la misma fuente de datos; evitar valores decorativos que contradigan el resto.</div>
+      <div class="spec-item"><strong>4. Feedback touch-first</strong> — priorizar `pressed`, `focus-visible` y estados activos. `hover` solo como mejora progresiva en desktop.</div>
+    </div>
+  </div>
 </section>
 
 </main>

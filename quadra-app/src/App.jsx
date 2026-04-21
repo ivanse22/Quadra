@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './styles/index.css'
 import { useAppStore } from './store/useAppStore'
 import { supabase } from './lib/supabase'
@@ -7,6 +7,7 @@ import { supabase } from './lib/supabase'
 import Header from './components/layout/Header'
 import BottomNav from './components/layout/BottomNav'
 import ToastContainer from './components/ui/Toast'
+import InstallBanner from './components/ui/InstallBanner'
 
 // Auth
 import Auth from './components/screens/auth/Auth'
@@ -69,22 +70,48 @@ const SCREENS = {
 }
 
 export default function App() {
-  const { currentScreen, theme, session, setSession, showToast } = useAppStore()
+  const { currentScreen, theme, session, setSession } = useAppStore()
+  const deferredPrompt = useRef(null)
+  const [showInstallBanner, setShowInstallBanner] = useState(false)
 
-  // Catch PWA Install Prompt
+  // Intercept the native A2HS prompt so we can trigger it on demand
   useEffect(() => {
+    if (localStorage.getItem('pwa-install-dismissed')) return
+
     const handleInstallPrompt = (e) => {
-      // Prevent Chrome 67+ from automatically showing the prompt
       e.preventDefault()
-      // Show our custom unified toast
-      showToast({ 
-        type: 'success', 
-        message: 'Quadra está lista para instalar. Toca "Agregar a inicio" en tu navegador.' 
-      })
+      deferredPrompt.current = e
+      setShowInstallBanner(true)
     }
+
+    const handleInstalled = () => {
+      deferredPrompt.current = null
+      setShowInstallBanner(false)
+    }
+
     window.addEventListener('beforeinstallprompt', handleInstallPrompt)
-    return () => window.removeEventListener('beforeinstallprompt', handleInstallPrompt)
-  }, [showToast])
+    window.addEventListener('appinstalled', handleInstalled)
+    return () => {
+      window.removeEventListener('beforeinstallprompt', handleInstallPrompt)
+      window.removeEventListener('appinstalled', handleInstalled)
+    }
+  }, [])
+
+  const handleInstall = async () => {
+    if (!deferredPrompt.current) return
+    deferredPrompt.current.prompt()
+    const { outcome } = await deferredPrompt.current.userChoice
+    deferredPrompt.current = null
+    setShowInstallBanner(false)
+    if (outcome === 'dismissed') {
+      localStorage.setItem('pwa-install-dismissed', '1')
+    }
+  }
+
+  const handleDismissBanner = () => {
+    setShowInstallBanner(false)
+    localStorage.setItem('pwa-install-dismissed', '1')
+  }
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -111,6 +138,9 @@ export default function App() {
         <div className="q-body" style={{ height: '100%', paddingTop: '0' }}>
           <Auth />
         </div>
+        {showInstallBanner && (
+          <InstallBanner onInstall={handleInstall} onDismiss={handleDismissBanner} />
+        )}
         <ToastContainer />
       </div>
     )
@@ -125,6 +155,9 @@ export default function App() {
       <div className="q-body" style={currentScreen === 'O1' ? { paddingTop: 0 } : {}}>
         <Screen />
       </div>
+      {showInstallBanner && (
+        <InstallBanner onInstall={handleInstall} onDismiss={handleDismissBanner} />
+      )}
       <ToastContainer />
       <BottomNav />
     </div>

@@ -118,12 +118,13 @@ export const useAppStore = create(
 
       // ── User profile ─────────────────────────────────────────────
       profile: {
-        name:          'Valentina Gómez',
-        regimen:       'ordinario',
-        tipo_ingreso:  'honorarios',
-        es_declarante: false,
-        retencion:     11,
-        pila:          'auto',
+        name:           'Valentina Gómez',
+        regimen:        'ordinario',
+        tipo_ingreso:   'honorarios',
+        es_declarante:  false,
+        retencion:      11,
+        pila:           'auto',
+        is_pila_exempt: false,
       },
 
       setProfile: (updates) => {
@@ -134,14 +135,15 @@ export const useAppStore = create(
         const { session } = get()
         if (session && !session.mock && session.user?.id) {
           supabase.from('profiles').upsert({
-            id:            session.user.id,
-            name:          newProfile.name,
-            regimen:       newProfile.regimen,
-            tipo_ingreso:  newProfile.tipo_ingreso,
-            es_declarante: newProfile.es_declarante,
-            retencion:     newProfile.retencion,
-            pila:          newProfile.pila,
-            updated_at:    new Date().toISOString(),
+            id:             session.user.id,
+            name:           newProfile.name,
+            regimen:        newProfile.regimen,
+            tipo_ingreso:   newProfile.tipo_ingreso,
+            es_declarante:  newProfile.es_declarante,
+            retencion:      newProfile.retencion,
+            pila:           newProfile.pila,
+            is_pila_exempt: newProfile.is_pila_exempt ?? false,
+            updated_at:     new Date().toISOString(),
           }).then(({ error }) => {
             if (error) console.error('[Quadra] Supabase upsert profile:', error.message)
           })
@@ -258,12 +260,13 @@ export const useAppStore = create(
         } else if (profileData) {
           set({
             profile: {
-              name:          profileData.name          || 'Usuario',
-              regimen:       profileData.regimen        || 'ordinario',
-              tipo_ingreso:  profileData.tipo_ingreso   || 'honorarios',
-              es_declarante: profileData.es_declarante  ?? false,
-              retencion:     Number(profileData.retencion ?? 11),
-              pila:          profileData.pila           || 'auto',
+              name:           profileData.name           || 'Usuario',
+              regimen:        profileData.regimen         || 'ordinario',
+              tipo_ingreso:   profileData.tipo_ingreso    || 'honorarios',
+              es_declarante:  profileData.es_declarante   ?? false,
+              retencion:      Number(profileData.retencion ?? 11),
+              pila:           profileData.pila            || 'auto',
+              is_pila_exempt: profileData.is_pila_exempt  ?? false,
             },
           })
         }

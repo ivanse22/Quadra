@@ -18,14 +18,13 @@ function ToastItem({ toast, onDismiss }) {
   const variantClass = {
     success: 'toast-success',
     error:   'toast-error',
-    warning: 'toast-warning',
+    warning: 'toast-error',
     info:    'toast-info',
   }[toast.type] || 'toast-info'
 
   const ToastIcon = {
     success: IconCheck,
     error:   IconX,
-    warning: IconZap,
     info:    IconInfo,
   }[toast.type] || IconInfo
 

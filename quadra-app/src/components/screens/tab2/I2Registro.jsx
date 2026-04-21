@@ -96,16 +96,10 @@ export default function I2Registro() {
       )}
 
       {/* Form */}
-      <div className="screen-stack screen-stack-compact" style={{ flex: 1, paddingBottom: 'var(--s6)' }}>
-        <div className="section-head">
-          <span className="section-kicker">Nuevo ingreso</span>
-          <h2 className="section-title">Registra el valor bruto del pago</h2>
-          <p className="section-desc">Quadra usa tu configuración fiscal para calcular al instante lo que realmente te queda disponible.</p>
-        </div>
-
+      <div style={{ flex: 1, padding: 'var(--screen-pt) var(--screen-px) 0' }}>
         <AmountField onChange={setAmount} showCalculatingHint={btnState === 'loading'} />
 
-        <div className="form-stack">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s5)', marginTop: 'var(--s6)' }}>
           {/* Currency */}
           <div className="field">
             <label className="field-label">Moneda</label>
@@ -180,20 +174,6 @@ export default function I2Registro() {
               )}
             </div>
           )}
-
-          <div className="muted-note">
-            <div className="task-card-icon" style={{ width: 36, height: 36 }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--txt-m)" strokeWidth="2">
-                <circle cx="12" cy="12" r="10" />
-                <path d="M12 8v4" />
-                <circle cx="12" cy="16" r="1" fill="currentColor" stroke="none" />
-              </svg>
-            </div>
-            <div className="muted-note-copy">
-              <span className="muted-note-title">Consejo</span>
-              <span className="muted-note-text">Registra el valor tal como aparece en tu factura. Si la moneda no es COP, Quadra conserva el original y usa una conversión aproximada para el cálculo.</span>
-            </div>
-          </div>
         </div>
       </div>
 

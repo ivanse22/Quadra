@@ -1,39 +1,34 @@
 import { useAppStore } from '../../../store/useAppStore'
+import { IconTrendingUp } from '../../ui/Icons'
 
 export default function A1Anual() {
   const { monthlyData, navigate } = useAppStore()
-  const actualMonths = monthlyData.filter(m => m.amount > 0)
   const max = Math.max(...monthlyData.map(m => m.amount), 1)
-  const total = actualMonths.reduce((sum, month) => sum + month.amount, 0)
-  const average = actualMonths.length ? Math.round(total / actualMonths.length) : 0
-  const bestMonth = actualMonths.reduce((best, month) => month.amount > best.amount ? month : best, actualMonths[0] || { month: 'Sin datos', amount: 0 })
-  const projectedTotal = total + (average * (12 - actualMonths.length))
-
-  const fmt = (n) => {
-    if (!n) return '$0'
-    if (n >= 1000000) return `$${(n / 1000000).toFixed(1)}M`
-    if (n >= 1000) return `$${(n / 1000).toFixed(0)}k`
-    return `$${n.toLocaleString('es-CO')}`
-  }
-
-  const heroAmount = total.toLocaleString('es-CO')
-  const [heroMain, heroDec = '000'] = heroAmount.split('.')
+  const fmt = n => n >= 1000000 ? `$${(n/1000000).toFixed(1)}M` : n >= 1000 ? `$${(n/1000).toFixed(0)}k` : '$0'
 
   return (
     <div className="q-body-inner">
       {/* Annual KPI */}
       <div className="hero-card mb5">
         <div className="hero-eye">Ingresos 2026</div>
-        <div className="hero-amount" style={{ fontSize: 'var(--t-2xl)' }}>
-          <span className="twotone">
-            <span className="twotone-main">${heroMain}</span><span className="twotone-dec">.{heroDec}</span>
-          </span>
+        <div
+          className="hero-amount"
+          style={{
+            fontSize: 'var(--t-hero)',
+            fontWeight: 900,
+            lineHeight: 0.92,
+            letterSpacing: '-0.05em',
+            color: 'var(--volt-text)',
+            fontVariantNumeric: 'tabular-nums',
+          }}
+        >
+          $7.400.000
         </div>
-        <div className="hero-sub">{actualMonths[0]?.month || 'Sin movimientos'} – {actualMonths[actualMonths.length - 1]?.month || '2026'} · {actualMonths.length || 0} meses</div>
+        <div className="hero-sub" style={{ fontSize: 'var(--t-md)', marginTop: 'var(--s2)' }}>Ene – Abr 2026 · 4 meses</div>
         <div className="hero-breakdown">
-          <div><div className="hero-bk-lbl">Mejor mes</div><div className="hero-bk-val" style={{ color: 'var(--fin-income)' }}>{bestMonth.month} — {fmt(bestMonth.amount)}</div></div>
-          <div><div className="hero-bk-lbl">Promedio</div><div className="hero-bk-val">{fmt(average)}</div></div>
-          <div><div className="hero-bk-lbl">Proyección</div><div className="hero-bk-val">{fmt(projectedTotal)}</div></div>
+          <div><div className="hero-bk-lbl">Mejor mes</div><div className="hero-bk-val" style={{ color: 'var(--fin-income)' }}>Mar — $2.4M</div></div>
+          <div><div className="hero-bk-lbl">Promedio</div><div className="hero-bk-val">$1.85M</div></div>
+          <div><div className="hero-bk-lbl">Proyección</div><div className="hero-bk-val">$22.2M</div></div>
         </div>
       </div>
 
@@ -42,7 +37,9 @@ export default function A1Anual() {
           <span className="year-projection-cta-title">Proyectar mi ingreso</span>
           <span className="year-projection-cta-sub">Simula tu disponible mensual y la proyección anual antes de cerrar el año.</span>
         </div>
-        <span className="year-projection-cta-action">Abrir</span>
+        <span className="year-projection-cta-action" aria-hidden="true">
+          <IconTrendingUp />
+        </span>
       </button>
 
       {/* Bar chart — CSS puro */}
@@ -55,7 +52,7 @@ export default function A1Anual() {
             const isProjEmpty = m.projected && m.amount === 0
             return (
               <div key={i} className="bar-col" style={{ cursor: 'pointer' }} onClick={() => !m.projected && navigate('A2')}>
-                <div className="bar-value" style={{ color: isActive ? 'var(--volt-text)' : 'var(--txt-m)', fontWeight: isActive ? 700 : 500, marginBottom: 2 }}>
+                <div style={{ fontSize: 8, color: isActive ? 'var(--volt-text)' : 'var(--txt-m)', fontWeight: isActive ? 700 : 400, marginBottom: 2, fontFamily: 'var(--font-body)' }}>
                   {m.amount > 0 ? fmt(m.amount) : ''}
                 </div>
                 <div
@@ -75,15 +72,15 @@ export default function A1Anual() {
             )
           })}
         </div>
-        <div className="chart-legend">
-          <span className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: 'var(--fin-income)' }} /> Real
+        <div style={{ display: 'flex', gap: 'var(--s4)', marginTop: 'var(--s4)', flexWrap: 'wrap' }}>
+          <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 9, color: 'var(--txt-m)', fontFamily: 'var(--font-body)' }}>
+            <span style={{ width: 10, height: 10, borderRadius: 2, background: 'var(--fin-income)', display: 'inline-block' }} /> Real
           </span>
-          <span className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ background: 'var(--volt-text)' }} /> Mes actual
+          <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 9, color: 'var(--txt-m)', fontFamily: 'var(--font-body)' }}>
+            <span style={{ width: 10, height: 10, borderRadius: 2, background: 'var(--volt-text)', display: 'inline-block' }} /> Mes actual
           </span>
-          <span className="chart-legend-item">
-            <span className="chart-legend-swatch" style={{ border: '1.5px dashed var(--border-m)' }} /> Proyectado
+          <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 9, color: 'var(--txt-m)', fontFamily: 'var(--font-body)' }}>
+            <span style={{ width: 10, height: 10, borderRadius: 2, border: '1.5px dashed var(--border-m)', display: 'inline-block' }} /> Proyectado
           </span>
         </div>
       </div>

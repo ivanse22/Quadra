@@ -1,16 +1,32 @@
 import { useState } from 'react'
 import { useAppStore } from '../../../store/useAppStore'
-import { IconCheck } from '../../ui/Icons'
+import { IconCalendar, IconCheck } from '../../ui/Icons'
+
+const MONTHS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+
+const toMonthInputValue = (date) => {
+  const year = date.getFullYear()
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  return `${year}-${month}`
+}
+
+const formatContributionPeriod = (value) => {
+  const [year, month] = value.split('-').map(Number)
+  if (!year || !month) return 'Mes en curso'
+  return `${MONTHS[month - 1]} ${year}`
+}
 
 export default function D3PagarPILA() {
   const { navigate, showToast, payPila, kpis } = useAppStore()
   const [paid, setPaid] = useState(false)
+  const [periodValue, setPeriodValue] = useState(() => toMonthInputValue(new Date()))
   const isAllClear = (kpis?.reservadoPila || 0) <= 0
 
   const handlePay = () => {
+    const periodLabel = formatContributionPeriod(periodValue)
     // Only pay if there is a debt
     if ((kpis?.reservadoPila || 0) > 0) {
-      payPila(kpis.reservadoPila, 'Mayo 2026')
+      payPila(kpis.reservadoPila, periodLabel)
     }
     setPaid(true)
     showToast({ type: 'success', message: 'Pago PILA registrado correctamente' })
@@ -76,7 +92,17 @@ export default function D3PagarPILA() {
 
       <div className="field mb6">
         <label className="field-label">Período de cotización</label>
-        <input className="q-input" defaultValue="Mes en curso" />
+        <label className="date-btn" style={{ marginTop: 'var(--s1)' }}>
+          <input
+            className="date-native-input"
+            type="month"
+            value={periodValue}
+            onChange={(e) => setPeriodValue(e.target.value)}
+            aria-label="Seleccionar período de cotización"
+          />
+          <span className="sel">{formatContributionPeriod(periodValue)}</span>
+          <IconCalendar />
+        </label>
       </div>
 
       <button className="btn btn-primary btn-full" onClick={handlePay}>Registrar pago PILA</button>

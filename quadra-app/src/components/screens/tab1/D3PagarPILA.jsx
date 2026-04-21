@@ -49,12 +49,12 @@ export default function D3PagarPILA() {
     )
   }
 
-  // Desglose real PILA: salud 12.5% IBC + pensión 16% IBC (Decreto 780/2016)
-  // Ratio derivado: salud/total = 12.5 / (12.5 + 16) = 12.5 / 28.5
-  const PILA_SALUD_RATIO = 12.5 / 28.5
-  const deuda  = kpis.reservadoPila
-  const salud  = Math.round(deuda * PILA_SALUD_RATIO)
-  const pension = deuda - salud
+  // Desglose PILA: salud 12.5% + pensión 16% + ARL N1 0.522% = 29.022% del IBC
+  const TOTAL_PILA_RATE = 12.5 + 16 + 0.522  // 29.022
+  const deuda   = kpis.reservadoPila
+  const salud   = Math.round(deuda * (12.5   / TOTAL_PILA_RATE))
+  const pension = Math.round(deuda * (16     / TOTAL_PILA_RATE))
+  const arl     = deuda - salud - pension // residual para evitar redondeo
 
   return (
     <div className="q-body-inner">
@@ -76,6 +76,10 @@ export default function D3PagarPILA() {
         <div className="drow">
           <div className="drow-l"><div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />Pensión (16% IBC)</div>
           <div className="drow-v" style={{ color: 'var(--fin-reserve)' }}>{fmt(pension)}</div>
+        </div>
+        <div className="drow">
+          <div className="drow-l"><div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />ARL Nivel I (0.522% IBC)</div>
+          <div className="drow-v" style={{ color: 'var(--fin-reserve)' }}>{fmt(arl)}</div>
         </div>
         <div className="dtotal">
           <div className="dtotal-l">Total a pagar PILA</div>

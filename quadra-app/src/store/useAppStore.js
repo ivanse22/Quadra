@@ -8,6 +8,16 @@ const MONTH_LABELS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct
 // ── Derived computations ──────────────────────────────────────────────────────
 
 const computeKpis = (payments) => {
+  const now          = new Date()
+  const currentMonth = now.getMonth()    // 0-11
+  const currentYear  = now.getFullYear()
+
+  const isCurrentMonth = (p) => {
+    if (!p.date) return false
+    const d = new Date(p.date + 'T12:00:00')
+    return d.getFullYear() === currentYear && d.getMonth() === currentMonth
+  }
+
   return payments.reduce((acc, p) => {
     if (p.type !== 'pila' && p.type !== 'renta') {
       acc.ytd            += (p.gross     || 0)
@@ -15,17 +25,24 @@ const computeKpis = (payments) => {
       acc.reservadoRenta += (p.reserva   || 0)
       acc.reservadoPila  += (p.pila      || 0)
       acc.retencionesYTD += (p.retencion || 0)
+      // Contexto mensual para cálculo PILA acumulativo
+      if (isCurrentMonth(p)) {
+        acc.ingresosMesActual += (p.gross || 0)
+        acc.pilaReservadaMes  += (p.pila  || 0)
+      }
     } else if (p.type === 'pila') {
       acc.reservadoPila -= (p.pila      || 0)
       acc.disponibleHoy += (p.disponible|| 0)
     }
     return acc
   }, {
-    disponibleHoy:  0,
-    ytd:            0,
-    reservadoRenta: 0,
-    reservadoPila:  0,
-    retencionesYTD: 0,
+    disponibleHoy:      0,
+    ytd:                0,
+    reservadoRenta:     0,
+    reservadoPila:      0,
+    retencionesYTD:     0,
+    ingresosMesActual:  0,
+    pilaReservadaMes:   0,
   })
 }
 
@@ -136,6 +153,7 @@ export const useAppStore = create(
       kpis: {
         disponibleHoy: 0, ytd: 0,
         reservadoRenta: 0, reservadoPila: 0, retencionesYTD: 0,
+        ingresosMesActual: 0, pilaReservadaMes: 0,
       },
       monthlyData: computeMonthlyData([]),
 

@@ -1,13 +1,30 @@
 import { useAppStore } from '../../../store/useAppStore'
+import { supabase } from '../../../lib/supabase'
 import { QuadraLogo } from '../../ui/Icons'
 
 export default function O5Resultado() {
-  const { switchTab, navigate, profile } = useAppStore()
+  const { switchTab, navigate, profile, session } = useAppStore()
   const regimenLabel = { simple: 'Simple', ordinario: 'Ordinario', unclear: 'Por definir' }[profile.regimen] || 'Ordinario'
   const retencionLabel = profile.retencion === 'other' ? 'Personalizado' : `${profile.retencion || 11}%`
   const pilaLabel = { auto: 'Auto 12.5%', manual: 'Manual', no: 'No aún' }[profile.pila] || 'Auto 12.5%'
 
-  const goHome = () => switchTab(0) // resets to D1 + activeTab=0
+  const goHome = async () => {
+    // Persist final profile to Supabase when onboarding completes
+    if (session && !session.mock && session.user?.id) {
+      const { error } = await supabase.from('profiles').upsert({
+        id:            session.user.id,
+        name:          profile.name,
+        regimen:       profile.regimen,
+        tipo_ingreso:  profile.tipo_ingreso,
+        es_declarante: profile.es_declarante,
+        retencion:     profile.retencion,
+        pila:          profile.pila,
+        updated_at:    new Date().toISOString(),
+      })
+      if (error) console.error('[Quadra] O5 upsert profile:', error.message)
+    }
+    switchTab(0)
+  }
 
   return (
     <div className="ob-result">

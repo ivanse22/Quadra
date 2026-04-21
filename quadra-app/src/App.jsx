@@ -133,7 +133,7 @@ const SCREENS = {
 }
 
 export default function App() {
-  const { currentScreen, theme, session, setSession, navigate, switchTab, payments } = useAppStore()
+  const { currentScreen, theme, session, setSession, navigate, switchTab, payments, loadUserData, clearUserData } = useAppStore()
   const deferredPrompt = useRef(null)
   const [showInstallBanner, setShowInstallBanner] = useState(false)
   const [showQuickMenu, setShowQuickMenu] = useState(false)
@@ -200,6 +200,15 @@ export default function App() {
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
+
+  // Load / clear user data when session changes
+  useEffect(() => {
+    if (session && !session.mock && session.user?.id) {
+      loadUserData(session.user.id)
+    } else if (!session) {
+      clearUserData()
+    }
+  }, [session]) // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     supabase.auth.getSession().then(({ data: { session } }) => {

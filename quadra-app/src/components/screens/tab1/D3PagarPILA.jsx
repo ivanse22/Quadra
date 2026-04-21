@@ -49,9 +49,11 @@ export default function D3PagarPILA() {
     )
   }
 
-  // Desglosar la deuda proporcionalmente (aprox 8.5 salud, 4 pension -> 68% salud, 32% pension)
-  const deuda = kpis.reservadoPila
-  const salud = Math.round(deuda * 0.68)
+  // Desglose real PILA: salud 12.5% IBC + pensión 16% IBC (Decreto 780/2016)
+  // Ratio derivado: salud/total = 12.5 / (12.5 + 16) = 12.5 / 28.5
+  const PILA_SALUD_RATIO = 12.5 / 28.5
+  const deuda  = kpis.reservadoPila
+  const salud  = Math.round(deuda * PILA_SALUD_RATIO)
   const pension = deuda - salud
 
   return (
@@ -68,11 +70,11 @@ export default function D3PagarPILA() {
 
       <div className="desglose mb6">
         <div className="drow">
-          <div className="drow-l"><div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />Salud (aprox 8.5% IBC)</div>
+          <div className="drow-l"><div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />Salud (12.5% IBC)</div>
           <div className="drow-v" style={{ color: 'var(--fin-reserve)' }}>{fmt(salud)}</div>
         </div>
         <div className="drow">
-          <div className="drow-l"><div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />Pensión (aprox 4% IBC)</div>
+          <div className="drow-l"><div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />Pensión (16% IBC)</div>
           <div className="drow-v" style={{ color: 'var(--fin-reserve)' }}>{fmt(pension)}</div>
         </div>
         <div className="dtotal">

@@ -43,11 +43,15 @@ export default function I2Resultado() {
 
   const fmt = (n) => '$' + Math.abs(n).toLocaleString('es-CO')
 
+  // Derive real rates from actual payment values
+  const retRate  = gross > 0 ? (retencion / gross * 100).toFixed(1).replace(/\.0$/, '') : 0
+  const pilaRate = gross > 0 ? (pila      / gross * 100).toFixed(1).replace(/\.0$/, '') : 0
+
   const desglose = [
-    { label: 'Ingreso bruto', val: fmt(gross), color: 'var(--fin-income)', delay: 0 },
-    { label: 'Retención en la fuente (11%)', val: `−${fmt(retencion)}`, color: 'var(--fin-deduct)', delay: 80 },
-    { label: 'Salud y pensión — PILA (12.5%)', val: `−${fmt(pila)}`, color: 'var(--fin-reserve)', delay: 160 },
-    { label: 'Reserva declaración renta', val: `−${fmt(reserva)}`, color: 'var(--fin-reserve)', delay: 240 },
+    { label: 'Ingreso bruto',                              val: fmt(gross),         color: 'var(--fin-income)',  delay: 0   },
+    { label: `Retención en la fuente (${retRate}%)`,       val: `−${fmt(retencion)}`,color: 'var(--fin-deduct)', delay: 80  },
+    { label: `Salud y pensión — PILA (${pilaRate}% bruto)`,val: `−${fmt(pila)}`,    color: 'var(--fin-reserve)', delay: 160 },
+    { label: 'Reserva declaración renta',                  val: `−${fmt(reserva)}`, color: 'var(--fin-reserve)', delay: 240 },
   ]
 
   return (

@@ -2,16 +2,18 @@ import { useState } from 'react'
 import { useAppStore } from '../../../store/useAppStore'
 
 const OPTIONS = [
-  { id: 'simple',    title: 'Régimen Simple', desc: 'Pagas una tarifa fija mensual. La retención ya está incluida en tu tributación.' },
-  { id: 'ordinario', title: 'Régimen Ordinario', desc: 'Tu cliente te descuenta un porcentaje antes de pagarte. Es la más común entre freelancers.' },
-  { id: 'unclear',   title: 'No lo tengo claro', desc: 'Quadra usa el porcentaje más común (11%) y puedes ajustarlo después.' },
+  { id: 'ordinario', title: 'Régimen Ordinario', desc: 'Me retienen un porcentaje de cada pago antes de recibirlo' },
+  { id: 'simple',    title: 'Régimen Simple',    desc: 'Pago mis impuestos directo a la DIAN cada dos meses' },
+  { id: 'unclear',   title: 'No lo tengo claro', desc: 'Quadra me ayuda a entenderlo más adelante' },
 ]
 
 export default function O2Regimen() {
   const { navigate, setProfile, profile } = useAppStore()
-  const [selected, setSelected] = useState(profile.regimen || 'ordinario')
+  const [selected, setSelected] = useState(profile.regimen || null)
+  const [showError, setShowError] = useState(false)
 
   const handleContinue = () => {
+    if (!selected) { setShowError(true); return }
     setProfile({ regimen: selected })
     navigate('O3')
   }
@@ -25,15 +27,16 @@ export default function O2Regimen() {
         </div>
         <div className="progress-bar" style={{ margin: 0 }}><div className="progress-fill" style={{ width: '33%' }} /></div>
       </div>
+
       <div className="ob-screen-main">
-        <h1 className="ob-question">¿Cómo tributas como freelancer?</h1>
-        <p className="ob-context">Esto define cómo calculamos tu retención. Lo puedes cambiar después.</p>
+        <h1 className="ob-question">¿Cómo tributas?</h1>
+        <p className="ob-context">Así Quadra sabe cómo calcular tus descuentos cada vez que recibes un pago.</p>
         <div className="ob-options">
           {OPTIONS.map(opt => (
             <div
               key={opt.id}
               className={`ob-option${selected === opt.id ? ' selected' : ''}`}
-              onClick={() => setSelected(opt.id)}
+              onClick={() => { setSelected(opt.id); setShowError(false) }}
             >
               <div className="ob-radio">
                 {selected === opt.id && <div className="ob-radio-dot" />}
@@ -45,7 +48,13 @@ export default function O2Regimen() {
             </div>
           ))}
         </div>
+        {showError && (
+          <p style={{ fontSize: 'var(--t-sm)', color: 'var(--fin-deduct)', fontFamily: 'var(--font-body)', marginTop: 'var(--s3)' }}>
+            Elige una opción para continuar. Si no estás seguro, selecciona la última.
+          </p>
+        )}
       </div>
+
       <div className="ob-screen-actions">
         <button className="btn btn-primary btn-full" onClick={handleContinue}>Continuar</button>
       </div>

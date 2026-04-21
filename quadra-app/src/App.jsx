@@ -81,6 +81,8 @@ import O2Regimen from './components/screens/onboarding/O2Regimen'
 import O3Retencion from './components/screens/onboarding/O3Retencion'
 import O4PILA from './components/screens/onboarding/O4PILA'
 import O5Resultado from './components/screens/onboarding/O5Resultado'
+import B1Login from './components/screens/onboarding/B1Login'
+import B2RecuperarPassword from './components/screens/onboarding/B2RecuperarPassword'
 
 // Tab 1 — Mi Dinero
 import D1Home from './components/screens/tab1/D1Home'
@@ -126,6 +128,7 @@ const showHeader = (screen) => !NO_HEADER.includes(screen)
 
 const SCREENS = {
   O1: O1Welcome, O2: O2Regimen, O3: O3Retencion, O4: O4PILA, O5: O5Resultado,
+  B1: B1Login, B2: B2RecuperarPassword,
   D1: D1Home, D2: D2Entender, D3: D3PagarPILA, D4: D4Reserva,
   I1: I1Pagos, I2: I2Registro, I2R: I2Resultado, I3: I3Detalle, I4: I4TotalGanado, I5: I5HistorialPILA,
   A1: A1Anual, A2: A2Mensual, A3: A3TotalAnio, A4: A4ReservaSaldo, A5: A5ReservaProyeccion, A6: A6Proyectar, A7: A7Exportar,
@@ -223,21 +226,6 @@ export default function App() {
 
     return () => subscription.unsubscribe()
   }, [])
-
-  if (!session) {
-    return (
-      <div className="q-phone" data-theme={theme}>
-        <StatusBar />
-        <div className="q-body" style={{ height: '100%', paddingTop: '0' }}>
-          <Auth />
-        </div>
-        {showInstallBanner && (
-          <InstallBanner onInstall={handleInstall} onDismiss={handleDismissBanner} />
-        )}
-        <ToastContainer />
-      </div>
-    )
-  }
 
   const Screen = SCREENS[currentScreen] || D1Home
 

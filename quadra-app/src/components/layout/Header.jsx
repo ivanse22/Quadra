@@ -1,7 +1,7 @@
 import { useAppStore } from '../../store/useAppStore'
 import { QuadraLogo, IconSun, IconMoon, IconArrowLeft, IconBell, IconPlus, IconDownload, IconSettings } from '../ui/Icons'
 
-const BACK_SCREENS = ['O2','O3','O4','O5','D2','D3','D4','I2','I2R','I3','I4','I5','A2','A3','A4','A5','A6','A7','C1','C2','C3','C4','C4C']
+const BACK_SCREENS = ['O2','O3','O4','O5','B1','B2','D2','D3','D4','I2','I2R','I3','I4','I5','A2','A3','A4','A5','A6','A7','C1','C2','C3','C4','C4C']
 
 export default function Header() {
   const { currentScreen, goBack, navigate, theme, toggleTheme } = useAppStore()
@@ -72,6 +72,7 @@ export default function Header() {
   // Header B — Back + title centered
   const titles = {
     O2:'¿Cómo tributas?', O3:'Retención', O4:'Salud y pensión', O5:'Resumen',
+    B1:'Iniciar sesión', B2:'Recuperar acceso',
     D2:'Entender mis descuentos', D3:'Pagar PILA', D4:'Reserva declaración',
     I2:'Nuevo pago', I3:'Detalle del pago', I5:'Historial PILA',
     A6:'Proyectar ingresos', A7:'Exportar datos',

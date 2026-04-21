@@ -17,25 +17,25 @@ export default function O1Welcome() {
       <div style={{ padding: '0 var(--s5)', flex: 1, display: 'flex', flexDirection: 'column' }}>
         <div style={{ paddingBottom: 'var(--s6)' }}>
           <h1 style={{ 
-            fontSize: 'clamp(3rem, 13vw, 5rem)', 
+            fontSize: 'clamp(2.35rem, 9.8vw, 4.1rem)', 
             fontFamily: 'var(--font-display)', 
             fontWeight: 900, 
             letterSpacing: '-0.04em', 
-            lineHeight: 1, 
+            lineHeight: 0.95, 
             color: 'var(--txt)',
-            marginBottom: 'var(--s4)'
+            marginBottom: 'var(--s3)'
           }}>
             Sin enredos.<br />
             <span style={{ color: 'var(--volt-text)' }}>Todo cuadra.</span>
           </h1>
         
         <p style={{ 
-          fontSize: 'var(--t-lg)', 
+          fontSize: 'var(--t-md)', 
           color: 'var(--txt-2)', 
           fontFamily: 'var(--font-body)', 
-          lineHeight: 1.5,
+          lineHeight: 1.45,
           letterSpacing: '-0.01em',
-          marginBottom: 'var(--s6)'
+          marginBottom: 'var(--s5)'
         }}>
           Quadra calcula lo que realmente te queda después de retención, PILA y reserva para la DIAN.
         </p>

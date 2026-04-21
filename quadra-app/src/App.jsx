@@ -3,6 +3,69 @@ import './styles/index.css'
 import { useAppStore } from './store/useAppStore'
 import { supabase } from './lib/supabase'
 
+// ── FAB quick-action definitions ─────────────────────────────────────────────
+const QUICK_ACTIONS = [
+  {
+    id: 'nuevo-pago',
+    label: 'Nuevo pago',
+    desc: 'Registrar un ingreso',
+    color: 'var(--volt-text)',
+    bg: 'var(--volt-dim)',
+    border: 'var(--volt-border)',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+        <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+      </svg>
+    ),
+    action: (navigate) => navigate('I2'),
+  },
+  {
+    id: 'movimientos',
+    label: 'Movimientos',
+    desc: 'Ver todos los ingresos',
+    color: 'var(--txt)',
+    bg: 'var(--surf-1)',
+    border: 'var(--border)',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+        <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+        <line x1="8" y1="18" x2="21" y2="18"/>
+        <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>
+    ),
+    action: (_navigate, switchTab) => switchTab(1),
+  },
+  {
+    id: 'pagar-pila',
+    label: 'Pagar PILA',
+    desc: 'Salud y pensión',
+    color: 'var(--fin-reserve)',
+    bg: 'var(--fin-reserve-dim)',
+    border: 'var(--fin-reserve-border)',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+    ),
+    action: (navigate) => navigate('D3'),
+  },
+  {
+    id: 'reservado',
+    label: 'Reservado',
+    desc: 'Fondo para declaración',
+    color: 'var(--fin-income)',
+    bg: 'var(--fin-income-dim)',
+    border: 'var(--fin-income-border)',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+        <rect x="3" y="3" width="18" height="18" rx="2"/>
+        <path d="M8 12h.01M12 8v4l2.5 2.5"/>
+      </svg>
+    ),
+    action: (navigate) => navigate('D4'),
+  },
+]
+
 // Layout
 import Header from './components/layout/Header'
 import BottomNav from './components/layout/BottomNav'
@@ -70,9 +133,24 @@ const SCREENS = {
 }
 
 export default function App() {
-  const { currentScreen, theme, session, setSession } = useAppStore()
+  const { currentScreen, theme, session, setSession, navigate, switchTab, payments } = useAppStore()
   const deferredPrompt = useRef(null)
   const [showInstallBanner, setShowInstallBanner] = useState(false)
+  const [showQuickMenu, setShowQuickMenu] = useState(false)
+  const bodyRef = useRef(null)
+  const fabRef = useRef(null)
+
+  // Spring-press animation handlers for the FAB button
+  const onFabDown = () => {
+    if (!fabRef.current) return
+    fabRef.current.style.transition = 'transform 80ms var(--ease-in)'
+    fabRef.current.style.transform = 'scale(0.87)'
+  }
+  const onFabUp = () => {
+    if (!fabRef.current) return
+    fabRef.current.style.transition = 'transform 500ms var(--ease-spring)'
+    fabRef.current.style.transform = 'scale(1)'
+  }
 
   // Intercept the native A2HS prompt so we can trigger it on demand
   useEffect(() => {
@@ -113,6 +191,12 @@ export default function App() {
     localStorage.setItem('pwa-install-dismissed', '1')
   }
 
+  // Reset scroll position and close quick menu on every screen change
+  useEffect(() => {
+    if (bodyRef.current) bodyRef.current.scrollTop = 0
+    if (currentScreen !== 'D1') setShowQuickMenu(false)
+  }, [currentScreen])
+
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
@@ -148,18 +232,99 @@ export default function App() {
 
   const Screen = SCREENS[currentScreen] || D1Home
 
+  // FAB is only shown on Mi Dinero tab and only when there are payments
+  const showFab = currentScreen === 'D1' && payments.length > 0
+
   return (
     <div className="q-phone" data-theme={theme}>
       {currentScreen !== 'O1' && <StatusBar />}
       {showHeader(currentScreen) && <Header />}
-      <div className="q-body" style={currentScreen === 'O1' ? { paddingTop: 0 } : {}}>
+      <div
+        className="q-body"
+        ref={bodyRef}
+        style={currentScreen === 'O1' ? { paddingTop: 0 } : {}}
+      >
         <Screen />
       </div>
+      <BottomNav />
+
+      {/* ── FAB + Quick-action sheet (direct child of q-phone to avoid overflow clipping) ── */}
+      {showFab && (
+        <>
+          {showQuickMenu && (
+            <div
+              className="fab-sheet-overlay"
+              onClick={() => setShowQuickMenu(false)}
+              aria-hidden="true"
+            />
+          )}
+          {showQuickMenu && (
+            <div className="fab-sheet" role="dialog" aria-label="Acciones rápidas">
+              <div className="fab-sheet-handle" />
+              <p className="fab-sheet-title">Acciones rápidas</p>
+              <p className="fab-sheet-subtitle">Selecciona lo que quieres hacer</p>
+              <div className="fab-sheet-list">
+                {QUICK_ACTIONS.map((item) => (
+                  <button
+                    key={item.id}
+                    className="fab-sheet-option"
+                    style={{ '--item-color': item.color, '--item-bg': item.bg, '--item-border': item.border }}
+                    onClick={() => {
+                      setShowQuickMenu(false)
+                      item.action(navigate, switchTab)
+                    }}
+                  >
+                    <span className="fab-sheet-icon">{item.icon}</span>
+                    <span className="fab-sheet-text">
+                      <span className="fab-sheet-label">{item.label}</span>
+                      <span className="fab-sheet-desc">{item.desc}</span>
+                    </span>
+                    <svg className="fab-sheet-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+          <button
+            ref={fabRef}
+            onClick={() => setShowQuickMenu(v => !v)}
+            onPointerDown={onFabDown}
+            onPointerUp={onFabUp}
+            onPointerLeave={onFabUp}
+            className={showQuickMenu ? 'fab-open' : 'fab-pulse'}
+            style={{
+              position: 'absolute',
+              bottom: 'calc(72px + var(--s6) + env(safe-area-inset-bottom, 0px))',
+              right: 'var(--s5)',
+              width: 56,
+              height: 56,
+              borderRadius: 'var(--r-full)',
+              background: showQuickMenu ? 'var(--surf-3)' : 'var(--volt)',
+              color: showQuickMenu ? 'var(--txt)' : 'var(--volt-on)',
+              border: 'none',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: 28,
+              fontWeight: 300,
+              lineHeight: 1,
+              boxShadow: showQuickMenu ? 'none' : '0 6px 24px rgba(189,243,0,0.35)',
+              zIndex: 30,
+            }}
+            aria-label={showQuickMenu ? 'Cerrar menú' : 'Acciones rápidas'}
+          >
+            {showQuickMenu ? '×' : '+'}
+          </button>
+        </>
+      )}
+
       {showInstallBanner && (
         <InstallBanner onInstall={handleInstall} onDismiss={handleDismissBanner} />
       )}
       <ToastContainer />
-      <BottomNav />
     </div>
   )
 }

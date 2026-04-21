@@ -81,36 +81,6 @@ export default function I1Pagos() {
         </div>
       )}
 
-      {/* FAB */}
-      <button
-        onClick={() => navigate('I2')}
-        style={{
-          position: 'fixed',
-          bottom: 'calc(72px + var(--s4))',
-          right: 'var(--s5)',
-          width: 56,
-          height: 56,
-          borderRadius: 'var(--r-full)',
-          background: 'var(--volt)',
-          color: 'var(--volt-on)',
-          border: 'none',
-          cursor: 'pointer',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          boxShadow: '0 6px 24px rgba(189,243,0,0.35), 0 2px 8px rgba(0,0,0,0.12)',
-          fontSize: 28,
-          fontWeight: 300,
-          lineHeight: 1,
-          transition: 'all var(--motion-fast) var(--ease-spring)',
-          zIndex: 10,
-        }}
-        onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.08)' }}
-        onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)' }}
-        aria-label="Registrar nuevo pago"
-      >
-        +
-      </button>
     </div>
   )
 }

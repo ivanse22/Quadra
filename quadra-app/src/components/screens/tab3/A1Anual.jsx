@@ -42,46 +42,40 @@ export default function A1Anual() {
         </span>
       </button>
 
-      {/* Bar chart — CSS puro */}
-      <div className="card mb5" style={{ padding: 'var(--s5)' }}>
-        <div className="card-title mb3">Ingresos brutos por mes</div>
-        <div className="bar-chart" style={{ height: 140, alignItems: 'flex-end' }}>
-          {monthlyData.map((m, i) => {
-            const h = m.amount > 0 ? Math.max(Math.round((m.amount / max) * 120), 4) : 4
-            const isActive = m.current
-            const isProjEmpty = m.projected && m.amount === 0
-            return (
-              <div key={i} className="bar-col" style={{ cursor: 'pointer' }} onClick={() => !m.projected && navigate('A2')}>
-                <div style={{ fontSize: 8, color: isActive ? 'var(--volt-text)' : 'var(--txt-m)', fontWeight: isActive ? 700 : 400, marginBottom: 2, fontFamily: 'var(--font-body)' }}>
-                  {m.amount > 0 ? fmt(m.amount) : ''}
-                </div>
-                <div
-                  className="bar-fill"
-                  style={{
-                    height: h,
-                    background: isActive ? 'var(--volt-text)' : isProjEmpty ? 'var(--surf-3)' : 'var(--fin-income)',
-                    opacity: isProjEmpty ? 0.5 : 1,
-                    border: isProjEmpty ? '1.5px dashed var(--border-m)' : 'none',
-                    borderRadius: '4px 4px 0 0',
-                  }}
-                />
-                <div className="bar-lbl" style={{ color: isActive ? 'var(--volt-text)' : 'var(--txt-m)', fontWeight: isActive ? 700 : 400 }}>
-                  {m.month}
-                </div>
-              </div>
-            )
-          })}
+      {/* Bar chart — redesigned card */}
+      <div className="card mb5 year-chart-card">
+        <div className="year-chart-head">
+          <div className="card-title">Ingresos brutos por mes</div>
+          <div className="year-chart-sub">Comparativo 2026</div>
         </div>
-        <div style={{ display: 'flex', gap: 'var(--s4)', marginTop: 'var(--s4)', flexWrap: 'wrap' }}>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 9, color: 'var(--txt-m)', fontFamily: 'var(--font-body)' }}>
-            <span style={{ width: 10, height: 10, borderRadius: 2, background: 'var(--fin-income)', display: 'inline-block' }} /> Real
-          </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 9, color: 'var(--txt-m)', fontFamily: 'var(--font-body)' }}>
-            <span style={{ width: 10, height: 10, borderRadius: 2, background: 'var(--volt-text)', display: 'inline-block' }} /> Mes actual
-          </span>
-          <span style={{ display: 'flex', alignItems: 'center', gap: 6, fontSize: 9, color: 'var(--txt-m)', fontFamily: 'var(--font-body)' }}>
-            <span style={{ width: 10, height: 10, borderRadius: 2, border: '1.5px dashed var(--border-m)', display: 'inline-block' }} /> Proyectado
-          </span>
+        <div className="year-chart-scroll">
+          <div className="bar-chart">
+            {monthlyData.map((m, i) => {
+              const percent = m.amount > 0 ? Math.max(Math.round((m.amount / max) * 100), 8) : 0
+              const isActive = m.current
+              const isProjEmpty = m.projected && m.amount === 0
+              return (
+                <button
+                  key={i}
+                  className={`bar-col${isActive ? ' is-active' : ''}${isProjEmpty ? ' is-projected' : ''}`}
+                  onClick={() => !m.projected && navigate('A2')}
+                  disabled={m.projected}
+                  aria-label={`${m.month}: ${m.amount > 0 ? fmt(m.amount) : 'Proyectado'}`}
+                >
+                  <div className="bar-value">{m.amount > 0 ? fmt(m.amount) : ''}</div>
+                  <div className="bar-track">
+                    <div className="bar-fill" style={{ height: `${percent}%` }} />
+                  </div>
+                  <div className="bar-lbl">{m.month}</div>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+        <div className="year-chart-legend">
+          <span className="year-chart-chip"><span className="year-chart-dot real" />Real</span>
+          <span className="year-chart-chip"><span className="year-chart-dot active" />Mes actual</span>
+          <span className="year-chart-chip"><span className="year-chart-dot projected" />Proyectado</span>
         </div>
       </div>
 

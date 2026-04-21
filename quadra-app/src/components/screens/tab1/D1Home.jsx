@@ -114,7 +114,7 @@ function TxRow({ payment, onClick }) {
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function D1Home() {
-  const { navigate, switchTab, kpis, payments, setSelectedPayment, showToast } = useAppStore()
+  const { navigate, switchTab, kpis, payments, setSelectedPayment } = useAppStore()
   const [loading, setLoading] = useState(true)
   const [showBadge, setShowBadge] = useState(false)
 
@@ -134,7 +134,7 @@ export default function D1Home() {
   const recentTx = payments.slice(0, 3)
 
   return (
-    <div style={{ flex: 1, overflow: 'hidden auto', paddingBottom: 16 }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', paddingBottom: 100 }}>
       {loading ? (
         <HomeSkeleton />
       ) : payments.length === 0 ? (
@@ -384,40 +384,6 @@ export default function D1Home() {
         </div>
       )}
 
-      {/* ── Floating Action Button (FAB) ── */}
-      {!loading && payments.length > 0 && (
-        <button
-          onClick={() => navigate('I2')}
-          className="fab-pulse"
-          style={{
-            position: 'absolute',
-            bottom: 'calc(72px + var(--s4))',
-            right: 'var(--s5)',
-            width: 56,
-            height: 56,
-            borderRadius: 'var(--r-full)',
-            background: 'var(--volt)',
-            color: 'var(--volt-on)',
-            border: 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: 28,
-            fontWeight: 300,
-            lineHeight: 1,
-            transition: 'transform var(--motion-fast) var(--ease-spring), background var(--motion-fast)',
-            zIndex: 10,
-          }}
-          onMouseEnter={e => { e.currentTarget.style.transform = 'scale(1.1)'; e.currentTarget.style.background = '#CEFF1A' }}
-          onMouseLeave={e => { e.currentTarget.style.transform = 'scale(1)'; e.currentTarget.style.background = 'var(--volt)' }}
-          onMouseDown={e => e.currentTarget.style.transform = 'scale(0.94)'}
-          onMouseUp={e => e.currentTarget.style.transform = 'scale(1.1)'}
-          aria-label="Registrar nuevo pago"
-        >
-          +
-        </button>
-      )}
     </div>
   )
 }

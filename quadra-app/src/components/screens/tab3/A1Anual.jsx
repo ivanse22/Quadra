@@ -1,16 +1,44 @@
 import { useAppStore } from '../../../store/useAppStore'
 import { IconTrendingUp } from '../../ui/Icons'
 
+const MONTH_LABELS_SHORT = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
+
 export default function A1Anual() {
-  const { monthlyData, navigate } = useAppStore()
+  const { monthlyData, kpis, navigate } = useAppStore()
   const max = Math.max(...monthlyData.map(m => m.amount), 1)
   const fmt = n => n >= 1000000 ? `$${(n/1000000).toFixed(1)}M` : n >= 1000 ? `$${(n/1000).toFixed(0)}k` : '$0'
+  const fmtFull = n => '$' + Math.round(n).toLocaleString('es-CO')
+
+  // Cálculos anuales derivados del store
+  const ytd = kpis?.ytd || 0
+  const currentYear = new Date().getFullYear()
+  const currentMonth = new Date().getMonth() // 0-11
+
+  // Meses con ingresos reales (excluye proyectados)
+  const realMonths = monthlyData.filter((m, i) => !m.projected && m.amount > 0)
+  const mesesConIngresos = realMonths.length || 1
+
+  // Mejor mes
+  const bestMonth = monthlyData.reduce((best, m, i) => m.amount > (best?.amount || 0) ? { ...m, index: i } : best, null)
+  const bestLabel = bestMonth ? `${MONTH_LABELS_SHORT[monthlyData.indexOf(bestMonth)]} — ${fmt(bestMonth.amount)}` : '—'
+
+  // Promedio mensual (sobre meses con datos)
+  const promedio = ytd / mesesConIngresos
+
+  // Proyección anual lineal
+  const proyeccion = promedio * 12
+
+  // Rango de meses con datos
+  const firstMonthIdx = monthlyData.findIndex(m => m.amount > 0)
+  const rangoLabel = firstMonthIdx >= 0
+    ? `${MONTH_LABELS_SHORT[firstMonthIdx]} – ${MONTH_LABELS_SHORT[currentMonth]} ${currentYear} · ${mesesConIngresos} ${mesesConIngresos === 1 ? 'mes' : 'meses'}`
+    : `${currentYear}`
 
   return (
     <div className="q-body-inner">
       {/* Annual KPI */}
       <div className="hero-card mb5">
-        <div className="hero-eye">Ingresos 2026</div>
+        <div className="hero-eye">Ingresos {currentYear}</div>
         <div
           className="hero-amount"
           style={{
@@ -22,14 +50,18 @@ export default function A1Anual() {
             fontVariantNumeric: 'tabular-nums',
           }}
         >
-          $7.400.000
+          {ytd > 0 ? fmtFull(ytd) : '$0'}
         </div>
-        <div className="hero-sub" style={{ fontSize: 'var(--t-md)', marginTop: 'var(--s2)' }}>Ene – Abr 2026 · 4 meses</div>
-        <div className="hero-breakdown">
-          <div><div className="hero-bk-lbl">Mejor mes</div><div className="hero-bk-val" style={{ color: 'var(--fin-income)' }}>Mar — $2.4M</div></div>
-          <div><div className="hero-bk-lbl">Promedio</div><div className="hero-bk-val">$1.85M</div></div>
-          <div><div className="hero-bk-lbl">Proyección</div><div className="hero-bk-val">$22.2M</div></div>
-        </div>
+        <div className="hero-sub" style={{ fontSize: 'var(--t-md)', marginTop: 'var(--s2)' }}>{rangoLabel}</div>
+        {ytd > 0 ? (
+          <div className="hero-breakdown">
+            <div><div className="hero-bk-lbl">Mejor mes</div><div className="hero-bk-val" style={{ color: 'var(--fin-income)' }}>{bestLabel}</div></div>
+            <div><div className="hero-bk-lbl">Promedio</div><div className="hero-bk-val">{fmt(promedio)}</div></div>
+            <div><div className="hero-bk-lbl">Proyección</div><div className="hero-bk-val">{fmt(proyeccion)}</div></div>
+          </div>
+        ) : (
+          <div className="hero-sub" style={{ fontSize: 'var(--t-sm)', marginTop: 'var(--s3)', color: 'var(--txt-2)' }}>Registra tu primer ingreso para ver estadísticas</div>
+        )}
       </div>
 
       <button className="year-projection-cta mb5" onClick={() => navigate('A6')}>

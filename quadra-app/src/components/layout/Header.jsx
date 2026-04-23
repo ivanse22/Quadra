@@ -1,10 +1,10 @@
 import { useAppStore } from '../../store/useAppStore'
 import { QuadraLogo, IconSun, IconMoon, IconArrowLeft, IconBell, IconPlus, IconDownload, IconSettings } from '../ui/Icons'
 
-const BACK_SCREENS = ['O2','O3','O4','O5','B1','B2','D2','D3','D4','I2','I2R','I3','I4','I5','A2','A3','A4','A5','A6','A7','C1','C2','C3','C4','C4C']
+const BACK_SCREENS = ['O1C','O2','O3','O4','O5','B1','B2','D2','D3','D4','I2','I2R','I3','I4','I5','A2','A3','A4','A5','A6','A7','C1','C2','C3','C4','C4C']
 
 export default function Header() {
-  const { currentScreen, goBack, navigate, theme, toggleTheme } = useAppStore()
+  const { currentScreen, goBack, navigate, screenHistory, theme, toggleTheme } = useAppStore()
 
   const s = currentScreen
 
@@ -32,6 +32,29 @@ export default function Header() {
               border: '1.5px solid var(--bg)',
             }} />
           </button>
+          <button className="q-hdr-btn" onClick={toggleTheme} aria-label="Cambiar tema">
+            {theme === 'light' ? <IconMoon /> : <IconSun />}
+          </button>
+        </div>
+      </header>
+    )
+  }
+
+  // Header — login / recuperar: atrás a bienvenida o login si no hay historial
+  if (s === 'B1' || s === 'B2') {
+    const titles = { B1: 'Iniciar sesión', B2: 'Recuperar acceso' }
+    const onBack = () => {
+      if (screenHistory.length > 0) goBack()
+      else if (s === 'B1') navigate('O1')
+      else navigate('B1')
+    }
+    return (
+      <header className="q-header">
+        <button className="q-hdr-back" onClick={onBack} type="button" aria-label="Volver">
+          <IconArrowLeft />
+        </button>
+        <span className="q-hdr-title-center">{titles[s]}</span>
+        <div className="q-hdr-right">
           <button className="q-hdr-btn" onClick={toggleTheme} aria-label="Cambiar tema">
             {theme === 'light' ? <IconMoon /> : <IconSun />}
           </button>
@@ -71,8 +94,7 @@ export default function Header() {
 
   // Header B — Back + title centered
   const titles = {
-    O2:'¿Cómo tributas?', O3:'Retención', O4:'Salud y pensión', O5:'Resumen',
-    B1:'Iniciar sesión', B2:'Recuperar acceso',
+    O1C:'Crea tu cuenta', O2:'¿Cómo tributas?', O3:'Retención', O4:'Salud y pensión', O5:'Resumen',
     D2:'Entender mis descuentos', D3:'Pagar PILA', D4:'Reserva declaración',
     I2:'Nuevo pago', I3:'Detalle del pago', I5:'Historial PILA',
     A6:'Proyectar ingresos', A7:'Exportar datos',

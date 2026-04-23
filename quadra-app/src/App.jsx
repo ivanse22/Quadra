@@ -72,11 +72,9 @@ import BottomNav from './components/layout/BottomNav'
 import ToastContainer from './components/ui/Toast'
 import InstallBanner from './components/ui/InstallBanner'
 
-// Auth
-import Auth from './components/screens/auth/Auth'
-
 // Onboarding
 import O1Welcome from './components/screens/onboarding/O1Welcome'
+import O1CreaCuenta from './components/screens/onboarding/O1CreaCuenta'
 import O2Regimen from './components/screens/onboarding/O2Regimen'
 import O3Retencion from './components/screens/onboarding/O3Retencion'
 import O4PILA from './components/screens/onboarding/O4PILA'
@@ -127,7 +125,7 @@ const NO_HEADER = ['O1', 'I2R', 'C4C']
 const showHeader = (screen) => !NO_HEADER.includes(screen)
 
 const SCREENS = {
-  O1: O1Welcome, O2: O2Regimen, O3: O3Retencion, O4: O4PILA, O5: O5Resultado,
+  O1: O1Welcome, O1C: O1CreaCuenta, O2: O2Regimen, O3: O3Retencion, O4: O4PILA, O5: O5Resultado,
   B1: B1Login, B2: B2RecuperarPassword,
   D1: D1Home, D2: D2Entender, D3: D3PagarPILA, D4: D4Reserva,
   I1: I1Pagos, I2: I2Registro, I2R: I2Resultado, I3: I3Detalle, I4: I4TotalGanado, I5: I5HistorialPILA,
@@ -136,12 +134,44 @@ const SCREENS = {
 }
 
 export default function App() {
-  const { currentScreen, theme, session, setSession, navigate, switchTab, payments, loadUserData, clearUserData } = useAppStore()
+  const { currentScreen, theme, session, setSession, navigate, navigateRoot, switchTab, payments, loadUserData, clearUserData } = useAppStore()
   const deferredPrompt = useRef(null)
   const [showInstallBanner, setShowInstallBanner] = useState(false)
   const [showQuickMenu, setShowQuickMenu] = useState(false)
+  /** Evita tratar `session: null` inicial como cierre de sesión antes de getSession() */
+  const [authReady, setAuthReady] = useState(false)
   const bodyRef = useRef(null)
   const fabRef = useRef(null)
+  const sheetRef = useRef(null)
+  const sheetDragRef = useRef({ startY: null, startTime: null })
+
+  const onSheetPointerDown = (e) => {
+    sheetDragRef.current = { startY: e.clientY, startTime: Date.now() }
+    e.currentTarget.setPointerCapture(e.pointerId)
+  }
+  const onSheetPointerMove = (e) => {
+    const { startY } = sheetDragRef.current
+    if (startY === null || !sheetRef.current) return
+    const dy = Math.max(0, e.clientY - startY)
+    sheetRef.current.style.transition = 'none'
+    sheetRef.current.style.transform = `translateY(${dy}px)`
+  }
+  const onSheetPointerUp = (e) => {
+    const { startY, startTime } = sheetDragRef.current
+    if (startY === null || !sheetRef.current) return
+    sheetDragRef.current = { startY: null, startTime: null }
+    const dy = Math.max(0, e.clientY - startY)
+    const dt = Date.now() - startTime
+    const velocity = dt > 0 ? dy / dt : 0
+    if (dy > 80 || velocity > 0.5) {
+      sheetRef.current.style.transition = 'transform 220ms var(--ease-accel)'
+      sheetRef.current.style.transform = `translateY(100%)`
+      setTimeout(() => setShowQuickMenu(false), 220)
+    } else {
+      sheetRef.current.style.transition = 'transform 320ms var(--ease-spring)'
+      sheetRef.current.style.transform = 'translateY(0)'
+    }
+  }
 
   // Spring-press animation handlers for the FAB button
   const onFabDown = () => {
@@ -204,19 +234,33 @@ export default function App() {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
 
-  // Load / clear user data when session changes
+  // Cargar / limpiar datos según sesión (solo tras el primer getSession, para no vaciar el store antes)
+  const AUTH_SCREENS = ['O1', 'O1C', 'O2', 'O3', 'O4', 'O5', 'B1', 'B2']
   useEffect(() => {
+    if (!authReady) return
     if (session && !session.mock && session.user?.id) {
       loadUserData(session.user.id)
     } else if (!session) {
       clearUserData()
     }
-  }, [session]) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [authReady, session, loadUserData, clearUserData])
 
   useEffect(() => {
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session)
-    })
+    if (!authReady || session) return
+    if (!AUTH_SCREENS.includes(currentScreen)) {
+      navigateRoot('B1')
+    }
+  }, [authReady, session, currentScreen, navigateRoot])
+
+  useEffect(() => {
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        setSession(session)
+      })
+      .finally(() => {
+        setAuthReady(true)
+      })
 
     const {
       data: { subscription },
@@ -225,7 +269,7 @@ export default function App() {
     })
 
     return () => subscription.unsubscribe()
-  }, [])
+  }, [setSession])
 
   const Screen = SCREENS[currentScreen] || D1Home
 
@@ -256,7 +300,15 @@ export default function App() {
             />
           )}
           {showQuickMenu && (
-            <div className="fab-sheet" role="dialog" aria-label="Acciones rápidas">
+            <div
+              ref={sheetRef}
+              className="fab-sheet"
+              role="dialog"
+              aria-label="Acciones rápidas"
+              onPointerDown={onSheetPointerDown}
+              onPointerMove={onSheetPointerMove}
+              onPointerUp={onSheetPointerUp}
+            >
               <div className="fab-sheet-handle" />
               <p className="fab-sheet-title">Acciones rápidas</p>
               <p className="fab-sheet-subtitle">Selecciona lo que quieres hacer</p>

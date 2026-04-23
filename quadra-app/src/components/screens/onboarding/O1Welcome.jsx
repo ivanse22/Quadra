@@ -51,7 +51,7 @@ export default function O1Welcome() {
           <button
             className="btn btn-primary btn-full"
             style={{ height: '60px', fontSize: 'var(--t-lg)' }}
-            onClick={() => navigate('O2')}
+            onClick={() => navigate('O1C')}
           >
             Empezar →
           </button>

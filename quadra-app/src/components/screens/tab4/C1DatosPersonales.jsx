@@ -2,7 +2,7 @@ import { useAppStore } from '../../../store/useAppStore'
 import { supabase } from '../../../lib/supabase'
 
 export default function C1DatosPersonales() {
-  const { profile, session, setSession, showToast } = useAppStore()
+  const { profile, session, setSession, navigateRoot, showToast } = useAppStore()
   const fields = [
     { label: 'Nombre', value: profile.name || 'Valentina Gómez' },
     { label: 'Régimen', value: { simple: 'Régimen Simple', ordinario: 'Régimen Ordinario', unclear: 'Sin definir' }[profile.regimen] || 'Régimen Ordinario' },
@@ -17,13 +17,15 @@ export default function C1DatosPersonales() {
       if (session?.mock) {
         setSession(null)
       } else {
-        const { error } = await supabase.auth.signOut()
-        if (error) throw error
+        await supabase.auth.signOut()
+        setSession(null)
       }
       showToast({ type: 'success', message: 'Sesión cerrada correctamente' })
     } catch (error) {
       console.error('Error cerrando sesión:', error)
-      showToast({ type: 'error', message: 'No fue posible cerrar sesión' })
+      setSession(null)
+    } finally {
+      navigateRoot('B1')
     }
   }
 

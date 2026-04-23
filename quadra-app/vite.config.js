@@ -7,8 +7,9 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      // En dev, el SW suele romper HMR / caché en localhost; el PWA se prueba con `npm run build && npm run preview`
       devOptions: {
-        enabled: true
+        enabled: false,
       },
       manifest: {
         name: 'Quadra — Tu plata, clara.',

@@ -86,6 +86,10 @@ export const useAppStore = create(
         }))
       },
 
+      navigateRoot: (screenId) => {
+        set({ currentScreen: screenId, screenHistory: [], activeTab: 0 })
+      },
+
       goBack: () => {
         const history = get().screenHistory
         if (history.length === 0) return
@@ -190,6 +194,19 @@ export const useAppStore = create(
             type:            payment.type || 'income',
           }).then(({ error }) => {
             if (error) console.error('[Quadra] Supabase insert payment:', error.message)
+          })
+        }
+      },
+
+      removePayment: (id) => {
+        set(state => {
+          const next = state.payments.filter(p => p.id !== id)
+          return { payments: next, kpis: computeKpis(next), monthlyData: computeMonthlyData(next) }
+        })
+        const { session } = get()
+        if (session && !session.mock && session.user?.id) {
+          supabase.from('payments').delete().eq('id', id).then(({ error }) => {
+            if (error) console.error('[Quadra] removePayment:', error.message)
           })
         }
       },
@@ -372,6 +389,11 @@ export const useAppStore = create(
       onRehydrateStorage: () => (state) => {
         if (state && state.payments) {
           state.monthlyData = computeMonthlyData(state.payments)
+        }
+        // B2 (recuperar contraseña) no debe ser la pantalla “de inicio” tras F5 / abrir de nuevo
+        if (state?.currentScreen === 'B2') {
+          state.currentScreen = 'O1'
+          state.screenHistory = []
         }
       },
     }

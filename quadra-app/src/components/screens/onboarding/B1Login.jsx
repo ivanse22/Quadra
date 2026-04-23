@@ -122,13 +122,20 @@ export default function B1Login() {
           </button>
         </form>
 
-        <div style={{ textAlign: 'center', marginTop: 'var(--s5)' }}>
+        <div style={{ textAlign: 'center', marginTop: 'var(--s5)', display: 'flex', flexDirection: 'column', gap: 'var(--s2)' }}>
           <button
             className="btn btn-ghost"
             onClick={() => navigate('B2')}
             style={{ fontSize: 'var(--t-sm)' }}
           >
             Olvidé mi contraseña
+          </button>
+          <button
+            className="btn btn-ghost"
+            onClick={() => navigate('O1C')}
+            style={{ fontSize: 'var(--t-sm)', color: 'var(--volt-text)', fontWeight: 700 }}
+          >
+            ¿No tienes cuenta? Crear una
           </button>
         </div>
       </div>

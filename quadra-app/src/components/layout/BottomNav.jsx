@@ -9,7 +9,7 @@ const TABS = [
 ]
 
 // Screens that HIDE the bottom nav
-const HIDDEN_ON = ['O1','O2','O3','O4','O5','B1','B2','I2','I2R','C4C']
+const HIDDEN_ON = ['O1','O1C','O2','O3','O4','O5','B1','B2','I2','I2R','C4C']
 
 export default function BottomNav() {
   const { currentScreen, activeTab, switchTab } = useAppStore()

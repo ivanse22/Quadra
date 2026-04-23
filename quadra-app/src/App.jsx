@@ -305,11 +305,13 @@ export default function App() {
               className="fab-sheet"
               role="dialog"
               aria-label="Acciones rápidas"
-              onPointerDown={onSheetPointerDown}
-              onPointerMove={onSheetPointerMove}
-              onPointerUp={onSheetPointerUp}
             >
-              <div className="fab-sheet-handle" />
+              <div
+                className="fab-sheet-handle"
+                onPointerDown={onSheetPointerDown}
+                onPointerMove={onSheetPointerMove}
+                onPointerUp={onSheetPointerUp}
+              />
               <p className="fab-sheet-title">Acciones rápidas</p>
               <p className="fab-sheet-subtitle">Selecciona lo que quieres hacer</p>
               <div className="fab-sheet-list">

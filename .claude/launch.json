@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "quadra-app",
+      "runtimeExecutable": "sh",
+      "runtimeArgs": ["-c", "cd /Users/CJ/Desktop/UOC/2\\ Semestre/TFM/R3/DS/quadra-app && npm run dev"],
+      "port": 5173
+    }
+  ]
+}
+

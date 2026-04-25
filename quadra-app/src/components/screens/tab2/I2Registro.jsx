@@ -3,7 +3,7 @@ import { useAppStore } from '../../../store/useAppStore'
 import { calcularPago } from '../../../lib/calculadoraFinanciera'
 import { formatDateButtonLabel, formatDateLabel, toDateInputValue } from '../../../lib/dateUtils'
 import AmountField from '../../ui/AmountField'
-import { IconCalendar, IconCheck } from '../../ui/Icons'
+import { IconAlertTriangle, IconCalendar, IconCheck } from '../../ui/Icons'
 
 export default function I2Registro() {
   const { navigate, addPayment, showToast, profile, kpis, payments } = useAppStore()
@@ -16,14 +16,16 @@ export default function I2Registro() {
   const [btnState, setBtnState] = useState('default') // default | loading | success
   const dateInputRef = useRef(null)
 
-  // E5.2 — Client autocomplete
+  // E5.2 — Client autocomplete (ordenado por frecuencia, cap 8)
   const uniqueClients = useMemo(() => {
-    const seen = new Set()
-    return payments
+    const freq = {}
+    payments
       .filter(p => p.type !== 'pila' && p.client)
-      .map(p => p.client)
-      .filter(c => { if (seen.has(c)) return false; seen.add(c); return true })
-      .slice(0, 5)
+      .forEach(p => { freq[p.client] = (freq[p.client] || 0) + 1 })
+    return Object.entries(freq)
+      .sort((a, b) => b[1] - a[1])
+      .map(([name]) => name)
+      .slice(0, 8)
   }, [payments])
 
   const suggestions = useMemo(() => {
@@ -138,6 +140,11 @@ export default function I2Registro() {
               placeholder="Nombre del cliente"
               autoComplete="off"
             />
+            {uniqueClients.length > 0 && !showSuggestions && !client && (
+              <span style={{ display: 'block', fontSize: 'var(--t-xs)', color: 'var(--txt-m)', marginTop: 4, fontFamily: 'var(--font-body)' }}>
+                Toca el campo para ver clientes anteriores
+              </span>
+            )}
             {showSuggestions && suggestions.length > 0 && (
               <div style={{
                 position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 20,
@@ -243,7 +250,7 @@ export default function I2Registro() {
               
               {calc.warnings.some(w => w.id === 'PILA_ALTA' || w.id === 'PILA_MIN') && (
                 <div style={{ marginTop: 'var(--s3)', padding: 'var(--s3)', background: 'var(--warning-bg, #fff8e1)', border: '1px solid var(--warning-border, #ffc107)', borderRadius: 8 }}>
-                  <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--warning-text, #7c5a00)', fontFamily: 'var(--font-body)', marginBottom: 2 }}>⚠️ Seguridad social del mes</div>
+                  <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--warning-text, #7c5a00)', fontFamily: 'var(--font-body)', marginBottom: 2, display: 'flex', alignItems: 'center', gap: 4 }}><IconAlertTriangle size={12} /> Seguridad social del mes</div>
                   <div style={{ fontSize: 10, color: 'var(--warning-text, #7c5a00)', fontFamily: 'var(--font-body)', lineHeight: 1.5 }}>
                     Tus aportes de PILA para este mes superan el valor de este pago. El disponible hoy es $0. El balance se ajustará con tus próximos ingresos del mes.
                   </div>

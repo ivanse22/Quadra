@@ -1,4 +1,5 @@
 import { useAppStore } from '../../../store/useAppStore'
+import { IconBriefcase, IconHome, IconReceipt, IconTrendingUp } from '../../ui/Icons'
 
 export default function D4Reserva() {
   const { navigate, kpis } = useAppStore()
@@ -81,13 +82,13 @@ export default function D4Reserva() {
           Cómo reducir tu impuesto
         </h3>
         {[
-          { icon: '📈', title: 'Fondos voluntarios de pensión (FVP)', desc: 'Los aportes voluntarios son deducibles hasta el 30% del ingreso. Habla con tu entidad financiera.' },
-          { icon: '🏠', title: 'Cuenta AFC', desc: 'El ahorro para vivienda también es deducible. Aplica si tienes crédito hipotecario o planeas uno.' },
-          { icon: '🧾', title: 'Facturas electrónicas', desc: 'Exige factura en tus gastos personales. El mínimo para aplicar el descuento es el 1% de tus compras.' },
-          { icon: '👩‍💼', title: '¿Tienes gastos deducibles?', desc: 'Un contador puede ayudarte a identificar más deducciones según tu actividad específica.' },
+          { Icon: IconTrendingUp, title: 'Fondos voluntarios de pensión (FVP)', desc: 'Los aportes voluntarios son deducibles hasta el 30% del ingreso. Habla con tu entidad financiera.' },
+          { Icon: IconHome,       title: 'Cuenta AFC', desc: 'El ahorro para vivienda también es deducible. Aplica si tienes crédito hipotecario o planeas uno.' },
+          { Icon: IconReceipt,   title: 'Facturas electrónicas', desc: 'Exige factura en tus gastos personales. El mínimo para aplicar el descuento es el 1% de tus compras.' },
+          { Icon: IconBriefcase, title: '¿Tienes gastos deducibles?', desc: 'Un contador puede ayudarte a identificar más deducciones según tu actividad específica.' },
         ].map(item => (
           <div key={item.title} style={{ display: 'flex', gap: 'var(--s3)', paddingBottom: 'var(--s4)', marginBottom: 'var(--s4)', borderBottom: '1px solid var(--border)' }}>
-            <span style={{ fontSize: 20, flexShrink: 0, lineHeight: 1.2 }}>{item.icon}</span>
+            <span style={{ flexShrink: 0, color: 'var(--txt-m)', display: 'flex', alignItems: 'flex-start', paddingTop: 2 }}><item.Icon size={20} /></span>
             <div>
               <div style={{ fontSize: 'var(--t-sm)', fontWeight: 700, color: 'var(--txt)', fontFamily: 'var(--font-display)', marginBottom: 'var(--s1)' }}>{item.title}</div>
               <p style={{ fontSize: 'var(--t-xs)', color: 'var(--txt-m)', fontFamily: 'var(--font-body)', lineHeight: 1.5, margin: 0 }}>{item.desc}</p>

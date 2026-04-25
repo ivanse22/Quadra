@@ -1,17 +1,18 @@
 import { useState } from 'react'
 import { useAppStore } from '../../../store/useAppStore'
+import { IconBuildingBank, IconCreditCard, IconSend, IconSmartphone } from '../../ui/Icons'
 
 const SUPPORTED = ['bancolombia', 'davivienda', 'bbva', 'nequi', 'daviplata', 'wise', 'paypal']
 
 const banks = [
-  { id: 'bancolombia', name: 'Bancolombia', icon: '🏦' },
-  { id: 'davivienda',  name: 'Davivienda',  icon: '🏧' },
-  { id: 'bbva',        name: 'BBVA',         icon: '🔵' },
-  { id: 'nequi',       name: 'Nequi',        icon: '📱' },
-  { id: 'daviplata',   name: 'Daviplata',    icon: '💳' },
-  { id: 'wise',        name: 'Wise',         icon: '💸' },
-  { id: 'paypal',      name: 'PayPal',       icon: '🅿️' },
-  { id: 'other',       name: 'Otro banco',   icon: '🏛️' },
+  { id: 'bancolombia', name: 'Bancolombia', Icon: IconBuildingBank },
+  { id: 'davivienda',  name: 'Davivienda',  Icon: IconBuildingBank },
+  { id: 'bbva',        name: 'BBVA',         Icon: IconBuildingBank },
+  { id: 'nequi',       name: 'Nequi',        Icon: IconSmartphone  },
+  { id: 'daviplata',   name: 'Daviplata',    Icon: IconCreditCard  },
+  { id: 'wise',        name: 'Wise',         Icon: IconSend        },
+  { id: 'paypal',      name: 'PayPal',       Icon: IconSend        },
+  { id: 'other',       name: 'Otro banco',   Icon: IconBuildingBank },
 ]
 
 export default function C4AgregarCuenta() {
@@ -45,7 +46,7 @@ export default function C4AgregarCuenta() {
             onClick={() => { setSelected(b.id); setNotifySent(false) }}
             aria-pressed={selected === b.id}
           >
-            <span style={{ fontSize: 28, marginBottom: 'var(--s2)' }}>{b.icon}</span>
+            <span style={{ marginBottom: 'var(--s2)', color: 'var(--txt-m)', display: 'flex', alignItems: 'center' }}><b.Icon size={28} /></span>
             <div className="ob-option-title">{b.name}</div>
             {b.id === 'other' && (
               <span style={{ position: 'absolute', top: 6, right: 6, fontSize: 9, background: 'var(--surf-3)', color: 'var(--txt-m)', padding: '2px 5px', borderRadius: 'var(--r-full)', fontFamily: 'var(--font-body)', fontWeight: 700 }}>

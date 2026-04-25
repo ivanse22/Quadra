@@ -22,7 +22,7 @@ export function computeNotifications(payments, kpis, profile, alerts) {
       notifs.push({
         id: 'pila-overdue',
         type: 'pila',
-        icon: '🛡️',
+        icon: 'shield',
         title: 'PILA pendiente',
         msg: neverRegistered
           ? 'Aún no has registrado ningún pago de seguridad social este año.'
@@ -46,7 +46,7 @@ export function computeNotifications(payments, kpis, profile, alerts) {
       notifs.push({
         id: 'renta-baja',
         type: 'renta',
-        icon: '📊',
+        icon: 'chart',
         title: 'Reserva para renta baja',
         msg: `Tu reserva está al ${pct}% de la meta. En agosto se declara renta.`,
         action: 'D4',
@@ -69,7 +69,7 @@ export function computeNotifications(payments, kpis, profile, alerts) {
       notifs.push({
         id: `resumen-${today}`,
         type: 'resumen',
-        icon: '📅',
+        icon: 'calendar',
         title: 'Resumen de la semana',
         msg: `Esta semana ingresaste $${weekGross.toLocaleString('es-CO')} en ${weekPayments.length} pago${weekPayments.length !== 1 ? 's' : ''}.`,
         action: 'I1',
@@ -89,7 +89,7 @@ export function computeNotifications(payments, kpis, profile, alerts) {
         notifs.push({
           id: `venc-${date}`,
           type: 'venc',
-          icon: '📋',
+          icon: 'file',
           title,
           msg: `Faltan ${daysUntil} días para esta fecha límite de la DIAN.`,
           action: 'A8',

@@ -1,5 +1,6 @@
 import { useAppStore } from '../../../store/useAppStore'
 import { useMemo } from 'react'
+import { IconBuildingBank, IconSend, IconShield } from '../../ui/Icons'
 
 export default function C3CuentasConectadas() {
   const { navigate, payments, profile, alerts } = useAppStore()
@@ -7,17 +8,17 @@ export default function C3CuentasConectadas() {
     const accountMap = new Map()
     payments.forEach((payment) => {
       if (payment.currency && payment.currency !== 'COP') {
-        accountMap.set('wise', { id: 'wise', name: 'Wise', type: `Cuenta ${payment.currency} · pagos internacionales`, status: 'ok', icon: '💸' })
+        accountMap.set('wise', { id: 'wise', name: 'Wise', type: `Cuenta ${payment.currency} · pagos internacionales`, status: 'ok', Icon: IconSend })
       }
       if (payment.method === 'Transferencia') {
-        accountMap.set('bank', { id: 'bank', name: 'Cuenta bancaria', type: 'Transferencias en COP registradas', status: 'ok', icon: '🏦' })
+        accountMap.set('bank', { id: 'bank', name: 'Cuenta bancaria', type: 'Transferencias en COP registradas', status: 'ok', Icon: IconBuildingBank })
       }
       if (payment.method === 'PSE' || payment.type === 'pila') {
-        accountMap.set('pse', { id: 'pse', name: 'PSE', type: 'Usada para pagos de PILA', status: 'ok', icon: '🛡️' })
+        accountMap.set('pse', { id: 'pse', name: 'PSE', type: 'Usada para pagos de PILA', status: 'ok', Icon: IconShield })
       }
     })
     if (accountMap.size === 0) {
-      accountMap.set('pending', { id: 'pending', name: 'Sin cuentas conectadas aún', type: 'Conecta una cuenta para ver aquí tus métodos frecuentes', status: 'warn', icon: '🏛️' })
+      accountMap.set('pending', { id: 'pending', name: 'Sin cuentas conectadas aún', type: 'Conecta una cuenta para ver aquí tus métodos frecuentes', status: 'warn', Icon: IconBuildingBank })
     }
     return [...accountMap.values()]
   }, [payments])
@@ -33,7 +34,7 @@ export default function C3CuentasConectadas() {
         <div className="tx-list mb5">
           {accounts.map((acc, i) => (
             <div key={i} className="tx-row compact-row" role="listitem">
-              <div className="tx-icon" style={{ fontSize: 20 }}>{acc.icon}</div>
+              <div className="tx-icon" style={{ color: 'var(--txt-m)', display: 'flex', alignItems: 'center' }}><acc.Icon size={20} /></div>
               <div className="tx-info compact-row-info">
                 <div className="tx-name compact-row-name">{acc.name}</div>
                 <div className="tx-sub compact-row-sub">{acc.type}</div>

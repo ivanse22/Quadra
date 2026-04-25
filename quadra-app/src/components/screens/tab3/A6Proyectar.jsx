@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { useAppStore } from '../../../store/useAppStore'
+import { IconCheck } from '../../ui/Icons'
 
 const PRESETS = [2000000, 4000000, 6000000, 10000000]
 
@@ -159,7 +160,7 @@ export default function A6Proyectar() {
         onClick={handleSaveMeta}
         disabled={saved || !monthly}
       >
-        {saved ? '✓ Meta guardada en tu perfil' : 'Aplicar como meta anual →'}
+        {saved ? <><IconCheck /> Meta guardada en tu perfil</> : 'Aplicar como meta anual →'}
       </button>
     </div>
   )

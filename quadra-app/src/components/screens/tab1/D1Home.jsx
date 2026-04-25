@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAppStore } from '../../../store/useAppStore'
 import { getPaymentDateLabel } from '../../../lib/dateUtils'
+import { IconBarChart, IconShield, IconTarget } from '../../ui/Icons'
 
 // ── Skeleton (DS §16 & §18 skeleton del Home) ────────────────────────────────
 function HomeSkeleton() {
@@ -163,7 +164,7 @@ export default function D1Home() {
 
     // Best month
     if (avg2 > 0 && currentGross > avg2 * 1.2) {
-      return { type: 'best', msg: 'Mejor mes del trimestre 🎯', cta: 'Ver ingresos →', screen: 'I4' }
+      return { type: 'best', msg: 'Mejor mes del trimestre', cta: 'Ver ingresos →', screen: 'I4' }
     }
 
     return null
@@ -254,8 +255,13 @@ export default function D1Home() {
                 borderRadius: 'var(--r-xl)', cursor: 'pointer',
               }}
             >
-              <span style={{ fontSize: 18, flexShrink: 0 }}>
-                {insight.type === 'best' ? '🎯' : insight.type === 'pila' ? '🛡️' : '📊'}
+              <span style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
+                {insight.type === 'best'
+                  ? <IconTarget size={18} style={{ color: 'var(--volt-text)' }} />
+                  : insight.type === 'pila'
+                  ? <IconShield size={18} style={{ color: 'var(--fin-reserve)' }} />
+                  : <IconBarChart size={18} style={{ color: 'var(--txt-m)' }} />
+                }
               </span>
               <span style={{ flex: 1, fontFamily: 'var(--font-body)', fontSize: 'var(--t-xs)', color: 'var(--txt)', lineHeight: 1.4 }}>
                 {insight.msg}

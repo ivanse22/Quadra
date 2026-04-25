@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useAppStore } from '../../../store/useAppStore'
 import { CONSTANTES } from '../../../lib/calculadoraFinanciera'
+import { IconCheck } from '../../ui/Icons'
 
 const UMBRAL_DECLARANTE_COP = CONSTANTES.UMBRAL_DECLARANTE_UVT * CONSTANTES.UVT
 
@@ -209,8 +210,8 @@ export default function I2Resultado() {
                       </>
                     ) : (
                       <>
-                        <span className="tx-drow-l" style={{ fontWeight: 700, color: 'var(--fin-income)' }}>
-                          ✓ Seguridad social del mes ya cubierta
+                        <span className="tx-drow-l" style={{ fontWeight: 700, color: 'var(--fin-income)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                          <IconCheck /> Seguridad social del mes ya cubierta
                         </span>
                         <span className="tx-drow-v" style={{ color: 'var(--fin-income)', fontWeight: 700 }}>$0</span>
                       </>

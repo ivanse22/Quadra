@@ -1,4 +1,12 @@
 import { useAppStore } from '../../store/useAppStore'
+import { IconBarChart, IconBell, IconCalendar, IconFileText, IconShield } from './Icons'
+
+const NOTIF_ICONS = {
+  shield:   <IconShield />,
+  chart:    <IconBarChart />,
+  calendar: <IconCalendar />,
+  file:     <IconFileText />,
+}
 
 export default function NotificationDrawer() {
   const { notifications, markAllRead, navigate, setNotifDrawerOpen } = useAppStore()
@@ -51,7 +59,7 @@ export default function NotificationDrawer() {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--s3)', marginBottom: 'var(--s3)' }}>
-                  <span style={{ fontSize: 20, flexShrink: 0, lineHeight: 1.2 }}>{n.icon}</span>
+                  <span style={{ flexShrink: 0, color: 'var(--txt-m)', display: 'flex', alignItems: 'center', paddingTop: 2 }}>{NOTIF_ICONS[n.icon] ?? <IconBell />}</span>
                   <div>
                     <div style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--t-sm)', fontWeight: 700, color: 'var(--txt)', marginBottom: 4 }}>
                       {n.title}

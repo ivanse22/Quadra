@@ -23,8 +23,8 @@ export default function Header() {
           {/* Bell with red dot — DS line 6372-6374 */}
           <button
             className="q-hdr-btn"
-            onClick={() => unreadCount > 0 ? setNotifDrawerOpen(true) : navigate('C2')}
-            aria-label={unreadCount > 0 ? `${unreadCount} notificaciones` : 'Alertas'}
+            onClick={() => setNotifDrawerOpen(true)}
+            aria-label={unreadCount > 0 ? `${unreadCount} notificaciones sin leer` : 'Notificaciones'}
             style={{ position: 'relative' }}
           >
             <IconBell />

@@ -200,6 +200,7 @@ export default function I1Pagos() {
   const { payments, navigate, setSelectedPayment, removePayment, showToast } = useAppStore()
   const [loading, setLoading] = useState(true)
   const [period, setPeriod] = useState('mes')
+  const [groupBy, setGroupBy] = useState('fecha')
   const [deleteId, setDeleteId] = useState(null)
   const [openRowId, setOpenRowId] = useState(null)
 
@@ -246,12 +247,18 @@ export default function I1Pagos() {
     period === 'anio' ? 'este año' :
     'visibles'
 
-  const grouped = filtered.reduce((acc, payment) => {
-    const key = getPaymentDateLabel(payment)
+  const rawGrouped = filtered.reduce((acc, payment) => {
+    const key = groupBy === 'cliente'
+      ? (payment.type === 'pila' ? 'Pagos PILA' : (payment.client || 'Sin cliente'))
+      : getPaymentDateLabel(payment)
     if (!acc[key]) acc[key] = []
     acc[key].push(payment)
     return acc
   }, {})
+
+  const groupEntries = groupBy === 'cliente'
+    ? Object.entries(rawGrouped).sort(([a], [b]) => a.localeCompare(b, 'es'))
+    : Object.entries(rawGrouped)
 
   const handleConfirmDelete = () => {
     if (!deleteId) return
@@ -348,6 +355,10 @@ export default function I1Pagos() {
                 <button className={`seg-btn${period === 'anio' ? ' active' : ''}`} onClick={() => { setPeriod('anio'); setOpenRowId(null) }}>Este año</button>
                 <button className={`seg-btn${period === 'todo' ? ' active' : ''}`} onClick={() => { setPeriod('todo'); setOpenRowId(null) }}>Todo</button>
               </div>
+              <div className="seg-ctrl" style={{ marginTop: 'var(--s2)' }}>
+                <button className={`seg-btn${groupBy === 'fecha' ? ' active' : ''}`} onClick={() => { setGroupBy('fecha'); setOpenRowId(null) }}>Por fecha</button>
+                <button className={`seg-btn${groupBy === 'cliente' ? ' active' : ''}`} onClick={() => { setGroupBy('cliente'); setOpenRowId(null) }}>Por cliente</button>
+              </div>
             </div>
 
             {filtered.length > 0 && (
@@ -372,9 +383,9 @@ export default function I1Pagos() {
                 </div>
               </div>
 
-              {Object.entries(grouped).map(([date, rows]) => (
-                <div key={date}>
-                  <div className="tx-section-header">{date}</div>
+              {groupEntries.map(([label, rows]) => (
+                <div key={label}>
+                  <div className="tx-section-header">{label}</div>
                   {rows.map((payment) => (
                     <SwipeRow
                       key={payment.id}

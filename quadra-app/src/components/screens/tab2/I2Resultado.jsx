@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
 import { useAppStore } from '../../../store/useAppStore'
+import { CONSTANTES } from '../../../lib/calculadoraFinanciera'
+
+const UMBRAL_DECLARANTE_COP = CONSTANTES.UMBRAL_DECLARANTE_UVT * CONSTANTES.UVT
 
 function useCountUp(target, duration = 900) {
   const [val, setVal] = useState(0)
@@ -154,7 +157,7 @@ export default function I2Resultado() {
             <div className="tx-drow-v" style={{ color: 'var(--fin-deduct)' }}>−{fmt(retencion)}</div>
           </div>
 
-          {pila > 0 && (
+          {(pila > 0 || pilaD) && (
             <div className="stagger-item" style={{ animationDelay: '160ms' }}>
               {pilaD ? (
                 <div
@@ -170,7 +173,7 @@ export default function I2Resultado() {
                 >
                   <div style={{ fontSize: 11, fontWeight: 800, fontFamily: 'var(--font-display)', color: 'var(--txt)', marginBottom: 'var(--s2)' }}>PILA — aportes (sobre IBC del mes)</div>
                   <p className="i2-legal-hint" style={{ marginBottom: 'var(--s3)' }}>
-                    El 12,5% es salud y el 16% pensión sobre el <strong>IBC</strong>, no sobre toda la factura. IBC = 40% de tus ingresos del mes (con piso 1 SMMLV y tope 25 SMMLV en el cálculo del app).
+                    La PILA es mensual sobre el total de tus ingresos del mes (todos los clientes). IBC = 40% del total, con piso 1 SMMLV y tope 25 SMMLV.
                   </p>
                   <div className="tx-drow" style={{ border: 'none', padding: '4px 0' }}>
                     <span className="tx-drow-l">IBC del mes (base)</span>
@@ -194,15 +197,31 @@ export default function I2Resultado() {
                   </div>
                   {pilaD.yaReservadoMes > 0 && (
                     <div className="tx-drow" style={{ border: 'none', padding: '4px 0' }}>
-                      <span className="tx-drow-l">Ya reservado antes en el mes</span>
+                      <span className="tx-drow-l">Ya reservado este mes</span>
                       <span className="tx-drow-v" style={{ color: 'var(--txt-m)' }}>−{fmt(pilaD.yaReservadoMes)}</span>
                     </div>
                   )}
                   <div className="tx-drow" style={{ border: 'none', padding: '6px 0 0', marginTop: 4, borderTop: '1px solid var(--border)' }}>
-                    <span className="tx-drow-l" style={{ fontWeight: 800 }}>Reservado en este pago</span>
-                    <span className="tx-drow-v" style={{ color: 'var(--fin-reserve)', fontWeight: 800 }}>−{fmt(pila)}</span>
+                    {pila > 0 ? (
+                      <>
+                        <span className="tx-drow-l" style={{ fontWeight: 800 }}>Reservado en este pago</span>
+                        <span className="tx-drow-v" style={{ color: 'var(--fin-reserve)', fontWeight: 800 }}>−{fmt(pila)}</span>
+                      </>
+                    ) : (
+                      <>
+                        <span className="tx-drow-l" style={{ fontWeight: 700, color: 'var(--fin-income)' }}>
+                          ✓ Seguridad social del mes ya cubierta
+                        </span>
+                        <span className="tx-drow-v" style={{ color: 'var(--fin-income)', fontWeight: 700 }}>$0</span>
+                      </>
+                    )}
                   </div>
-                  {pilaPctoBruto != null && (
+                  {pila === 0 && (
+                    <p className="i2-legal-hint" style={{ marginTop: 'var(--s2)', marginBottom: 0 }}>
+                      Este pago no agrega PILA adicional. La obligación mensual ya fue cubierta con pagos anteriores del mes.
+                    </p>
+                  )}
+                  {pila > 0 && pilaPctoBruto != null && (
                     <p className="i2-legal-hint" style={{ marginTop: 'var(--s2)', marginBottom: 0 }}>
                       Equivale a ~{String(pilaPctoBruto).replace(/\.0$/, '')}% del bruto de <em>este</em> pago: eso es distinto al 12,5% de salud, que va sobre IBC.
                     </p>
@@ -214,18 +233,54 @@ export default function I2Resultado() {
                     <div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />
                     PILA (registrado en pagos anteriores sin desglose)
                   </div>
-                  <div className="tx-drow-v" style={{ color: 'var(--fin-reserve)' }}>−{fmt(p)}</div>
+                  <div className="tx-drow-v" style={{ color: 'var(--fin-reserve)' }}>−{fmt(pila)}</div>
                 </div>
               )}
             </div>
           )}
 
-          <div className="tx-drow stagger-item" style={{ animationDelay: '240ms' }}>
-            <div className="tx-drow-l" style={{ color: 'var(--txt-2)' }}>
-              <div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />
-              Reserva declaración renta
-            </div>
-            <div className="tx-drow-v" style={{ color: 'var(--fin-reserve)' }}>−{fmt(reserva)}</div>
+          <div className="stagger-item" style={{ animationDelay: '240ms' }}>
+            {reserva > 0 ? (
+              <div className="tx-drow">
+                <div className="tx-drow-l" style={{ color: 'var(--txt-2)' }}>
+                  <div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />
+                  Reserva declaración renta
+                </div>
+                <div className="tx-drow-v" style={{ color: 'var(--fin-reserve)' }}>−{fmt(reserva)}</div>
+              </div>
+            ) : (
+              <div
+                className="card"
+                style={{
+                  marginTop: 'var(--s2)',
+                  padding: 'var(--s4)',
+                  textAlign: 'left',
+                  border: '1px solid var(--border)',
+                  borderRadius: 'var(--r-lg)',
+                  background: 'var(--bg-subtle)',
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--s2)' }}>
+                  <div style={{ fontSize: 11, fontWeight: 800, fontFamily: 'var(--font-display)', color: 'var(--txt)' }}>
+                    RENTA — reserva declaración
+                  </div>
+                  <span style={{ fontWeight: 700, color: 'var(--fin-income)', fontSize: 'var(--t-sm)' }}>$0</span>
+                </div>
+                <p className="i2-legal-hint" style={{ marginBottom: 'var(--s3)' }}>
+                  Tu proyección anual aún no supera el umbral de ~{fmt(UMBRAL_DECLARANTE_COP)} (1.400 UVT). No estás obligado a declarar renta por ahora.
+                </p>
+                <button
+                  onClick={() => navigate('C1')}
+                  style={{
+                    fontSize: 'var(--t-xs)', fontWeight: 700, fontFamily: 'var(--font-body)',
+                    color: 'var(--txt-m)', background: 'none', border: 'none',
+                    cursor: 'pointer', padding: 0, textDecoration: 'underline',
+                  }}
+                >
+                  Soy declarante voluntario → activar en perfil
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Total row — DS: volt-dim background, volt-text */}

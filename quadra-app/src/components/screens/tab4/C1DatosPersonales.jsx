@@ -12,6 +12,7 @@ export default function C1DatosPersonales() {
     retencion: profile.retencion ?? 11,
     pila: profile.pila || 'auto',
     document: profile.document || '',
+    es_declarante: profile.es_declarante ?? false,
   })
 
   const handleSave = () => {
@@ -27,6 +28,7 @@ export default function C1DatosPersonales() {
       retencion: profile.retencion ?? 11,
       pila: profile.pila || 'auto',
       document: profile.document || '',
+      es_declarante: profile.es_declarante ?? false,
     })
     setIsEditing(false)
   }
@@ -36,6 +38,7 @@ export default function C1DatosPersonales() {
     { label: 'Régimen', value: { simple: 'Régimen Simple', ordinario: 'Régimen Ordinario', unclear: 'Sin definir' }[profile.regimen] || 'Régimen Ordinario' },
     { label: 'Retención habitual', value: `${profile.retencion ?? 11}%` },
     { label: 'PILA', value: { auto: 'Automático 12.5%', manual: 'Manual', no: 'No aplica' }[profile.pila] || 'Automático 12.5%' },
+    { label: 'Declarante de renta', value: profile.es_declarante ? 'Sí (reserva activa)' : 'No (por umbral automático)' },
     { label: 'Email', value: session?.user?.email || 'Pendiente por conectar' },
     { label: 'NIT / Cédula', value: profile.document || 'Pendiente por completar' },
   ]
@@ -107,6 +110,30 @@ export default function C1DatosPersonales() {
             <div>
               <label style={labelStyle}>NIT / Cédula</label>
               <input className="q-input" value={form.document} onChange={e => setForm(f => ({ ...f, document: e.target.value }))} placeholder="Tu NIT o número de cédula" />
+            </div>
+            <div
+              style={{
+                display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between',
+                gap: 'var(--s4)', padding: 'var(--s4)', border: '1px solid var(--border)',
+                borderRadius: 'var(--r-lg)', background: 'var(--bg-subtle)',
+              }}
+            >
+              <div style={{ flex: 1 }}>
+                <div style={{ ...labelStyle, marginBottom: 2 }}>Soy declarante de renta</div>
+                <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--t-xs)', color: 'var(--txt-m)', lineHeight: 1.5, margin: 0 }}>
+                  Activa esto si sabes que tus ingresos superarán ~$73.3M este año (1.400 UVT). Quadra reservará un porcentaje desde el primer peso.
+                </p>
+              </div>
+              <button
+                type="button"
+                role="switch"
+                aria-checked={form.es_declarante}
+                onClick={() => setForm(f => ({ ...f, es_declarante: !f.es_declarante }))}
+                className={`q-switch${form.es_declarante ? ' on' : ''}`}
+                style={{ flexShrink: 0, marginTop: 2 }}
+              >
+                <span className="q-switch-thumb" />
+              </button>
             </div>
           </div>
         ) : (

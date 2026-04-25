@@ -291,6 +291,13 @@ export default function App() {
   }, [authReady, session, currentScreen, navigateRoot])
 
   useEffect(() => {
+    // Demo / screenshot mode: if a mock session was rehydrated from localStorage,
+    // skip Supabase auth entirely so the app stays on the injected screen.
+    if (session?.mock) {
+      setAuthReady(true)
+      return
+    }
+
     supabase.auth
       .getSession()
       .then(({ data: { session } }) => {
@@ -307,7 +314,7 @@ export default function App() {
     })
 
     return () => subscription.unsubscribe()
-  }, [setSession])
+  }, [setSession]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const Screen = SCREENS[currentScreen] || D1Home
 

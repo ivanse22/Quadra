@@ -41,7 +41,10 @@ export function calcularPago(pagoBruto, moneda, tasaCambio, profile, kpis) {
   const pago_cop = moneda === 'COP' ? pagoBruto : Math.round(pagoBruto * tasaCambio);
 
   if (pago_cop === 0) {
-    return { pago_cop: 0, retencion: 0, pila: 0, reserva: 0, disponible: 0, warnings: [] };
+    return {
+      pago_cop: 0, retencion: 0, pila: 0, reserva: 0, disponible: 0, warnings: [],
+      pilaDetalle: null, retencionDetalle: null,
+    };
   }
 
   const acumulado_año  = kpis?.ytd              || 0;
@@ -61,6 +64,8 @@ export function calcularPago(pagoBruto, moneda, tasaCambio, profile, kpis) {
   let pila      = 0;
   let reserva   = 0;
   const warnings = [];
+  /** Aportes mensuales sobre IBC; lo reservado en *este* pago es el delta. */
+  let pilaDetalle = null;
 
   // ── 2. RETENCIÓN EN LA FUENTE ───────────────────────────────────────────────
   if (regimen === 'simple') {
@@ -111,6 +116,16 @@ export function calcularPago(pagoBruto, moneda, tasaCambio, profile, kpis) {
 
     // Solo reservar el delta que falta (lo ya reservado en pagos anteriores del mes no se vuelve a cobrar)
     pila = Math.max(pilaObligacionMensual - pilaReservadaMes, 0);
+
+    pilaDetalle = {
+      ibc: ibcMensual,
+      salud,
+      pension,
+      arl,
+      obligacionMensual: pilaObligacionMensual,
+      yaReservadoMes: pilaReservadaMes,
+      reservadoEstePago: pila,
+    }
 
     if (pila > pago_cop * 0.5) {
       warnings.push({
@@ -172,6 +187,10 @@ export function calcularPago(pagoBruto, moneda, tasaCambio, profile, kpis) {
   // Truncado a 0 si las deducciones superan el pago (edge case pagos pequeños).
   const disponible = Math.max(pago_cop - retencion - pila - reserva, 0);
 
+  const retencionDetalle = retencion > 0
+    ? { tasaSobreBrutoPct: Math.round((retencion / pago_cop) * 1000) / 10 }
+    : null
+
   return {
     pago_cop,
     retencion,
@@ -180,5 +199,7 @@ export function calcularPago(pagoBruto, moneda, tasaCambio, profile, kpis) {
     disponible,
     proyeccion_anual: Math.round(proyeccion_anual),
     warnings,
+    pilaDetalle,
+    retencionDetalle,
   };
 }

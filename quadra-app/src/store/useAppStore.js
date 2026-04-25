@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 import { supabase } from '../lib/supabase'
+import { formatDateLabel, normalizePaymentDates } from '../lib/dateUtils'
 
 const TABS = ['D1', 'I1', 'A1', 'C1']
 const MONTH_LABELS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
@@ -77,6 +78,7 @@ export const useAppStore = create(
       currentScreen: 'O1',
       screenHistory: [],
       activeTab: 0,
+      selectedAnnualMonth: null,
 
       navigate: (screenId) => {
         const current = get().currentScreen
@@ -107,6 +109,8 @@ export const useAppStore = create(
           screenHistory: [],
         })
       },
+
+      setSelectedAnnualMonth: (monthIndex) => set({ selectedAnnualMonth: monthIndex }),
 
       // ── Auth ──────────────────────────────────────────────────
       session: null,
@@ -164,9 +168,10 @@ export const useAppStore = create(
       monthlyData: computeMonthlyData([]),
 
       addPayment: (payment) => {
+        const normalizedPayment = normalizePaymentDates(payment)
         // 1. Update local state immediately (keep UI snappy)
         set(state => {
-          const next = [payment, ...state.payments]
+          const next = [normalizedPayment, ...state.payments]
           return {
             payments:    next,
             kpis:        computeKpis(next),
@@ -178,20 +183,20 @@ export const useAppStore = create(
         const { session } = get()
         if (session && !session.mock && session.user?.id) {
           supabase.from('payments').insert({
-            id:              payment.id,
+            id:              normalizedPayment.id,
             user_id:         session.user.id,
-            client:          payment.client,
-            method:          payment.method,
-            currency:        payment.currency,
-            original_amount: payment.originalAmount ?? null,
-            gross:           payment.gross,
-            retencion:       payment.retencion,
-            pila:            payment.pila,
-            reserva:         payment.reserva,
-            disponible:      payment.disponible,
-            date:            payment.date,
-            date_label:      payment.dateLabel,
-            type:            payment.type || 'income',
+            client:          normalizedPayment.client,
+            method:          normalizedPayment.method,
+            currency:        normalizedPayment.currency,
+            original_amount: normalizedPayment.originalAmount ?? null,
+            gross:           normalizedPayment.gross,
+            retencion:       normalizedPayment.retencion,
+            pila:            normalizedPayment.pila,
+            reserva:         normalizedPayment.reserva,
+            disponible:      normalizedPayment.disponible,
+            date:            normalizedPayment.date,
+            date_label:      normalizedPayment.dateLabel,
+            type:            normalizedPayment.type || 'income',
           }).then(({ error }) => {
             if (error) console.error('[Quadra] Supabase insert payment:', error.message)
           })
@@ -223,7 +228,7 @@ export const useAppStore = create(
           retencion:  0,
           disponible: -amount,
           date:       new Date().toISOString().split('T')[0],
-          dateLabel:  'Hoy',
+          dateLabel:  formatDateLabel(new Date().toISOString().split('T')[0]),
           periodLabel: period,
         }
 
@@ -301,7 +306,7 @@ export const useAppStore = create(
         }
 
         if (rows && rows.length > 0) {
-          const payments = rows.map(p => ({
+          const payments = rows.map(p => normalizePaymentDates({
             id:             p.id,
             client:         p.client,
             method:         p.method,
@@ -331,6 +336,7 @@ export const useAppStore = create(
           payments:    empty,
           kpis:        computeKpis(empty),
           monthlyData: computeMonthlyData(empty),
+          selectedAnnualMonth: null,
         })
       },
 
@@ -360,6 +366,27 @@ export const useAppStore = create(
         alerts: { ...state.alerts, [key]: !state.alerts[key] },
       })),
 
+      // ── Notifications (in-app, computed client-side) ──────────────
+      notifications: [],
+      notifDrawerOpen: false,
+      addNotification: (n) => set(state => ({
+        notifications: state.notifications.find(x => x.id === n.id)
+          ? state.notifications
+          : [...state.notifications, n],
+      })),
+      syncNotifications: (newNotifs) => set(state => ({
+        // Replace array but preserve read state for existing items
+        notifications: newNotifs.map(n => ({
+          ...n,
+          read: state.notifications.find(x => x.id === n.id)?.read ?? false,
+        })),
+      })),
+      markAllRead: () => set(state => ({
+        notifications: state.notifications.map(n => ({ ...n, read: true })),
+      })),
+      clearNotifications: () => set({ notifications: [] }),
+      setNotifDrawerOpen: (v) => set({ notifDrawerOpen: v }),
+
       // ── Dev ───────────────────────────────────────────────────────
       resetStore: () => {
         const empty = []
@@ -370,6 +397,7 @@ export const useAppStore = create(
           monthlyData:  computeMonthlyData(empty),
           currentScreen: 'O1',
           screenHistory: [],
+          selectedAnnualMonth: null,
         })
       },
     }),
@@ -384,6 +412,7 @@ export const useAppStore = create(
         currentScreen: state.currentScreen,
         screenHistory: state.screenHistory,
         activeTab:     state.activeTab,
+        selectedAnnualMonth: state.selectedAnnualMonth,
         // monthlyData is recomputed on rehydration via onRehydrateStorage
       }),
       onRehydrateStorage: () => (state) => {

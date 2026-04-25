@@ -1,10 +1,10 @@
 import { useAppStore } from '../../../store/useAppStore'
-import { IconTrendingUp } from '../../ui/Icons'
+import { IconCalendar, IconTrendingUp } from '../../ui/Icons'
 
 const MONTH_LABELS_SHORT = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
 
 export default function A1Anual() {
-  const { monthlyData, kpis, navigate } = useAppStore()
+  const { monthlyData, kpis, navigate, setSelectedAnnualMonth } = useAppStore()
   const max = Math.max(...monthlyData.map(m => m.amount), 1)
   const fmt = n => n >= 1000000 ? `$${(n/1000000).toFixed(1)}M` : n >= 1000 ? `$${(n/1000).toFixed(0)}k` : '$0'
   const fmtFull = n => '$' + Math.round(n).toLocaleString('es-CO')
@@ -39,17 +39,7 @@ export default function A1Anual() {
       {/* Annual KPI */}
       <div className="hero-card mb5">
         <div className="hero-eye">Ingresos {currentYear}</div>
-        <div
-          className="hero-amount"
-          style={{
-            fontSize: 'var(--t-hero)',
-            fontWeight: 900,
-            lineHeight: 0.92,
-            letterSpacing: '-0.05em',
-            color: 'var(--volt-text)',
-            fontVariantNumeric: 'tabular-nums',
-          }}
-        >
+        <div className="hero-amount hero-amount--lg">
           {ytd > 0 ? fmtFull(ytd) : '$0'}
         </div>
         <div className="hero-sub" style={{ fontSize: 'var(--t-md)', marginTop: 'var(--s2)' }}>{rangoLabel}</div>
@@ -74,11 +64,21 @@ export default function A1Anual() {
         </span>
       </button>
 
+      <button className="year-projection-cta mb5" onClick={() => navigate('A8')}>
+        <div className="year-projection-cta-copy">
+          <span className="year-projection-cta-title">Ver calendario</span>
+          <span className="year-projection-cta-sub">Visualiza pagos, PILA y fechas clave en una vista mensual mas clara.</span>
+        </div>
+        <span className="year-projection-cta-action" aria-hidden="true">
+          <IconCalendar />
+        </span>
+      </button>
+
       {/* Bar chart — redesigned card */}
       <div className="card mb5 year-chart-card">
         <div className="year-chart-head">
           <div className="card-title">Ingresos brutos por mes</div>
-          <div className="year-chart-sub">Comparativo 2026</div>
+          <div className="year-chart-sub">Comparativo {currentYear}</div>
         </div>
         <div className="year-chart-scroll">
           <div className="bar-chart">
@@ -90,7 +90,11 @@ export default function A1Anual() {
                 <button
                   key={i}
                   className={`bar-col${isActive ? ' is-active' : ''}${isProjEmpty ? ' is-projected' : ''}`}
-                  onClick={() => !m.projected && navigate('A2')}
+                  onClick={() => {
+                    if (m.projected) return
+                    setSelectedAnnualMonth(i)
+                    navigate('A2')
+                  }}
                   disabled={m.projected}
                   aria-label={`${m.month}: ${m.amount > 0 ? fmt(m.amount) : 'Proyectado'}`}
                 >
@@ -111,7 +115,7 @@ export default function A1Anual() {
         </div>
       </div>
 
-      <button className="btn btn-secondary btn-full" onClick={() => navigate('A3')}>Ver total ganado</button>
+      <button className="btn btn-secondary btn-full" onClick={() => navigate('A3')}>Ver resumen anual</button>
     </div>
   )
 }

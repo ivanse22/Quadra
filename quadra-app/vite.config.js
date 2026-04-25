@@ -3,6 +3,10 @@ import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  server: {
+    // Permite abrir el dev server desde el móvil en la misma red (http://<tu-ip-lan>:5173)
+    host: true,
+  },
   plugins: [
     react(),
     VitePWA({

@@ -55,7 +55,7 @@ export default function AmountField({ onChange, showCalculatingHint = false }) {
   return (
     <div>
       {/* Currency pill */}
-      <button className="amount-currency-pill">
+      <div className="amount-currency-pill" aria-label="Moneda base COP">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/>
         </svg>
@@ -63,13 +63,14 @@ export default function AmountField({ onChange, showCalculatingHint = false }) {
         <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
           <polyline points="6,9 12,15 18,9"/>
         </svg>
-      </button>
+      </div>
 
       {/* Big number */}
-      <div 
+      <button
+        type="button"
         className="amount-input-wrap"
         onClick={() => setShowNumpad(true)}
-        style={{ cursor: 'pointer' }}
+        style={{ cursor: 'pointer', width: '100%' }}
       >
         <span className="amount-prefix">$</span>
         <div
@@ -99,7 +100,7 @@ export default function AmountField({ onChange, showCalculatingHint = false }) {
             </span>
           )}
         </div>
-      </div>
+      </button>
 
       <div className={`amount-divider${raw ? ' focused' : ''}`} />
 
@@ -116,21 +117,14 @@ export default function AmountField({ onChange, showCalculatingHint = false }) {
       {showNumpad && (
         <div style={{ marginTop: 'var(--s4)', animation: 'slideInUp var(--motion-fast) var(--ease-out)' }}>
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 'var(--s3)' }}>
-            <span 
+            <button
+              type="button"
+              className="amount-done-btn"
               onClick={() => setShowNumpad(false)}
-              style={{
-                fontFamily: 'var(--font-body)', fontSize: 'var(--t-sm)', fontWeight: 600,
-                color: 'var(--txt-2)', cursor: 'pointer', padding: '6px 14px',
-                background: 'var(--surf-2)', borderRadius: 'var(--r-full)',
-                display: 'inline-flex', alignItems: 'center', gap: 6,
-                transition: 'all var(--motion-fast)'
-              }}
-              onMouseEnter={e => e.currentTarget.style.color = 'var(--txt)'}
-              onMouseLeave={e => e.currentTarget.style.color = 'var(--txt-2)'}
             >
               Listo
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>
-            </span>
+            </button>
           </div>
           <div className="numpad">
             {['1','2','3','4','5','6','7','8','9'].map(k => (

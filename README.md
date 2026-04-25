@@ -1,65 +1,130 @@
-# Quadra — Fintech PWA ⚡️
+# Quadra — Fintech PWA para Freelancers 🇨🇴
 
-Un ecosistema financiero responsivo y progresivo (PWA) construido bajo el sólido **Design System v7** de Quadra. Orientado a ofrecer una experiencia premium sin fricciones para trabajadores independientes (freelancers, creadores) optimizando retenciones (PILAs y Rentas).
+PWA de gestión financiera para trabajadores independientes colombianos. Calcula en tiempo real el disponible real tras descontar PILA (salud + pensión), retención en la fuente y reserva para declaración de renta.
 
-## 🚀 Estado Actual de la Aplicación
-
-La aplicación web progresiva (`quadra-app/`) implementa 100% el **DS v7** en un entorno modular de React + Vite. Se han estructurado fluidamente todas las vistas core.
-
-### 📱 Flujos y Pantallas Implementados
-
-#### 1. Onboarding & Autenticación
-- **O1 - Welcome**: Headline cinemático responsive y CTAs claros.
-- **O2 a O4 - Cuestionario (Régimen, Retención, PILA)**: Flujo wizard con barra de progreso superior animada y etiquetas de estado (ej: "¡Último!").
-- **Auth**: Formularios refactorizados utilizando puro CSS Semántico (`.q-input`, `.field`) para login y registro unificado.
-
-#### 2. Tab 1: Mi Dinero (Home - D1)
-El corazón jerárquico de Quadra:
-- **Hero "Disponible hoy"**: Implementación de tipografía dinámica responsiva (`clamp(3.5rem, 14vw, 5rem)`) con la marca personal de Quadra, garantizando impacto visual total en móvil y desktop.
-- **KPI Cards**: Jerarquías visuales controladas clases semánticas `.kpi-lbl` y `.kpi-val` para YTD y Reservas.
-- **Alerta PILA (Task-row)**: Card rediseñada tipo "tarea financiera" con botón sólido y claro para incentivar el pago sin saturar de colores de alerta ruidosos.
-- **Floating Action Button (FAB)**: Introducido globalmente en D1 y Tab 2 con un `fab-pulse` (anillo expansivo al cargar) que guía de forma instintiva al usuario hacia la acción principal: "*Registrar un nuevo ingreso*".
-
-#### 3. Tab 2: Entradas (Movimientos - I1 e I2)
-- Flujo interactivo para listar ingresos clasificados.
-- **AmountField Inteligente (Nuevo Pago)**: Input central de valores que imita calculadoras premium.
-  - _Tipografía Fluida_: El número decrece en tamaño suavemente mientras más cifras escribes.
-  - _Teclado Táctil bajo demanda_: El `numpad` viene oculto por default para no estorbar; se despliega con fluidas animaciones al tocar la zona numérica y se oculta presionando "Listo".
-  - _Soporte Desktop Nativo_: Soporte activo al NumPad y teclas físicas del computador para ingresos rápidos mientras se discrimina la entrada a inputs de texto del sistema (e.g. campo "cliente").
-
-#### 4. Tabs adicionales
-- **Tab 3: Perfil / Datos (C1)**: Manejo de datos y logouts respetando `.btn--destructive` del DS v7.
-- Sistema de **Bottom Navigation** responsivo (con tokens interactivos `hover`, `active pill` y pulsaciones escala `0.93`).
+**Stack:** React 19 + Vite · Zustand · Supabase · CSS puro (sin Tailwind)
 
 ---
 
-## 🎨 Design System (DS v7)
+## 🚀 Levantar localmente
 
-La fuente de verdad se encuentra mapeada en `quadra-app/src/styles/`:
-- `tokens.css`: Raíz absoluta de pesos tipográficos, tokens semánticos financieros (`--fin-income`, `--fin-reserve`), colores neutros ajustados por contraste AA/AAA (ej. `--txt-m: #556357`) y dinámicas de superficie (`surf-1`). Modo Oscuro automatizado incluido.
-- `components.css`: Patrones de diseño reutilizables (`.btn`, `.q-input`, `numpad`, `.badge`, `fab-pulse`).
-- **Accesibilidad**: Todos los íconos de navegación incluyen sus roles (`role="img"`) y sus resoluciones ARIA (`aria-label`) optimizando la app para Screen Readers.
-
----
-
-## 🛠 Entorno de Desarrollo y Despliegue
-
-### Requisitos Prerequisitos
-- Node.js versión `18.x` o posterior.
-
-### Instrucciones para levantar la App localmente
 ```bash
-# Ingresar al directorio de la app nativa
 cd quadra-app
-
-# Instalar las dependencias
 npm install
-
-# Correr el entorno local de Vite (con --host para visualizar en móvil)
-npm run dev --host
+npm run dev          # http://localhost:5173
+npm run dev -- --host  # + acceso desde móvil en la misma red
 ```
 
-## 📦 Próximos pasos identificados
-- Conectar Supabase (Base de datos remota) y sincronizar el App context (Estado global).
-- Refinamiento offline-first (Service Workers para modo sin internet).
-- Lógicas reales de cálculo (disponible hoy = ingresos - reservas de salud/pensión/renta).
+---
+
+## 📱 Pantallas implementadas
+
+### Onboarding & Auth (`O1–O5`, `B1–B2`)
+- Bienvenida cinemática con animaciones spring
+- Wizard de perfil fiscal: régimen tributario, retención habitual, cotización PILA
+- Registro / login con Supabase Auth (email + magic link)
+- Recuperación de contraseña
+- Resumen de configuración con opción de conectar cuenta bancaria al terminar
+
+### Tab 1 — Mi Dinero (`D1–D4`)
+- **D1 Home**: Hero "Lo que es tuyo hoy" tocable (abre desglose), KPI cards con tendencia mes vs. mes anterior y barra de progreso vs. meta anual, desglose Renta + PILA en card Reservado, insights contextuales (mejor mes, disponible bajo, PILA vencida)
+- **D2 Entender**: Explicación del cálculo de descuentos con CTAs forward
+- **D3 Pagar PILA**: Calcula IBC automático, registra pago, historial en I5
+- **D4 Reserva**: Progreso visual hacia la meta de declaración de renta
+
+### Tab 2 — Mis Ingresos (`I1–I5`)
+- **I1**: Lista con swipe-hint, banner orientador hacia D1
+- **I2 Registro**: AmountField con teclado numérico táctil, preview en vivo del disponible exacto, autocomplete de cliente desde historial, soporte COP/USD/EUR
+- **I2R Resultado**: Ficha de disponible con desglose completo post-cálculo
+- **I3 Detalle**: Timeline del pago con todos los importes
+- **I4 Total ganado**: KPIs YTD, mejor mes, promedio
+- **I5 Historial PILA**: Lista de pagos de seguridad social con estado
+
+### Tab 3 — Mi Año (`A1–A8`)
+- **A1 Anual**: Gráfico de barras mensual, proyección, acceso a herramientas
+- **A2 Mensual**: Detalle por mes
+- **A3 Resumen**: Totales anuales
+- **A4/A5 Reserva**: Saldo y proyección hacia meta de renta
+- **A6 Proyectar**: Chips de preset ($2M/$4M/$6M/$10M), barra visual apilada (PILA/Ret./Reserva/Disponible), contexto vs. promedio real, guardar como meta anual
+- **A7 Exportar**: Descarga CSV real con BOM UTF-8 (Excel compatible); PDF marcado como Premium
+- **A8 Calendario**: Fechas clave DIAN y recordatorios
+
+### Tab 4 — Mi Cuenta (`C1–C4`)
+- **C1 Datos personales**: Edición inline de nombre, régimen, retención, PILA, NIT; toggle dark/light mode; cerrar sesión
+- **C2 Alertas**: Toggles de notificaciones con canal in-app / push (si PWA instalada)
+- **C3 Cuentas conectadas**: Vista de plataformas vinculadas
+- **C4 Agregar cuenta**: Bancolombia, Davivienda, BBVA, Nequi, Daviplata, Wise, PayPal; lista de espera por email para plataformas no soportadas
+
+---
+
+## 🔔 Sistema de notificaciones in-app
+
+Motor de alertas cliente-side que evalúa condiciones en cada cambio de pagos y sincroniza un array de notificaciones en el store (sin backend):
+
+| Condición | Alerta |
+|-----------|--------|
+| Sin PILA > 25 días | "PILA pendiente" → D3 |
+| Reserva < 40% en mayo+ | "Reserva para renta baja" → D4 |
+| Es viernes con pagos esta semana | "Resumen semanal" → I1 |
+| Fecha límite DIAN próxima (≤ 15 días) | "Vencimiento DIAN" → A8 |
+
+El bell del header muestra un badge numérico (no solo un punto). Al hacer tap abre un drawer bottom-sheet con las notificaciones accionables. Los toggles de C2 controlan qué reglas se evalúan.
+
+---
+
+## 🧮 Motor financiero (`calculadoraFinanciera.js`)
+
+Calcula por cada pago registrado:
+- **Retención en la fuente**: según porcentaje del perfil del usuario
+- **PILA**: 12,5% salud + 16% pensión + ARL sobre IBC del mes (acumulativo), respetando mínimos legales
+- **Reserva para renta**: 14,5% del bruto
+- **Disponible real**: bruto − retención − PILA − reserva
+
+Soporta múltiples monedas (COP, USD, EUR) con tasas de cambio configurables.
+
+---
+
+## 🎨 Design System
+
+Tokens en `src/styles/tokens.css`:
+- Tipografía: `--font-display` (Syne) + `--font-body` (DM Sans)
+- Colores financieros semánticos: `--fin-income`, `--fin-reserve`, `--fin-deduct`
+- Volt brand color: `--volt` / `--volt-dim` / `--volt-text`
+- Modo oscuro automático via `data-theme`
+
+Componentes en `src/styles/components.css`: `.btn`, `.q-input`, `.card`, `.tx-row`, `.home-kpi-card`, `.fab-pulse`, `.badge`, `.toast`, `.dialog`, `.q-empty`, `.q-toggle`, y más.
+
+---
+
+## 🗄 Supabase
+
+- Auth: email + magic link
+- Tabla `profiles`: régimen, retención, PILA, NIT, metaAnual
+- Tabla `payments`: historial de pagos sincronizado por `user.id`
+- Mock session disponible para demo sin cuenta
+
+---
+
+## 📁 Estructura
+
+```
+quadra-app/src/
+├── App.jsx                    # Routing, FAB, notificaciones hook
+├── store/useAppStore.js       # Zustand (payments, kpis, profile, alerts, notifications)
+├── lib/
+│   ├── calculadoraFinanciera.js
+│   ├── dateUtils.js
+│   └── notifications.js       # computeNotifications()
+├── components/
+│   ├── layout/               # Header, BottomNav
+│   ├── ui/                   # Toast, Dialog, NotificationDrawer, AmountField
+│   └── screens/
+│       ├── onboarding/       # O1–O5, B1–B2
+│       ├── tab1/             # D1–D4
+│       ├── tab2/             # I1–I5
+│       ├── tab3/             # A1–A8
+│       └── tab4/             # C1–C4
+└── styles/
+    ├── tokens.css
+    └── components.css
+```

@@ -35,7 +35,7 @@ function ToastItem({ toast, onDismiss }) {
       </div>
       <span className="toast-text">{toast.message}</span>
       {toast.action && (
-        <span className="toast-action" onClick={toast.action.fn}>{toast.action.label}</span>
+        <button type="button" className="toast-action" onClick={toast.action.fn}>{toast.action.label}</button>
       )}
       <button className="toast-dismiss" onClick={onDismiss} aria-label="Cerrar">
         <IconX />

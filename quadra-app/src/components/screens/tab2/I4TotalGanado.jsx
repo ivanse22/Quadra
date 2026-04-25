@@ -1,13 +1,21 @@
 import { useAppStore } from '../../../store/useAppStore'
+import { toSafeDate } from '../../../lib/dateUtils'
 
 export default function I4TotalGanado() {
-  const { navigate, kpis } = useAppStore()
+  const { navigate, payments } = useAppStore()
+  const currentYear = new Date().getFullYear()
   const fmt = n => '$' + n.toLocaleString('es-CO')
-  const totalReservado = (kpis?.reservadoRenta || 0) + (kpis?.reservadoPila || 0)
+  const currentYearPayments = payments.filter((payment) => {
+    const date = toSafeDate(payment.date)
+    return date && date.getFullYear() === currentYear && payment.type !== 'renta' && payment.type !== 'pila'
+  })
+  const disponibleAcumulado = currentYearPayments.reduce((sum, payment) => sum + (payment.disponible || 0), 0)
+  const brutoAnual = currentYearPayments.reduce((sum, payment) => sum + (payment.gross || 0), 0)
+  const totalReservado = currentYearPayments.reduce((sum, payment) => sum + (payment.pila || 0) + (payment.reserva || 0) + (payment.retencion || 0), 0)
   const kpiRows = [
-    { label: 'Disponible real hoy', val: fmt(kpis?.disponibleHoy || 0), color: 'var(--volt-text)' },
-    { label: 'Total YTD 2026', val: fmt(kpis?.ytd || 0), color: 'var(--txt)' },
-    { label: 'Reservado Total', val: fmt(totalReservado), color: 'var(--fin-reserve)' },
+    { label: 'Disponible acumulado', val: fmt(disponibleAcumulado || 0), color: 'var(--volt-text)' },
+    { label: `Bruto YTD ${currentYear}`, val: fmt(brutoAnual || 0), color: 'var(--txt)' },
+    { label: 'Separado en obligaciones', val: fmt(totalReservado), color: 'var(--fin-reserve)' },
   ]
   return (
     <div className="q-body-inner">
@@ -20,7 +28,7 @@ export default function I4TotalGanado() {
         ))}
       </div>
       {/* CL-03 reverse link */}
-      <button className="btn btn-secondary btn-full" onClick={() => navigate('A3')}>Ver resumen anual</button>
+      <button className="btn btn-secondary btn-full" onClick={() => navigate('A3')}>Volver al resumen anual</button>
     </div>
   )
 }

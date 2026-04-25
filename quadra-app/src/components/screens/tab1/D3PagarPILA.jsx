@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { useAppStore } from '../../../store/useAppStore'
 import { IconCalendar, IconCheck } from '../../ui/Icons'
 
@@ -20,6 +20,7 @@ export default function D3PagarPILA() {
   const { navigate, showToast, payPila, kpis } = useAppStore()
   const [paid, setPaid] = useState(false)
   const [periodValue, setPeriodValue] = useState(() => toMonthInputValue(new Date()))
+  const monthInputRef = useRef(null)
   const isAllClear = (kpis?.reservadoPila || 0) <= 0
 
   const handlePay = () => {
@@ -32,19 +33,40 @@ export default function D3PagarPILA() {
     showToast({ type: 'success', message: 'Pago PILA registrado correctamente' })
   }
 
+  const openMonthPicker = () => {
+    const input = monthInputRef.current
+    if (!input) return
+    if (typeof input.showPicker === 'function') {
+      input.showPicker()
+      return
+    }
+    input.focus()
+    input.click()
+  }
+
   const fmt = n => '$' + Math.abs(n).toLocaleString('es-CO')
 
   if (paid || isAllClear) {
+    const periodLabel = formatContributionPeriod(periodValue)
     return (
       <div className="q-body-inner" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', flex: 1, textAlign: 'center', minHeight: 400 }}>
         <div style={{ width: 80, height: 80, borderRadius: '50%', background: 'var(--fin-income-dim)', border: '2px solid var(--fin-income-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'var(--s5)', animation: 'resultPop .4s var(--ease-spring) both' }}>
           <IconCheck />
         </div>
         <h2 style={{ fontSize: 'var(--t-xl)', fontWeight: 900, color: 'var(--txt)', marginBottom: 'var(--s2)', fontFamily: 'var(--font-display)' }}>Estás al día</h2>
-        <p style={{ fontSize: 'var(--t-sm)', color: 'var(--txt-m)', marginBottom: 'var(--s6)', fontFamily: 'var(--font-body)' }}>
+        <p style={{ fontSize: 'var(--t-sm)', color: 'var(--txt-m)', marginBottom: 'var(--s2)', fontFamily: 'var(--font-body)' }}>
           No tienes saldos pendientes por pagar de PILA en este momento.
         </p>
-        <button className="btn btn-ghost" onClick={() => navigate('D1')} style={{ marginTop: 'var(--s2)' }}>Volver al inicio</button>
+        {paid && (
+          <p style={{ fontSize: 'var(--t-xs)', color: 'var(--txt-f)', marginBottom: 'var(--s6)', fontFamily: 'var(--font-body)' }}>
+            Registro guardado · {periodLabel}
+          </p>
+        )}
+        {!paid && <div style={{ marginBottom: 'var(--s6)' }} />}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s2)', width: '100%' }}>
+          <button className="btn btn-secondary btn-full" onClick={() => navigate('I5')}>Ver historial PILA →</button>
+          <button className="btn btn-ghost btn-full" onClick={() => navigate('D1')}>Volver al inicio</button>
+        </div>
       </div>
     )
   }
@@ -69,17 +91,17 @@ export default function D3PagarPILA() {
       </div>
 
       <div className="desglose mb6">
-        <div className="drow">
-          <div className="drow-l"><div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />Salud (12.5% IBC)</div>
-          <div className="drow-v" style={{ color: 'var(--fin-reserve)' }}>{fmt(salud)}</div>
+        <div className="tx-drow">
+          <div className="tx-drow-l" style={{ color: 'var(--txt-2)' }}><div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />Salud (12.5% IBC)</div>
+          <div className="tx-drow-v" style={{ color: 'var(--fin-reserve)' }}>{fmt(salud)}</div>
         </div>
-        <div className="drow">
-          <div className="drow-l"><div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />Pensión (16% IBC)</div>
-          <div className="drow-v" style={{ color: 'var(--fin-reserve)' }}>{fmt(pension)}</div>
+        <div className="tx-drow">
+          <div className="tx-drow-l" style={{ color: 'var(--txt-2)' }}><div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />Pensión (16% IBC)</div>
+          <div className="tx-drow-v" style={{ color: 'var(--fin-reserve)' }}>{fmt(pension)}</div>
         </div>
-        <div className="drow">
-          <div className="drow-l"><div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />ARL Nivel I (0.522% IBC)</div>
-          <div className="drow-v" style={{ color: 'var(--fin-reserve)' }}>{fmt(arl)}</div>
+        <div className="tx-drow">
+          <div className="tx-drow-l" style={{ color: 'var(--txt-2)' }}><div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />ARL Nivel I (0.522% IBC)</div>
+          <div className="tx-drow-v" style={{ color: 'var(--fin-reserve)' }}>{fmt(arl)}</div>
         </div>
         <div className="dtotal">
           <div className="dtotal-l">Total a pagar PILA</div>
@@ -98,19 +120,37 @@ export default function D3PagarPILA() {
 
       <div className="field mb6">
         <label className="field-label">Período de cotización</label>
-        <label className="date-btn" style={{ marginTop: 'var(--s1)' }}>
+        <div
+          className="date-btn"
+          style={{ marginTop: 'var(--s1)' }}
+          onClick={openMonthPicker}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault()
+              openMonthPicker()
+            }
+          }}
+          role="button"
+          tabIndex={0}
+          aria-label="Seleccionar período de cotización"
+        >
           <input
+            ref={monthInputRef}
             className="date-native-input"
             type="month"
             value={periodValue}
             onChange={(e) => setPeriodValue(e.target.value)}
-            aria-label="Seleccionar período de cotización"
+            aria-hidden="true"
+            tabIndex={-1}
           />
           <span className="sel">{formatContributionPeriod(periodValue)}</span>
           <IconCalendar />
-        </label>
+        </div>
       </div>
 
+      <p style={{ fontSize: 'var(--t-xs)', color: 'var(--txt-f)', marginBottom: 'var(--s4)', fontFamily: 'var(--font-body)', lineHeight: 1.5 }}>
+        Este es un registro manual. Cuadra no procesa el pago directamente — debes hacerlo en la plataforma seleccionada.
+      </p>
       <button className="btn btn-primary btn-full" onClick={handlePay}>Registrar pago PILA</button>
     </div>
   )

@@ -24,7 +24,7 @@ export default function D2Entender() {
           <div className="drow-v" style={{ color: 'var(--fin-deduct)' }}>-$200.000</div>
         </div>
         <div className="drow">
-          <div className="drow-l"><div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />Salud y pensión — PILA (12.5%)</div>
+          <div className="drow-l"><div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />PILA (salud 12,5% + pensión 16% + ARL sobre IBC; ejemplo)</div>
           <div className="drow-v" style={{ color: 'var(--fin-reserve)' }}>-$250.000</div>
         </div>
         <div className="drow">
@@ -39,7 +39,7 @@ export default function D2Entender() {
 
       {[
         { title: '¿Qué es la retención en la fuente?', color: 'var(--fin-deduct)', desc: 'Tu cliente descuenta el 11% de tu pago antes de transferirte. No es un gasto tuyo — ya te lo quitaron. Lo declara el cliente ante la DIAN.' },
-        { title: '¿Qué es el PILA?', color: 'var(--fin-reserve)', desc: 'Como independiente debes pagar salud (12.5% del IBC) cada mes. Quadra lo reserva automáticamente por ti para que no te tome por sorpresa.' },
+        { title: '¿Qué es el PILA?', color: 'var(--fin-reserve)', desc: 'En la ley, salud (12,5% del IBC) y pensión (16% del IBC) y ARL se calculan sobre el IBC del mes, no como un solo porcentaje de tu factura. Quadra te muestra el desglose en el detalle del pago. Lo que ves como % del bruto a veces es distinto, porque convierte a la misma factura: es normal.' },
         { title: '¿Qué es la reserva para agosto?', color: 'var(--fin-reserve)', desc: 'Cada año debes presentar declaración de renta. Quadra reserva aproximadamente el 15% de tu disponible para que tengas fondos cuando llegue ese momento.' },
       ].map(item => (
         <div key={item.title} className="card mb4">
@@ -47,6 +47,16 @@ export default function D2Entender() {
           <p style={{ fontSize: 'var(--t-sm)', color: 'var(--txt-2)', lineHeight: 1.65, fontFamily: 'var(--font-body)' }}>{item.desc}</p>
         </div>
       ))}
+
+      {/* ── CTAs forward ── */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s2)', marginTop: 'var(--s4)', paddingTop: 'var(--s6)', borderTop: '1px solid var(--border)' }}>
+        <button className="btn btn-primary btn-full" onClick={() => navigate('I2')}>
+          + Registrar un pago
+        </button>
+        <button className="btn btn-ghost btn-full" onClick={() => navigate('D1')}>
+          Volver al inicio
+        </button>
+      </div>
     </div>
   )
 }

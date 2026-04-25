@@ -1,11 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { useAppStore } from '../../../store/useAppStore'
+import { getPaymentDateLabel, toSafeDate } from '../../../lib/dateUtils'
 
 const MONTH_LABELS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
 const SWIPE_ACTION_WIDTH = 168
 const SWIPE_THRESHOLD = 56
 
 const fmt = (n) => '$' + Math.round(n).toLocaleString('es-CO')
+const fmtCompact = (n) => '$' + new Intl.NumberFormat('es-CO', {
+  notation: 'compact',
+  maximumFractionDigits: 1,
+}).format(Math.abs(n || 0))
 
 function SkeletonList() {
   return (
@@ -58,7 +63,7 @@ function SwipeRow({ payment, isOpen, onOpen, onClose, onDetail, onDelete }) {
   const isIncome = payment.type !== 'pila'
   const amountMain = isIncome ? payment.gross || 0 : payment.pila || 0
   const amountTone = payment.disponible < 0 || !isIncome ? 'var(--fin-reserve)' : 'var(--fin-income)'
-  const metaLabel = isIncome ? `Disponible ${fmt(payment.disponible || 0)}` : 'Afecta tu disponible real'
+  const metaLabel = isIncome ? `Disponible ${fmtCompact(payment.disponible || 0)}` : 'Usa tu saldo disponible'
 
   const onPointerDown = (e) => {
     startXRef.current = e.clientX
@@ -73,6 +78,13 @@ function SwipeRow({ payment, isOpen, onOpen, onClose, onDetail, onDelete }) {
     const base = isOpen ? -SWIPE_ACTION_WIDTH : 0
     const next = Math.max(-SWIPE_ACTION_WIDTH, Math.min(0, base + delta))
     setOffset(next)
+  }
+
+  const cancelDrag = () => {
+    startXRef.current = null
+    dragStartedRef.current = false
+    setDragging(false)
+    setOffset(isOpen ? -SWIPE_ACTION_WIDTH : 0)
   }
 
   const endDrag = (clientX) => {
@@ -111,13 +123,21 @@ function SwipeRow({ payment, isOpen, onOpen, onClose, onDetail, onDelete }) {
       </div>
 
       <div
-        className="tx-row income-row"
+        className="tx-row compact-row movement-row income-row"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={(e) => endDrag(e.clientX)}
-        onPointerCancel={() => endDrag(startXRef.current ?? 0)}
+        onPointerCancel={cancelDrag}
         onPointerLeave={(e) => {
           if (startXRef.current !== null) endDrag(e.clientX)
+        }}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault()
+            onDetail()
+          }
         }}
         style={{
           transform: `translateX(${offset}px)`,
@@ -138,19 +158,19 @@ function SwipeRow({ payment, isOpen, onOpen, onClose, onDetail, onDelete }) {
           )}
         </div>
 
-        <div className="tx-info">
-          <div className="tx-name income-row-name">{payment.client}</div>
-          <div className="tx-sub income-row-sub">
+        <div className="tx-info compact-row-info movement-row-info">
+          <div className="tx-name compact-row-name movement-row-name income-row-name">{payment.client}</div>
+          <div className="tx-sub compact-row-sub movement-row-sub income-row-sub">
             {payment.method}
             {payment.currency !== 'COP' && payment.currency ? ` · ${payment.currency} ${payment.originalAmount?.toLocaleString('es-CO')}` : ''}
           </div>
         </div>
 
-        <div className="income-row-amount">
-          <div className="income-row-amount-main" style={{ color: amountTone }}>
+        <div className="compact-row-amount movement-row-amount income-row-amount">
+          <div className="compact-row-amount-main movement-row-amount-main income-row-amount-main" style={{ color: amountTone }}>
             {isIncome ? '+' : '-'}{fmt(amountMain)}
           </div>
-          <div className="income-row-amount-meta">{metaLabel}</div>
+          <div className="compact-row-amount-meta movement-row-amount-meta income-row-amount-meta">{metaLabel}</div>
         </div>
       </div>
     </div>
@@ -177,7 +197,7 @@ function I1VacioFiltro({ period, onReset }) {
 }
 
 export default function I1Pagos() {
-  const { payments, kpis, navigate, setSelectedPayment, removePayment, showToast } = useAppStore()
+  const { payments, navigate, setSelectedPayment, removePayment, showToast } = useAppStore()
   const [loading, setLoading] = useState(true)
   const [period, setPeriod] = useState('mes')
   const [deleteId, setDeleteId] = useState(null)
@@ -188,15 +208,15 @@ export default function I1Pagos() {
   const currentYear = now.getFullYear()
 
   useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 700)
-    return () => clearTimeout(t)
+    setLoading(false)
   }, [])
 
   if (payments.length === 0) return <I1Vacio />
 
   const filtered = payments.filter((payment) => {
     if (!payment.date) return period === 'todo'
-    const date = new Date(payment.date + 'T12:00:00')
+    const date = toSafeDate(payment.date)
+    if (!date) return period === 'todo'
     if (period === 'mes') return date.getFullYear() === currentYear && date.getMonth() === currentMonth
     if (period === 'anio') return date.getFullYear() === currentYear
     return true
@@ -221,8 +241,13 @@ export default function I1Pagos() {
     period === 'anio' ? `Disponible real ${currentYear}` :
     'Disponible real total'
 
+  const periodTrendLabel =
+    period === 'mes' ? 'este mes' :
+    period === 'anio' ? 'este año' :
+    'visibles'
+
   const grouped = filtered.reduce((acc, payment) => {
-    const key = payment.dateLabel || payment.date || 'Sin fecha'
+    const key = getPaymentDateLabel(payment)
     if (!acc[key]) acc[key] = []
     acc[key].push(payment)
     return acc
@@ -238,6 +263,30 @@ export default function I1Pagos() {
 
   return (
     <div className="q-body-inner income-page" style={{ position: 'relative' }}>
+
+      {/* ── E1.1 Banner orientación: tu disponible está en Mi Dinero ── */}
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+        gap: 'var(--s3)', padding: 'var(--s3) var(--s4)',
+        background: 'var(--volt-dim)', border: '1px solid var(--volt-border)',
+        borderRadius: 'var(--r-lg)', marginBottom: 'var(--s4)',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s2)', flex: 1, minWidth: 0 }}>
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--volt-text)" strokeWidth="2.2" style={{ flexShrink: 0 }}>
+            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <span style={{ fontSize: 'var(--t-xs)', color: 'var(--volt-text)', fontFamily: 'var(--font-body)', lineHeight: 1.4 }}>
+            Tu dinero disponible real está en <strong>Mi Dinero</strong>
+          </span>
+        </div>
+        <button
+          onClick={() => navigate('D1')}
+          style={{ flexShrink: 0, fontSize: 'var(--t-xs)', fontWeight: 700, color: 'var(--volt-text)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: 'var(--font-display)', whiteSpace: 'nowrap' }}
+        >
+          Ver →
+        </button>
+      </div>
+
       {deleteId && (
         <div className="dialog-overlay">
           <div className="dialog">
@@ -266,7 +315,7 @@ export default function I1Pagos() {
               <div>
                 <div className="income-summary-eyebrow">{periodEyebrow}</div>
                 <div className="income-summary-amount">{fmt(filteredBruto)}</div>
-                <div className="income-summary-sub">{periodLabel} · Ingreso bruto visible</div>
+                <div className="income-summary-sub">{periodLabel} · Ingreso bruto registrado</div>
               </div>
 
               <div className="income-summary-side">
@@ -274,7 +323,7 @@ export default function I1Pagos() {
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <path d="M18 15l-6-6-6 6" />
                   </svg>
-                  +{fmt(kpis?.ytd || 0)} YTD
+                  +{fmt(filteredBruto)} {periodTrendLabel}
                 </span>
                 <button className="btn btn-ghost btn-sm income-summary-link" onClick={() => navigate('I4')}>
                   Ver KPIs →

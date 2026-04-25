@@ -1,38 +1,35 @@
-import { useState, useMemo } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { useAppStore } from '../../../store/useAppStore'
 import { calcularPago } from '../../../lib/calculadoraFinanciera'
+import { formatDateButtonLabel, formatDateLabel, toDateInputValue } from '../../../lib/dateUtils'
 import AmountField from '../../ui/AmountField'
 import { IconCalendar, IconCheck } from '../../ui/Icons'
 
-const DAYS = ['Dom', 'Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab']
-const MONTHS = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
-
-const toDateInputValue = (date) => {
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  return `${year}-${month}-${day}`
-}
-
-const formatDateLabel = (value) => {
-  const [year, month, day] = value.split('-').map(Number)
-  const date = new Date(year, month - 1, day)
-  return `${DAYS[date.getDay()]} ${day} ${MONTHS[month - 1]} ${year}`
-}
-
-const formatDateButtonLabel = (value) => {
-  const todayValue = toDateInputValue(new Date())
-  return value === todayValue ? `Hoy — ${formatDateLabel(value)}` : formatDateLabel(value)
-}
-
 export default function I2Registro() {
-  const { navigate, addPayment, showToast, profile, kpis } = useAppStore()
+  const { navigate, addPayment, showToast, profile, kpis, payments } = useAppStore()
   const [amount, setAmount] = useState(0)
-  const [client, setClient] = useState('Agencia Creativa SAS')
+  const [client, setClient] = useState('')
+  const [showSuggestions, setShowSuggestions] = useState(false)
   const [currency, setCurrency] = useState('COP')
   const [paymentDate, setPaymentDate] = useState(() => toDateInputValue(new Date()))
   const [showDialog, setShowDialog] = useState(false)
   const [btnState, setBtnState] = useState('default') // default | loading | success
+  const dateInputRef = useRef(null)
+
+  // E5.2 — Client autocomplete
+  const uniqueClients = useMemo(() => {
+    const seen = new Set()
+    return payments
+      .filter(p => p.type !== 'pila' && p.client)
+      .map(p => p.client)
+      .filter(c => { if (seen.has(c)) return false; seen.add(c); return true })
+      .slice(0, 5)
+  }, [payments])
+
+  const suggestions = useMemo(() => {
+    if (!client.trim()) return uniqueClients
+    return uniqueClients.filter(c => c.toLowerCase().includes(client.toLowerCase()) && c !== client)
+  }, [client, uniqueClients])
 
   // Tasas de cambio mockeadas estáticas
   const tasasCambio = { COP: 1, USD: 4000, EUR: 4560 }
@@ -45,6 +42,17 @@ export default function I2Registro() {
   const handleConfirm = () => {
     if (!amount) return
     setShowDialog(true)
+  }
+
+  const openDatePicker = () => {
+    const input = dateInputRef.current
+    if (!input) return
+    if (typeof input.showPicker === 'function') {
+      input.showPicker()
+      return
+    }
+    input.focus()
+    input.click()
   }
 
   const executeConfirm = () => {
@@ -65,6 +73,8 @@ export default function I2Registro() {
         disponible: calc.disponible,
         date: paymentDate,
         dateLabel: formatDateLabel(paymentDate),
+        pilaDetalle: calc.pilaDetalle,
+        retencionDetalle: calc.retencionDetalle,
       })
       showToast({ type: 'success', message: 'Pago guardado correctamente' })
       setTimeout(() => navigate('I2R'), 400)
@@ -115,26 +125,76 @@ export default function I2Registro() {
           </div>
 
           {/* Client */}
-          <div className="field">
+          <div className="field" style={{ position: 'relative' }}>
             <label className="field-label">Cliente</label>
             <span className="field-sub">Como aparece en tu factura</span>
-            <input className="q-input" style={{ marginTop: 'var(--s1)' }} value={client} onChange={e => setClient(e.target.value)} placeholder="Nombre del cliente" />
+            <input
+              className="q-input"
+              style={{ marginTop: 'var(--s1)' }}
+              value={client}
+              onChange={e => { setClient(e.target.value); setShowSuggestions(true) }}
+              onFocus={() => setShowSuggestions(true)}
+              onBlur={() => setTimeout(() => setShowSuggestions(false), 150)}
+              placeholder="Nombre del cliente"
+              autoComplete="off"
+            />
+            {showSuggestions && suggestions.length > 0 && (
+              <div style={{
+                position: 'absolute', top: '100%', left: 0, right: 0, zIndex: 20,
+                background: 'var(--bg)', border: '1px solid var(--border)',
+                borderRadius: 'var(--r-lg)', boxShadow: '0 4px 16px rgba(0,0,0,0.12)',
+                marginTop: 4, overflow: 'hidden',
+              }}>
+                {suggestions.map((c, i) => (
+                  <button
+                    key={i}
+                    type="button"
+                    onMouseDown={e => e.preventDefault()}
+                    onClick={() => { setClient(c); setShowSuggestions(false) }}
+                    style={{
+                      display: 'block', width: '100%', textAlign: 'left',
+                      padding: '10px 14px', background: 'none', border: 'none',
+                      borderBottom: i < suggestions.length - 1 ? '1px solid var(--border)' : 'none',
+                      fontFamily: 'var(--font-body)', fontSize: 'var(--t-sm)', color: 'var(--txt)',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Date */}
           <div className="field">
             <label className="field-label">Fecha del pago</label>
-            <label className="date-btn" style={{ marginTop: 'var(--s1)' }}>
+            <div
+              className="date-btn"
+              style={{ marginTop: 'var(--s1)' }}
+              onClick={openDatePicker}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  e.preventDefault()
+                  openDatePicker()
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              aria-label="Seleccionar fecha del pago"
+            >
               <input
+                ref={dateInputRef}
                 className="date-native-input"
                 type="date"
                 value={paymentDate}
                 onChange={(e) => setPaymentDate(e.target.value)}
-                aria-label="Seleccionar fecha del pago"
+                aria-hidden="true"
+                tabIndex={-1}
               />
               <span className="sel">{formatDateButtonLabel(paymentDate)}</span>
               <IconCalendar />
-            </label>
+            </div>
           </div>
 
           {/* Live preview interactiva real */}
@@ -144,23 +204,39 @@ export default function I2Registro() {
               <div className="preview-amount" style={{ color: 'var(--volt-text)' }}>${calc.disponible.toLocaleString('es-CO')}</div>
               <div className="preview-sub">De ${calc.pago_cop.toLocaleString('es-CO')} brutos (COP)</div>
               
-              <div className="preview-breakdown" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s2)', marginTop: 'var(--s4)' }}>
+              <div className="preview-breakdown" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s1)', marginTop: 'var(--s4)' }}>
                 {calc.pila > 0 && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--t-xs)', fontFamily: 'var(--font-body)' }}>
-                    <div style={{ color: 'var(--txt-m)', fontWeight: 500 }}>Salud y Pensión</div>
-                    <div style={{ color: 'var(--fin-reserve)', fontWeight: 700 }}>-${calc.pila.toLocaleString('es-CO')}</div>
+                  <div className="pila-preview-blk" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div className="tx-drow" style={{ padding: 'var(--s2) 0', borderBottom: '1px solid var(--volt-border)' }}>
+                      <div className="tx-drow-l" style={{ flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>
+                        <span>PILA (seg. social, este pago)</span>
+                        {calc.pilaDetalle && (
+                          <span style={{ fontSize: 9, fontWeight: 500, color: 'var(--txt-2)', lineHeight: 1.35, maxWidth: 280 }}>12,5% salud, 16% pensión y ARL se calculan sobre el IBC del mes, no como % único de tu factura.</span>
+                        )}
+                      </div>
+                      <div className="tx-drow-v" style={{ color: 'var(--fin-reserve)' }}>-${calc.pila.toLocaleString('es-CO')}</div>
+                    </div>
+                    {calc.pilaDetalle && (
+                      <div style={{ fontSize: 10, color: 'var(--txt-2)', lineHeight: 1.45, paddingLeft: 2 }}>
+                        IBC del mes: ${calc.pilaDetalle.ibc.toLocaleString('es-CO')}
+                        {' · '}
+                        salud 12,5%: ${calc.pilaDetalle.salud.toLocaleString('es-CO')}
+                        {', pensión 16%: '}${calc.pilaDetalle.pension.toLocaleString('es-CO')}
+                        {', ARL: '}${calc.pilaDetalle.arl.toLocaleString('es-CO')}
+                      </div>
+                    )}
                   </div>
                 )}
                 {calc.retencion > 0 && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--t-xs)', fontFamily: 'var(--font-body)' }}>
-                    <div style={{ color: 'var(--txt-m)', fontWeight: 500 }}>Retención Fuente</div>
-                    <div style={{ color: 'var(--fin-deduct)', fontWeight: 700 }}>-${calc.retencion.toLocaleString('es-CO')}</div>
+                  <div className="tx-drow" style={{ padding: 'var(--s2) 0', borderBottomColor: 'var(--volt-border)' }}>
+                    <div className="tx-drow-l">Retención Fuente</div>
+                    <div className="tx-drow-v" style={{ color: 'var(--fin-deduct)' }}>-${calc.retencion.toLocaleString('es-CO')}</div>
                   </div>
                 )}
                 {calc.reserva > 0 && (
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 'var(--t-xs)', fontFamily: 'var(--font-body)' }}>
-                    <div style={{ color: 'var(--txt-m)', fontWeight: 500 }}>Reserva Renta</div>
-                    <div style={{ color: 'var(--fin-reserve)', fontWeight: 700 }}>-${calc.reserva.toLocaleString('es-CO')}</div>
+                  <div className="tx-drow" style={{ padding: 'var(--s2) 0', borderBottomColor: 'var(--volt-border)' }}>
+                    <div className="tx-drow-l">Reserva Renta</div>
+                    <div className="tx-drow-v" style={{ color: 'var(--fin-reserve)' }}>-${calc.reserva.toLocaleString('es-CO')}</div>
                   </div>
                 )}
               </div>

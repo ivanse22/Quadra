@@ -1,10 +1,13 @@
 import { useAppStore } from '../../store/useAppStore'
-import { QuadraLogo, IconSun, IconMoon, IconArrowLeft, IconBell, IconPlus, IconDownload, IconSettings } from '../ui/Icons'
+import { QuadraLogo, IconArrowLeft, IconBell, IconPlus, IconDownload, IconCalendar } from '../ui/Icons'
 
-const BACK_SCREENS = ['O1C','O2','O3','O4','O5','B1','B2','D2','D3','D4','I2','I2R','I3','I4','I5','A2','A3','A4','A5','A6','A7','C1','C2','C3','C4','C4C']
+const BACK_SCREENS = ['O1C','O2','O3','O4','O5','B1','B2','D2','D3','D4','I2','I2R','I3','I4','I5','A2','A3','A4','A5','A6','A7','A8','C1','C2','C3','C4','C4C']
+const MONTH_LABELS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 
 export default function Header() {
-  const { currentScreen, goBack, navigate, screenHistory, theme, toggleTheme } = useAppStore()
+  const { currentScreen, goBack, navigate, screenHistory, selectedAnnualMonth, notifications, setNotifDrawerOpen } = useAppStore()
+
+  const unreadCount = notifications.filter(n => !n.read).length
 
   const s = currentScreen
 
@@ -20,21 +23,20 @@ export default function Header() {
           {/* Bell with red dot — DS line 6372-6374 */}
           <button
             className="q-hdr-btn"
-            onClick={() => navigate('C2')}
-            aria-label="Alertas"
+            onClick={() => unreadCount > 0 ? setNotifDrawerOpen(true) : navigate('C2')}
+            aria-label={unreadCount > 0 ? `${unreadCount} notificaciones` : 'Alertas'}
             style={{ position: 'relative' }}
           >
             <IconBell />
-            <span style={{
-              position: 'absolute', top: 7, right: 7,
-              width: 7, height: 7,
-              background: 'var(--fin-deduct)', borderRadius: '50%',
-              border: '1.5px solid var(--bg)',
-            }} />
+            {unreadCount > 0 && (
+              <span className="bell-badge">{unreadCount}</span>
+            )}
           </button>
-          <button className="q-hdr-btn" onClick={toggleTheme} aria-label="Cambiar tema">
-            {theme === 'light' ? <IconMoon /> : <IconSun />}
-          </button>
+          {s === 'D1' && (
+            <button className="q-hdr-btn" onClick={() => navigate('A8')} aria-label="Abrir calendario">
+              <IconCalendar />
+            </button>
+          )}
         </div>
       </header>
     )
@@ -54,20 +56,19 @@ export default function Header() {
           <IconArrowLeft />
         </button>
         <span className="q-hdr-title-center">{titles[s]}</span>
-        <div className="q-hdr-right">
-          <button className="q-hdr-btn" onClick={toggleTheme} aria-label="Cambiar tema">
-            {theme === 'light' ? <IconMoon /> : <IconSun />}
-          </button>
-        </div>
+        <div className="q-hdr-right" />
       </header>
     )
   }
 
   // Header C — Title left (listas)
-  if (['I1','I4','I5','A1','A2','A3','A4','A5','C2'].includes(s)) {
+  if (['I1','I4','I5','A1','A2','A4','A5','C2'].includes(s)) {
+    const annualMonthTitle = selectedAnnualMonth != null
+      ? `${MONTH_LABELS[selectedAnnualMonth]} ${new Date().getFullYear()}`
+      : `${MONTH_LABELS[new Date().getMonth()]} ${new Date().getFullYear()}`
     const titles = {
       I1: 'Mis Ingresos', I4: 'Total ganado', I5: 'Historial PILA',
-      A1: 'Mi Año', A2: 'Abril 2026', A3: 'Total ganado',
+      A1: 'Mi Año', A2: annualMonthTitle,
       A4: 'Reserva declaración', A5: 'Proyección', C2: 'Alertas',
     }
     return (
@@ -84,9 +85,6 @@ export default function Header() {
               <IconDownload />
             </button>
           )}
-          <button className="q-hdr-btn" onClick={toggleTheme} aria-label="Cambiar tema">
-            {theme === 'light' ? <IconMoon /> : <IconSun />}
-          </button>
         </div>
       </header>
     )
@@ -97,7 +95,7 @@ export default function Header() {
     O1C:'Crea tu cuenta', O2:'¿Cómo tributas?', O3:'Retención', O4:'Salud y pensión', O5:'Resumen',
     D2:'Entender mis descuentos', D3:'Pagar PILA', D4:'Reserva declaración',
     I2:'Nuevo pago', I3:'Detalle del pago', I5:'Historial PILA',
-    A6:'Proyectar ingresos', A7:'Exportar datos',
+    A3:'Resumen anual', A6:'Proyectar ingresos', A7:'Exportar resumen', A8:'Calendario',
     C1:'Mis datos', C4:'Agregar cuenta',
   }
 
@@ -107,11 +105,7 @@ export default function Header() {
         <IconArrowLeft />
       </button>
       {titles[s] && <span className="q-hdr-title-center">{titles[s]}</span>}
-      <div className="q-hdr-right">
-        <button className="q-hdr-btn" onClick={toggleTheme} aria-label="Cambiar tema">
-          {theme === 'light' ? <IconMoon /> : <IconSun />}
-        </button>
-      </div>
+      <div className="q-hdr-right" />
     </header>
   )
 }

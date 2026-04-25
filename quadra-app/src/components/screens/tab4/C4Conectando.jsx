@@ -14,7 +14,7 @@ export default function C4Conectando() {
       navigate('C3')
     }, 4200)
     return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3) }
-  }, [])
+  }, [navigate, showToast])
 
   return (
     <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: 'var(--s8)', textAlign: 'center' }}>
@@ -37,6 +37,11 @@ export default function C4Conectando() {
             <div key={i} className="skel" style={{ width: 8, height: 8, borderRadius: '50%', animationDelay: `${i * 200}ms`, display: 'block' }} />
           ))}
         </div>
+      )}
+      {step < 2 && (
+        <button className="btn btn-ghost" type="button" style={{ marginTop: 'var(--s5)' }} onClick={() => navigate('C4')}>
+          Cancelar
+        </button>
       )}
     </div>
   )

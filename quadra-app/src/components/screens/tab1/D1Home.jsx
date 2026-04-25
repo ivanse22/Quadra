@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useAppStore } from '../../../store/useAppStore'
+import { getPaymentDateLabel } from '../../../lib/dateUtils'
 
 // ── Skeleton (DS §16 & §18 skeleton del Home) ────────────────────────────────
 function HomeSkeleton() {
@@ -46,23 +47,18 @@ function TxRow({ payment, onClick }) {
   const sign = isIncome ? '+' : '-'
   const abs = Math.abs(isIncome ? payment.gross : payment.pila)
   const disp = Math.abs(payment.disponible)
+  const metaLabel = isIncome
+    ? `Disponible ${new Intl.NumberFormat('es-CO', { notation: 'compact', maximumFractionDigits: 1 }).format(disp)}`
+    : 'Usa tu saldo disponible'
 
   return (
-    <div
+    <button
       onClick={onClick}
-      style={{
-        display: 'flex', alignItems: 'center', gap: 12,
-        padding: '14px 20px', borderBottom: '1px solid var(--border)',
-        cursor: 'pointer', transition: 'background var(--motion-fast)',
-      }}
-      onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
-      onMouseLeave={e => e.currentTarget.style.background = ''}
+      className="tx-row compact-row movement-row"
+      type="button"
+      style={{ width: '100%', textAlign: 'left' }}
     >
-      <div style={{
-        width: 38, height: 38, borderRadius: '50%',
-        background: 'var(--surf-2)', border: '1px solid var(--border)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-      }}>
+      <div className="tx-icon">
         {payment.type === 'pila' ? (
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke={colorStroke} strokeWidth="2.5">
             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
@@ -75,53 +71,32 @@ function TxRow({ payment, onClick }) {
         )}
       </div>
 
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{
-          fontFamily: 'var(--font-display)', fontSize: 'var(--t-base)',
-          fontWeight: 700, color: 'var(--txt)',
-          overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-        }}>
+      <div className="tx-info compact-row-info movement-row-info">
+        <div className="tx-name compact-row-name movement-row-name">
           {payment.client}
         </div>
-        <div style={{
-          fontFamily: 'var(--font-body)', fontSize: 'var(--t-sm)',
-          color: 'var(--txt-m)', marginTop: 2,
-        }}>
+        <div className="tx-sub compact-row-sub movement-row-sub">
           {payment.method}{payment.currency && payment.currency !== 'COP' ? ` · ${payment.currency} ${payment.originalAmount?.toLocaleString()}` : ''}
         </div>
       </div>
 
-      <div style={{ textAlign: 'right', flexShrink: 0 }}>
-        <div style={{
-          fontFamily: 'var(--font-display)', fontSize: 'var(--t-base)',
-          fontWeight: 700, color: colorStroke,
-          fontVariantNumeric: 'tabular-nums',
-        }}>
+      <div className="compact-row-amount movement-row-amount">
+        <div className="compact-row-amount-main movement-row-amount-main" style={{ color: colorStroke }}>
           {sign}${abs.toLocaleString('es-CO')}
         </div>
-        {isIncome && (
-          <div style={{
-            fontFamily: 'var(--font-body)', fontSize: 'var(--t-xs)',
-            color: 'var(--txt-m)', marginTop: 1,
-          }}>
-            disp ${(disp / 1000).toFixed(0)}k
-          </div>
-        )}
+        <div className="compact-row-amount-meta movement-row-amount-meta">{metaLabel}</div>
       </div>
-    </div>
+    </button>
   )
 }
 
 // ── Main component ────────────────────────────────────────────────────────────
 export default function D1Home() {
-  const { navigate, switchTab, kpis, payments, setSelectedPayment } = useAppStore()
+  const { navigate, switchTab, kpis, payments, setSelectedPayment, profile } = useAppStore()
   const [loading, setLoading] = useState(true)
-  const [showBadge, setShowBadge] = useState(false)
 
   useEffect(() => {
-    const t1 = setTimeout(() => setLoading(false), 900)
-    const t2 = setTimeout(() => setShowBadge(true), 1100)
-    return () => { clearTimeout(t1); clearTimeout(t2) }
+    setLoading(false)
   }, [])
 
   const fmt = (n) => {
@@ -132,9 +107,70 @@ export default function D1Home() {
 
   // Latest 3 movements for the home preview
   const recentTx = payments.slice(0, 3)
+  const latestPayment = payments[0]
+
+  // M2.1 — Trend: current month vs previous month gross
+  const now = new Date()
+  const cm = now.getMonth(), cy = now.getFullYear()
+  const prevDate = new Date(now); prevDate.setMonth(cm - 1)
+  const pm = prevDate.getMonth(), py = prevDate.getFullYear()
+  const MONTH_NAMES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
+
+  const monthGross = (mo, yr) => payments
+    .filter(p => p.type !== 'pila' && p.date)
+    .filter(p => { const d = new Date(p.date); return d.getMonth() === mo && d.getFullYear() === yr })
+    .reduce((s, p) => s + (p.gross || 0), 0)
+
+  const currentMonthGross = monthGross(cm, cy)
+  const prevMonthGross = monthGross(pm, py)
+  const monthTrend = prevMonthGross > 0
+    ? Math.round(((currentMonthGross - prevMonthGross) / prevMonthGross) * 100)
+    : null
+
+  // M2.2 — Progress vs meta anual
+  const metaAnual = profile?.metaAnual || 0
+  const ytdProgress = metaAnual > 0 ? Math.min(100, Math.round(((kpis?.ytd || 0) / metaAnual) * 100)) : null
+
+  // E5.1 — Insight contextual
+  const insight = (() => {
+    if (!payments.length) return null
+    const now = new Date()
+    const cm = now.getMonth(), cy = now.getFullYear()
+
+    const grossByMonth = (mo, yr) => payments
+      .filter(p => p.type !== 'pila' && p.date)
+      .filter(p => { const d = new Date(p.date); return d.getMonth() === mo && d.getFullYear() === yr })
+      .reduce((s, p) => s + (p.gross || 0), 0)
+
+    const currentGross = grossByMonth(cm, cy)
+    const prev1 = new Date(now); prev1.setMonth(cm - 1)
+    const prev2 = new Date(now); prev2.setMonth(cm - 2)
+    const avg2 = (grossByMonth(prev1.getMonth(), prev1.getFullYear()) + grossByMonth(prev2.getMonth(), prev2.getFullYear())) / 2
+
+    // PILA overdue: no pila payment in last 60 days
+    const pilaList = payments.filter(p => p.type === 'pila' && p.date).sort((a, b) => new Date(b.date) - new Date(a.date))
+    const daysSincePila = pilaList[0] ? Math.floor((now - new Date(pilaList[0].date)) / 86400000) : 999
+    if (daysSincePila > 60) {
+      return { type: 'pila', msg: `Llevas más de ${Math.round(daysSincePila / 30)} meses sin registrar PILA`, cta: 'Ver PILA', screen: 'D3' }
+    }
+
+    // Low disponible: disponibleHoy < 30% of YTD gross
+    const ytdGross = payments.filter(p => p.type !== 'pila' && p.date && new Date(p.date).getFullYear() === cy).reduce((s, p) => s + (p.gross || 0), 0)
+    const disponible = kpis?.disponibleHoy || 0
+    if (ytdGross > 0 && disponible < ytdGross * 0.30) {
+      return { type: 'low', msg: 'Tu disponible es menor de lo habitual · revisa tus deducciones', cta: 'Entender →', screen: 'D2' }
+    }
+
+    // Best month
+    if (avg2 > 0 && currentGross > avg2 * 1.2) {
+      return { type: 'best', msg: 'Mejor mes del trimestre 🎯', cta: 'Ver ingresos →', screen: 'I4' }
+    }
+
+    return null
+  })()
 
   return (
-    <div style={{ flex: 1, display: 'flex', flexDirection: 'column', paddingBottom: 100 }}>
+    <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
       {loading ? (
         <HomeSkeleton />
       ) : payments.length === 0 ? (
@@ -157,29 +193,39 @@ export default function D1Home() {
           </button>
         </div>
       ) : (
-        <div style={{ padding: 'var(--s3) var(--screen-px) 0', display: 'flex', flexDirection: 'column', gap: 0 }}>
+        <div className="q-body-inner" style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
 
           {/* ── Hero zone ── */}
           <div style={{ paddingBottom: 'var(--s8)', borderBottom: '1px solid var(--border)', marginBottom: 'var(--s6)' }}>
             {/* Eyebrow */}
-            <div style={{
-              fontFamily: 'var(--font-body)', fontSize: 'var(--t-xs)',
-              fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.12em',
-              color: 'var(--txt-m)', marginBottom: 'var(--s2)',
-            }}>
+            <div className="hero-eye hero-eye--sm">
               Lo que es tuyo hoy
             </div>
 
-            {/* Hero number — mobile-first massive */}
-            <div style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 'clamp(3.5rem, 14vw, 5rem)',
-              fontWeight: 900, letterSpacing: '-0.05em',
-              lineHeight: 0.9, color: 'var(--volt-text)',
-              fontVariantNumeric: 'tabular-nums', marginBottom: 'var(--s3)',
-              animation: 'slideInUp var(--motion-slow) var(--ease-out) both',
-            }}>
+            {/* Hero number — E1.6: tocable → desglose último pago */}
+            <button
+              type="button"
+              onClick={() => { if (latestPayment) { setSelectedPayment(latestPayment.id); navigate('I3') } }}
+              className="d1-hero-amount"
+              aria-label="Ver desglose de tu disponible real"
+            >
               {fmt(kpis?.disponibleHoy || 0)}
+            </button>
+
+            {/* E2.2 — contexto vs YTD */}
+            <div style={{ marginBottom: 'var(--s3)' }}>
+              <button
+                type="button"
+                onClick={() => navigate('D2')}
+                style={{
+                  background: 'none', border: 'none', padding: 0, cursor: 'pointer',
+                  fontSize: 'var(--t-xs)', color: 'var(--txt-m)', fontFamily: 'var(--font-body)',
+                  textDecoration: 'underline', textDecorationColor: 'var(--border-m)',
+                  textUnderlineOffset: 3,
+                }}
+              >
+                ¿Cómo se calcula este número? →
+              </button>
             </div>
 
             {/* Meta row: source + badge */}
@@ -188,53 +234,66 @@ export default function D1Home() {
                 fontFamily: 'var(--font-body)', fontSize: 'var(--t-sm)',
                 color: 'var(--txt-m)',
               }}>
-                Último movimiento · Agosto 2026
+                Último movimiento · {latestPayment ? getPaymentDateLabel(latestPayment) : 'Sin fecha'}
               </div>
-              {showBadge && (
-                <span style={{
-                  display: 'inline-flex', alignItems: 'center', gap: 5,
-                  background: 'var(--fin-income-dim)', border: '1px solid var(--fin-income-border)',
-                  color: 'var(--fin-income)', padding: '4px 10px',
-                  borderRadius: 'var(--r-full)',
-                  fontFamily: 'var(--font-display)', fontSize: 'var(--t-xs)', fontWeight: 700,
-                  animation: 'resultPop var(--motion-slow) var(--ease-spring) both',
-                }}>
-                  <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <path d="M18 15l-6-6-6 6"/>
-                  </svg>
-                  Pago guardado
-                </span>
-              )}
+              <span className="badge badge-neu">Disponible actualizado</span>
             </div>
           </div>
 
+          {/* ── E5.1 Insight card ── */}
+          {insight && (
+            <button
+              type="button"
+              onClick={() => navigate(insight.screen)}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 'var(--s3)',
+                width: '100%', textAlign: 'left', marginBottom: 'var(--s4)',
+                padding: 'var(--s3) var(--s4)',
+                background: insight.type === 'best' ? 'var(--volt-dim)' : insight.type === 'pila' ? 'var(--fin-reserve-dim)' : 'var(--surf-1)',
+                border: `1px solid ${insight.type === 'best' ? 'var(--volt-border)' : insight.type === 'pila' ? 'var(--fin-reserve-border)' : 'var(--border)'}`,
+                borderRadius: 'var(--r-xl)', cursor: 'pointer',
+              }}
+            >
+              <span style={{ fontSize: 18, flexShrink: 0 }}>
+                {insight.type === 'best' ? '🎯' : insight.type === 'pila' ? '🛡️' : '📊'}
+              </span>
+              <span style={{ flex: 1, fontFamily: 'var(--font-body)', fontSize: 'var(--t-xs)', color: 'var(--txt)', lineHeight: 1.4 }}>
+                {insight.msg}
+              </span>
+              <span style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--t-xs)', color: insight.type === 'best' ? 'var(--volt-text)' : 'var(--txt-m)', fontWeight: 700, flexShrink: 0 }}>
+                {insight.cta}
+              </span>
+            </button>
+          )}
+
           {/* ── KPI row — 2 cards ── */}
           <div style={{ display: 'flex', gap: 'var(--s2)', marginBottom: 'var(--s6)' }}>
-            <div style={{
-              flex: 1, background: 'var(--bg-subtle)',
-              border: '1px solid var(--border)', borderRadius: 'var(--r-lg)', padding: 'var(--s4)',
-              cursor: 'pointer', transition: 'background var(--motion-fast) var(--ease-out)',
-            }}
-            onClick={() => navigate('I4')}
-            onMouseEnter={e => e.currentTarget.style.background = 'var(--surf-2)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
-            >
+            {/* M2.1 + M2.2 — YTD con trend y progress */}
+            <button type="button" className="home-kpi-card" onClick={() => navigate('I4')}>
               <div className="kpi-lbl">Ingresado YTD</div>
               <div className="kpi-val">{fmt(kpis?.ytd || 0)}</div>
-            </div>
+              {monthTrend !== null && (
+                <div className={`kpi-trend ${monthTrend >= 0 ? 'kpi-trend-up' : 'kpi-trend-down'}`}>
+                  {monthTrend >= 0 ? '↑' : '↓'} {Math.abs(monthTrend)}% vs {MONTH_NAMES[pm]}
+                </div>
+              )}
+              {ytdProgress !== null && (
+                <>
+                  <div className="kpi-progress-wrap">
+                    <div className="kpi-progress-bar" style={{ width: `${ytdProgress}%` }} />
+                  </div>
+                  <div className="kpi-progress-lbl">{ytdProgress}% de la meta anual</div>
+                </>
+              )}
+            </button>
 
-            <div style={{
-              flex: 1, background: 'var(--bg-subtle)',
-              border: '1px solid var(--border)', borderRadius: 'var(--r-lg)', padding: 'var(--s4)',
-              cursor: 'pointer', transition: 'background var(--motion-fast) var(--ease-out)',
-            }}
-            onClick={() => navigate('D4')}
-            onMouseEnter={e => e.currentTarget.style.background = 'var(--surf-2)'}
-            onMouseLeave={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
-            >
+            {/* M2.3 — Reservado con desglose */}
+            <button type="button" className="home-kpi-card" onClick={() => navigate('D4')}>
               <div className="kpi-lbl">Reservado</div>
               <div className="kpi-val" style={{ color: 'var(--fin-reserve)' }}>{fmt((kpis?.reservadoRenta || 0) + (kpis?.reservadoPila || 0))}</div>
-            </div>
+              <div className="kpi-sub">Renta {fmt(kpis?.reservadoRenta || 0)}</div>
+              <div className="kpi-sub">PILA {fmt(kpis?.reservadoPila || 0)}</div>
+            </button>
           </div>
 
           {/* ── Movimientos section ── */}
@@ -247,22 +306,17 @@ export default function D1Home() {
               }}>
                 Movimientos
               </span>
-              <span
-                style={{
-                  fontFamily: 'var(--font-body)', fontSize: 'var(--t-xs)',
-                  fontWeight: 700, color: 'var(--volt-text)', cursor: 'pointer',
-                }}
+              <button
+                type="button"
+                className="q-text-action"
                 onClick={() => switchTab(1)}
               >
                 Ver todo →
-              </span>
+              </button>
             </div>
 
             {/* Transaction list card */}
-            <div style={{
-              background: 'var(--bg)', border: '1px solid var(--border)',
-              borderRadius: 'var(--r-xl)', overflow: 'hidden',
-            }}>
+            <div className="tx-list">
               {recentTx.map((p, i) => (
                 <TxRow
                   key={p.id}
@@ -275,111 +329,85 @@ export default function D1Home() {
               ))}
               {/* Footer CTAs */}
               <div style={{ borderTop: '1px solid var(--border)' }}>
-                <div
-                  style={{
-                    padding: 'var(--s3) var(--screen-px)', textAlign: 'center',
-                    fontFamily: 'var(--font-body)', fontSize: 'var(--t-xs)',
-                    fontWeight: 700, color: 'var(--volt-text)', cursor: 'pointer',
-                    transition: 'background var(--motion-fast)',
-                  }}
+                <button
+                  type="button"
+                  className="q-inline-footer-action"
                   onClick={() => switchTab(1)}
-                  onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
-                  onMouseLeave={e => e.currentTarget.style.background = ''}
                 >
                   Ver todos los movimientos →
-                </div>
-                <div
-                  style={{
-                    padding: 'var(--s2) var(--screen-px) var(--s3)', textAlign: 'center',
-                    borderTop: '1px solid var(--border)',
-                    fontFamily: 'var(--font-body)', fontSize: 'var(--t-xs)',
-                    fontWeight: 500, color: 'var(--txt-m)', cursor: 'pointer',
-                    transition: 'background var(--motion-fast)',
-                  }}
+                </button>
+                <button
+                  type="button"
+                  className="q-inline-footer-action q-inline-footer-action-subtle"
                   onClick={() => navigate('D2')}
-                  onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
-                  onMouseLeave={e => e.currentTarget.style.background = ''}
                 >
                   ¿Cómo se calculan tus descuentos?
-                </div>
+                </button>
               </div>
             </div>
           </div>
 
           {/* ── Quick action row — removed in favour of FAB ── */}
 
-          {/* ── PILA alert — task-row card ── */}
-          {(kpis?.reservadoPila || 0) > 0 && (
-            <div
-              onClick={() => navigate('D3')}
-              style={{
-                marginTop: 'var(--s5)',
-                background: 'var(--bg)',
-                border: '1px solid var(--border)',
-                borderRadius: 'var(--r-xl)',
-                padding: 'var(--s3) var(--s4)',
-                display: 'flex', alignItems: 'center', gap: 'var(--s3)',
-                cursor: 'pointer',
-                transition: 'background var(--motion-fast) var(--ease-out)',
-                boxShadow: 'var(--shadow-sm)',
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = 'var(--bg-subtle)'}
-              onMouseLeave={e => e.currentTarget.style.background = 'var(--bg)'}
-            >
-              {/* Icon square */}
-              <div style={{
-                width: 44, height: 44, borderRadius: 'var(--r-md)',
-                background: 'var(--fin-reserve-dim)',
-                border: '1.5px solid var(--fin-reserve-border)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                flexShrink: 0,
-              }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--fin-reserve)" strokeWidth="2">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                </svg>
-              </div>
+          {/* ── E2.1 Panel próxima acción — 3 estados ── */}
+          {(() => {
+            const pilaPendiente = (kpis?.reservadoPila || 0) > 0
+            const ytd = kpis?.ytd || 0
+            const reservaActual = kpis?.reservadoRenta || 0
+            const proyectadoAnual = Math.max(ytd * 3, 40000000)
+            const metaRenta = Math.round(proyectadoAnual * 0.155)
+            const progressReserva = metaRenta > 0 ? Math.round((reservaActual / metaRenta) * 100) : 100
+            const reservaBaja = progressReserva < 50 && ytd > 0
 
-              {/* Text */}
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{
-                  fontFamily: 'var(--font-display)', fontSize: 'var(--t-sm)',
-                  fontWeight: 700, color: 'var(--txt)', lineHeight: 1.3,
-                  marginBottom: 2,
-                }}>
-                  PILA pendiente
-                </div>
-                <div style={{
-                  fontFamily: 'var(--font-body)', fontSize: 'var(--t-xs)',
-                  color: 'var(--txt-m)',
-                }}>
-                  {fmt(kpis?.reservadoPila || 0)} reservados
-                </div>
-              </div>
+            if (pilaPendiente) {
+              return (
+                <button type="button" className="home-task-card" onClick={() => navigate('D3')} style={{ marginTop: 'var(--s4)' }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 'var(--r-md)', background: 'var(--fin-reserve-dim)', border: '1.5px solid var(--fin-reserve-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--fin-reserve)" strokeWidth="2">
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                    </svg>
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--t-sm)', fontWeight: 700, color: 'var(--txt)', lineHeight: 1.3, marginBottom: 2 }}>PILA pendiente</div>
+                    <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--t-xs)', color: 'var(--txt-m)' }}>{fmt(kpis?.reservadoPila || 0)} por registrar</div>
+                  </div>
+                  <span className="home-task-chip">Pagar</span>
+                </button>
+              )
+            }
 
-              {/* CTA button */}
-              <button
-                onClick={e => { e.stopPropagation(); navigate('D3') }}
-                style={{
-                  height: 36, padding: '0 var(--s4)',
-                  background: 'var(--fin-reserve)',
-                  color: '#fff',
-                  border: 'none',
-                  borderRadius: 'var(--r-full)',
-                  fontFamily: 'var(--font-display)',
-                  fontSize: 'var(--t-xs)',
-                  fontWeight: 700,
-                  cursor: 'pointer',
-                  flexShrink: 0,
-                  transition: 'all var(--motion-fast) var(--ease-out)',
-                  whiteSpace: 'nowrap',
-                }}
-                onMouseEnter={e => e.currentTarget.style.background = '#92400E'}
-                onMouseLeave={e => e.currentTarget.style.background = 'var(--fin-reserve)'}
-              >
-                Pagar
+            if (reservaBaja) {
+              return (
+                <button type="button" className="home-task-card" onClick={() => navigate('D4')} style={{ marginTop: 'var(--s4)' }}>
+                  <div style={{ width: 44, height: 44, borderRadius: 'var(--r-md)', background: 'var(--fin-reserve-dim)', border: '1.5px solid var(--fin-reserve-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--fin-reserve)" strokeWidth="2">
+                      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                    </svg>
+                  </div>
+                  <div style={{ flex: 1, minWidth: 0 }}>
+                    <div style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--t-sm)', fontWeight: 700, color: 'var(--txt)', lineHeight: 1.3, marginBottom: 2 }}>Reserva para renta</div>
+                    <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--t-xs)', color: 'var(--txt-m)' }}>Tu reserva está al {progressReserva}% de la meta</div>
+                  </div>
+                  <span className="home-task-chip">Ver →</span>
+                </button>
+              )
+            }
+
+            return (
+              <button type="button" className="home-task-card home-task-card-ok" onClick={() => navigate('I2')} style={{ marginTop: 'var(--s4)' }}>
+                <div style={{ width: 44, height: 44, borderRadius: 'var(--r-md)', background: 'var(--fin-income-dim)', border: '1.5px solid var(--fin-income-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--fin-income)" strokeWidth="2">
+                    <polyline points="20 6 9 17 4 12"/>
+                  </svg>
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--t-sm)', fontWeight: 700, color: 'var(--txt)', lineHeight: 1.3, marginBottom: 2 }}>Todo al día</div>
+                  <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--t-xs)', color: 'var(--txt-m)' }}>¿Recibiste un nuevo pago?</div>
+                </div>
+                <span className="home-task-chip home-task-chip-ok">+ Registrar</span>
               </button>
-            </div>
-          )}
+            )
+          })()}
 
         </div>
       )}

@@ -129,6 +129,18 @@
   --screen-px-lg:        24px;
   --screen-pt:           16px;
   --screen-pb:           32px;
+
+  /* ── Compact row semantics ── */
+  --compact-row-gap:              12px;
+  --compact-row-padding-y:        14px;
+  --compact-row-icon-size:        36px;
+  --compact-row-stack-gap:        3px;
+  --compact-row-amount-width:     clamp(88px, 25vw, 122px);
+  --compact-row-meta-size:        10px;
+  --compact-row-mobile-gap:       10px;
+  --compact-row-mobile-padding-y: 12px;
+  --compact-row-mobile-padding-x: var(--s4);
+  --compact-row-mobile-width:     clamp(76px, 24vw, 102px);
 }
 
 /* ── Dark mode ── */

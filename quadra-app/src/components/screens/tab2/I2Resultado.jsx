@@ -21,17 +21,17 @@ function useCountUp(target, duration = 900) {
 }
 
 export default function I2Resultado() {
-  const { navigate, payments, switchTab, showToast } = useAppStore()
+  const { navigate, payments, switchTab, setSelectedPayment } = useAppStore()
   const [step, setStep] = useState(0) // 0=hero, 1=desglose, 2=full
 
   // Read the most recently added payment (first in the array, since addPayment prepends)
   const latest = payments[0]
-  const gross     = latest?.gross     ?? 2000000
-  const retencion = latest?.retencion ?? 200000
-  const pila      = latest?.pila      ?? 250000
-  const reserva   = latest?.reserva   ?? 310000
-  const disponible = latest?.disponible ?? 1240000
-  const client    = latest?.client    ?? 'Agencia Creativa SAS'
+  const gross     = latest?.gross ?? 0
+  const retencion = latest?.retencion ?? 0
+  const pila      = latest?.pila ?? 0
+  const reserva   = latest?.reserva ?? 0
+  const disponible = latest?.disponible ?? 0
+  const client    = latest?.client ?? 'Pago reciente'
 
   const countedDisponible = useCountUp(step >= 1 ? disponible : 0, 900)
 
@@ -42,20 +42,55 @@ export default function I2Resultado() {
   }, [])
 
   const fmt = (n) => '$' + Math.abs(n).toLocaleString('es-CO')
+  const pilaD = latest?.pilaDetalle
+  const retPctoBruto = gross > 0 && retencion > 0
+    ? (Math.round((retencion / gross) * 1000) / 10)
+    : null
+  const pilaPctoBruto = gross > 0 && pila > 0
+    ? (Math.round((pila / gross) * 1000) / 10)
+    : null
 
-  // Derive real rates from actual payment values
-  const retRate  = gross > 0 ? (retencion / gross * 100).toFixed(1).replace(/\.0$/, '') : 0
-  const pilaRate = gross > 0 ? (pila      / gross * 100).toFixed(1).replace(/\.0$/, '') : 0
-
-  const desglose = [
-    { label: 'Ingreso bruto',                              val: fmt(gross),         color: 'var(--fin-income)',  delay: 0   },
-    { label: `Retención en la fuente (${retRate}%)`,       val: `−${fmt(retencion)}`,color: 'var(--fin-deduct)', delay: 80  },
-    { label: `Salud y pensión — PILA (${pilaRate}% bruto)`,val: `−${fmt(pila)}`,    color: 'var(--fin-reserve)', delay: 160 },
-    { label: 'Reserva declaración renta',                  val: `−${fmt(reserva)}`, color: 'var(--fin-reserve)', delay: 240 },
-  ]
+  if (!latest) {
+    return (
+      <div className="q-body-inner">
+        <div className="q-empty">
+          <div className="q-empty-visual">
+            <svg width="38" height="38" viewBox="0 0 24 24" fill="none" stroke="var(--txt-f)" strokeWidth="1.5">
+              <circle cx="12" cy="12" r="9" />
+              <path d="M8 12h8" />
+            </svg>
+          </div>
+          <h2 className="q-empty-headline">Sin resultado reciente</h2>
+          <p className="q-empty-desc">Registra un pago primero para ver el disponible calculado con cifras reales.</p>
+          <button className="q-empty-cta" onClick={() => navigate('I2')}>
+            Registrar un pago
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
-    <div className="q-body-inner" style={{ paddingTop: 'var(--s6)', paddingBottom: 'var(--s10)' }}>
+    <div className="q-body-inner" style={{ paddingTop: 'var(--s4)', paddingBottom: 'var(--s10)' }}>
+
+      {/* ── Minimal close row (NO_HEADER screen) ── */}
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 'var(--s2)' }}>
+        <button
+          onClick={() => switchTab(0)}
+          style={{
+            display: 'flex', alignItems: 'center', gap: 'var(--s1)',
+            fontSize: 'var(--t-xs)', color: 'var(--txt-m)',
+            background: 'none', border: 'none', cursor: 'pointer',
+            fontFamily: 'var(--font-body)', padding: 'var(--s1) 0',
+          }}
+          aria-label="Volver al inicio"
+        >
+          Inicio
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </button>
+      </div>
 
       {/* ── Hero Result — DS motion: slide-in + count-up ── */}
       <div
@@ -78,22 +113,12 @@ export default function I2Resultado() {
         </div>
 
         {/* Eyebrow */}
-        <div style={{
-          fontFamily: 'var(--font-body)', fontSize: 'var(--t-xs)',
-          fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.14em',
-          color: 'var(--txt-m)', marginBottom: 'var(--s2)',
-        }}>
+        <div className="hero-eye hero-eye--sm">
           Disponible real
         </div>
 
-        {/* Hero count-up — DS: Satoshi 900, --t-3xl, volt-text */}
-        <div style={{
-          fontFamily: 'var(--font-display)',
-          fontSize: 'clamp(3rem, 10vw, 3.8rem)',
-          fontWeight: 900, letterSpacing: '-0.05em', lineHeight: 0.9,
-          color: 'var(--volt-text)', fontVariantNumeric: 'tabular-nums',
-          marginBottom: 8,
-        }}>
+        {/* Hero count-up — DS: Satoshi 900, clamp font, volt-text */}
+        <div className="i2r-hero-amount">
           ${countedDisponible.toLocaleString('es-CO')}
         </div>
 
@@ -108,19 +133,100 @@ export default function I2Resultado() {
       {/* ── Desglose con stagger ── */}
       {step >= 1 && (
         <div className="desglose mb5">
-          {desglose.map((row, i) => (
-            <div
-              key={i}
-              className="drow stagger-item"
-              style={{ animationDelay: `${row.delay}ms` }}
-            >
-              <div className="drow-l">
-                <div className="drow-dot" style={{ background: row.color }} />
-                {row.label}
-              </div>
-              <div className="drow-v" style={{ color: row.color }}>{row.val}</div>
+          <div className="tx-drow stagger-item" style={{ animationDelay: '0ms' }}>
+            <div className="tx-drow-l" style={{ color: 'var(--txt-2)' }}>
+              <div className="drow-dot" style={{ background: 'var(--fin-income)' }} />
+              Ingreso bruto
             </div>
-          ))}
+            <div className="tx-drow-v" style={{ color: 'var(--fin-income)' }}>{fmt(gross)}</div>
+          </div>
+
+          <div className="tx-drow stagger-item" style={{ animationDelay: '80ms' }}>
+            <div className="tx-drow-l" style={{ color: 'var(--txt-2)', flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                <div className="drow-dot" style={{ background: 'var(--fin-deduct)' }} />
+                <span>Retención en la fuente</span>
+              </div>
+              {retPctoBruto != null && (
+                <span className="i2-legal-hint">~{String(retPctoBruto).replace(/\.0$/, '')}% del bruto de este pago (tu tarifa o 11% si aplica).</span>
+              )}
+            </div>
+            <div className="tx-drow-v" style={{ color: 'var(--fin-deduct)' }}>−{fmt(retencion)}</div>
+          </div>
+
+          {pila > 0 && (
+            <div className="stagger-item" style={{ animationDelay: '160ms' }}>
+              {pilaD ? (
+                <div
+                  className="card pila-mes-blk"
+                  style={{
+                    marginTop: 'var(--s2)',
+                    padding: 'var(--s4)',
+                    textAlign: 'left',
+                    border: '1px solid var(--border)',
+                    borderRadius: 'var(--r-lg)',
+                    background: 'var(--bg-subtle)',
+                  }}
+                >
+                  <div style={{ fontSize: 11, fontWeight: 800, fontFamily: 'var(--font-display)', color: 'var(--txt)', marginBottom: 'var(--s2)' }}>PILA — aportes (sobre IBC del mes)</div>
+                  <p className="i2-legal-hint" style={{ marginBottom: 'var(--s3)' }}>
+                    El 12,5% es salud y el 16% pensión sobre el <strong>IBC</strong>, no sobre toda la factura. IBC = 40% de tus ingresos del mes (con piso 1 SMMLV y tope 25 SMMLV en el cálculo del app).
+                  </p>
+                  <div className="tx-drow" style={{ border: 'none', padding: '4px 0' }}>
+                    <span className="tx-drow-l">IBC del mes (base)</span>
+                    <span className="tx-drow-v">{fmt(pilaD.ibc)}</span>
+                  </div>
+                  <div className="tx-drow" style={{ border: 'none', padding: '4px 0' }}>
+                    <span className="tx-drow-l">Salud 12,5% del IBC</span>
+                    <span className="tx-drow-v" style={{ color: 'var(--fin-reserve)' }}>−{fmt(pilaD.salud)}</span>
+                  </div>
+                  <div className="tx-drow" style={{ border: 'none', padding: '4px 0' }}>
+                    <span className="tx-drow-l">Pensión 16% del IBC</span>
+                    <span className="tx-drow-v" style={{ color: 'var(--fin-reserve)' }}>−{fmt(pilaD.pension)}</span>
+                  </div>
+                  <div className="tx-drow" style={{ border: 'none', padding: '4px 0' }}>
+                    <span className="tx-drow-l">ARL (riesgo I)</span>
+                    <span className="tx-drow-v" style={{ color: 'var(--fin-reserve)' }}>−{fmt(pilaD.arl)}</span>
+                  </div>
+                  <div className="tx-drow" style={{ border: 'none', padding: '4px 0' }}>
+                    <span className="tx-drow-l">Obligación total del mes</span>
+                    <span className="tx-drow-v" style={{ fontWeight: 700 }}>−{fmt(pilaD.obligacionMensual)}</span>
+                  </div>
+                  {pilaD.yaReservadoMes > 0 && (
+                    <div className="tx-drow" style={{ border: 'none', padding: '4px 0' }}>
+                      <span className="tx-drow-l">Ya reservado antes en el mes</span>
+                      <span className="tx-drow-v" style={{ color: 'var(--txt-m)' }}>−{fmt(pilaD.yaReservadoMes)}</span>
+                    </div>
+                  )}
+                  <div className="tx-drow" style={{ border: 'none', padding: '6px 0 0', marginTop: 4, borderTop: '1px solid var(--border)' }}>
+                    <span className="tx-drow-l" style={{ fontWeight: 800 }}>Reservado en este pago</span>
+                    <span className="tx-drow-v" style={{ color: 'var(--fin-reserve)', fontWeight: 800 }}>−{fmt(pila)}</span>
+                  </div>
+                  {pilaPctoBruto != null && (
+                    <p className="i2-legal-hint" style={{ marginTop: 'var(--s2)', marginBottom: 0 }}>
+                      Equivale a ~{String(pilaPctoBruto).replace(/\.0$/, '')}% del bruto de <em>este</em> pago: eso es distinto al 12,5% de salud, que va sobre IBC.
+                    </p>
+                  )}
+                </div>
+              ) : (
+                <div className="tx-drow" style={{ marginTop: 'var(--s1)' }}>
+                  <div className="tx-drow-l" style={{ color: 'var(--txt-2)' }}>
+                    <div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />
+                    PILA (registrado en pagos anteriores sin desglose)
+                  </div>
+                  <div className="tx-drow-v" style={{ color: 'var(--fin-reserve)' }}>−{fmt(p)}</div>
+                </div>
+              )}
+            </div>
+          )}
+
+          <div className="tx-drow stagger-item" style={{ animationDelay: '240ms' }}>
+            <div className="tx-drow-l" style={{ color: 'var(--txt-2)' }}>
+              <div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />
+              Reserva declaración renta
+            </div>
+            <div className="tx-drow-v" style={{ color: 'var(--fin-reserve)' }}>−{fmt(reserva)}</div>
+          </div>
 
           {/* Total row — DS: volt-dim background, volt-text */}
           <div className="dtotal" style={{ background: 'var(--volt-dim)', borderRadius: 'var(--r-lg)', padding: '12px 14px', marginTop: 'var(--s3)', border: '1px solid var(--volt-border)' }}>
@@ -139,6 +245,7 @@ export default function I2Resultado() {
           <button
             className="btn btn-primary btn-full"
             onClick={() => {
+              setSelectedPayment(latest.id)
               navigate('I3')
             }}
           >

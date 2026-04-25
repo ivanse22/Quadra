@@ -2,6 +2,9 @@ import { useEffect, useRef, useState } from 'react'
 import './styles/index.css'
 import { useAppStore } from './store/useAppStore'
 import { supabase } from './lib/supabase'
+import { computeNotifications } from './lib/notifications'
+
+const MONTH_LABELS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
 
 // ── FAB quick-action definitions ─────────────────────────────────────────────
 const QUICK_ACTIONS = [
@@ -33,7 +36,7 @@ const QUICK_ACTIONS = [
         <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
       </svg>
     ),
-    action: (_navigate, switchTab) => switchTab(1),
+    action: (navigate) => navigate('I1'),
   },
   {
     id: 'pagar-pila',
@@ -71,6 +74,7 @@ import Header from './components/layout/Header'
 import BottomNav from './components/layout/BottomNav'
 import ToastContainer from './components/ui/Toast'
 import InstallBanner from './components/ui/InstallBanner'
+import NotificationDrawer from './components/ui/NotificationDrawer'
 
 // Onboarding
 import O1Welcome from './components/screens/onboarding/O1Welcome'
@@ -104,6 +108,7 @@ import A4ReservaSaldo from './components/screens/tab3/A4ReservaSaldo'
 import A5ReservaProyeccion from './components/screens/tab3/A5ReservaProyeccion'
 import A6Proyectar from './components/screens/tab3/A6Proyectar'
 import A7Exportar from './components/screens/tab3/A7Exportar'
+import A8Calendario from './components/screens/tab3/A8Calendario'
 
 // Tab 4 — Mi Cuenta
 import C1DatosPersonales from './components/screens/tab4/C1DatosPersonales'
@@ -129,12 +134,12 @@ const SCREENS = {
   B1: B1Login, B2: B2RecuperarPassword,
   D1: D1Home, D2: D2Entender, D3: D3PagarPILA, D4: D4Reserva,
   I1: I1Pagos, I2: I2Registro, I2R: I2Resultado, I3: I3Detalle, I4: I4TotalGanado, I5: I5HistorialPILA,
-  A1: A1Anual, A2: A2Mensual, A3: A3TotalAnio, A4: A4ReservaSaldo, A5: A5ReservaProyeccion, A6: A6Proyectar, A7: A7Exportar,
+  A1: A1Anual, A2: A2Mensual, A3: A3TotalAnio, A4: A4ReservaSaldo, A5: A5ReservaProyeccion, A6: A6Proyectar, A7: A7Exportar, A8: A8Calendario,
   C1: C1DatosPersonales, C2: C2Alertas, C3: C3CuentasConectadas, C4: C4AgregarCuenta, C4C: C4Conectando,
 }
 
 export default function App() {
-  const { currentScreen, theme, session, setSession, navigate, navigateRoot, switchTab, payments, loadUserData, clearUserData } = useAppStore()
+  const { currentScreen, theme, session, setSession, navigate, navigateRoot, switchTab, payments, loadUserData, clearUserData, selectedAnnualMonth, kpis, profile, alerts, syncNotifications, notifDrawerOpen } = useAppStore()
   const deferredPrompt = useRef(null)
   const [showInstallBanner, setShowInstallBanner] = useState(false)
   const [showQuickMenu, setShowQuickMenu] = useState(false)
@@ -224,11 +229,44 @@ export default function App() {
     localStorage.setItem('pwa-install-dismissed', '1')
   }
 
+  // M3.3 — Sync in-app notifications whenever payments or kpis change
+  useEffect(() => {
+    const newNotifs = computeNotifications(payments, kpis, profile, alerts)
+    syncNotifications(newNotifs)
+  }, [payments, kpis]) // eslint-disable-line react-hooks/exhaustive-deps
+
   // Reset scroll position and close quick menu on every screen change
   useEffect(() => {
     if (bodyRef.current) bodyRef.current.scrollTop = 0
     if (currentScreen !== 'D1') setShowQuickMenu(false)
+    requestAnimationFrame(() => bodyRef.current?.focus({ preventScroll: true }))
   }, [currentScreen])
+
+  useEffect(() => {
+    const titles = {
+      D1: 'Quadra',
+      I1: 'Mis Ingresos',
+      I2: 'Nuevo pago',
+      I2R: 'Resultado del pago',
+      I3: 'Detalle del pago',
+      I4: 'Indicadores',
+      I5: 'Historial PILA',
+      A1: 'Mi Año',
+      A2: `${MONTH_LABELS[selectedAnnualMonth ?? new Date().getMonth()]} ${new Date().getFullYear()}`,
+      A3: 'Resumen anual',
+      A4: 'Reserva declaración',
+      A5: 'Proyección reserva',
+      A6: 'Proyectar ingresos',
+      A7: 'Exportar resumen',
+      A8: 'Calendario',
+      C1: 'Mis datos',
+      C2: 'Alertas',
+      C3: 'Cuentas',
+      C4: 'Agregar cuenta',
+      C4C: 'Conectando cuenta',
+    }
+    document.title = titles[currentScreen] ? `${titles[currentScreen]} · Quadra` : 'Quadra'
+  }, [currentScreen, selectedAnnualMonth])
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
@@ -283,6 +321,7 @@ export default function App() {
       <div
         className="q-body"
         ref={bodyRef}
+        tabIndex={-1}
         style={currentScreen === 'O1' ? { paddingTop: 0 } : {}}
       >
         <Screen />
@@ -375,6 +414,7 @@ export default function App() {
       {showInstallBanner && (
         <InstallBanner onInstall={handleInstall} onDismiss={handleDismissBanner} />
       )}
+      {notifDrawerOpen && <NotificationDrawer />}
       <ToastContainer />
     </div>
   )

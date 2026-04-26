@@ -2261,3 +2261,22 @@ textarea:focus-visible,
   margin-top:8px;font-family:var(--font-display);font-size:var(--t-base);font-weight:800;color:var(--txt);
 }
 
+/* ── I1Pagos UX improvements ── */
+.income-row{position:relative;padding-left:calc(var(--screen-px) + 3px);}
+.income-row::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:0 2px 2px 0;}
+.income-row--income::before{background:var(--fin-income);}
+.income-row--pila::before{background:var(--fin-reserve);}
+.income-row--renta::before{background:var(--fin-deduct);}
+.i1-breakdown-bar{height:8px;border-radius:var(--r-full);display:flex;overflow:hidden;margin:var(--s3) 0 var(--s2);}
+.i1-breakdown-seg{height:100%;transition:width 400ms var(--ease-out);}
+.i1-breakdown-legend{display:flex;gap:var(--s3);flex-wrap:wrap;margin-bottom:var(--s3);}
+.i1-breakdown-item{display:flex;align-items:center;gap:4px;font-size:var(--t-xs);color:var(--txt-m);font-family:var(--font-body);}
+.i1-breakdown-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+.i1-search-wrap{position:relative;margin-bottom:var(--s3);}
+.i1-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--txt-m);pointer-events:none;}
+.i1-search-clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--txt-m);padding:4px;display:flex;align-items:center;justify-content:center;}
+.i1-client-subtotal{display:flex;justify-content:space-between;align-items:center;padding:6px var(--screen-px);background:var(--bg-subtle);font-size:var(--t-xs);color:var(--txt-m);font-family:var(--font-body);border-top:1px solid var(--border);border-bottom:1px solid var(--border);margin-bottom:var(--s2);}
+.i1-footer-breakdown{background:var(--volt-dim);border-top:1px solid var(--volt-border);}
+.i1-footer-row{display:flex;justify-content:space-between;padding:6px var(--screen-px);font-size:var(--t-xs);color:var(--txt-m);font-family:var(--font-body);border-bottom:1px solid var(--volt-border);}
+.i1-footer-row:last-child{border-bottom:none;}
+

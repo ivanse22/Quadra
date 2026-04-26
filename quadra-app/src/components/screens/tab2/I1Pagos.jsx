@@ -49,7 +49,7 @@ function SkeletonList() {
   )
 }
 
-function SwipeRow({ payment, isOpen, onOpen, onClose, onDetail, onDelete }) {
+function SwipeRow({ payment, isOpen, onOpen, onClose, onDetail, onDelete, showDate }) {
   const startXRef = useRef(null)
   const dragStartedRef = useRef(false)
   const [dragging, setDragging] = useState(false)
@@ -64,6 +64,15 @@ function SwipeRow({ payment, isOpen, onOpen, onClose, onDetail, onDelete }) {
   const amountMain = isIncome ? payment.gross || 0 : payment.pila || 0
   const amountTone = payment.disponible < 0 || !isIncome ? 'var(--fin-reserve)' : 'var(--fin-income)'
   const metaLabel = isIncome ? `Disponible ${fmtCompact(payment.disponible || 0)}` : 'Usa tu saldo disponible'
+  const rowTypeClass = payment.type === 'pila'
+    ? 'income-row--pila'
+    : payment.type === 'renta'
+    ? 'income-row--renta'
+    : 'income-row--income'
+
+  const sub = showDate
+    ? `${payment.method}${payment.currency !== 'COP' && payment.currency ? ` · ${payment.currency}` : ''} · ${getPaymentDateLabel(payment)}`
+    : `${payment.method}${payment.currency !== 'COP' && payment.originalAmount ? ` · ${payment.currency} ${payment.originalAmount.toLocaleString('es-CO')}` : ''}`
 
   const onPointerDown = (e) => {
     startXRef.current = e.clientX
@@ -123,7 +132,7 @@ function SwipeRow({ payment, isOpen, onOpen, onClose, onDetail, onDelete }) {
       </div>
 
       <div
-        className="tx-row compact-row movement-row income-row"
+        className={`tx-row compact-row movement-row income-row ${rowTypeClass}`}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={(e) => endDrag(e.clientX)}
@@ -160,10 +169,7 @@ function SwipeRow({ payment, isOpen, onOpen, onClose, onDetail, onDelete }) {
 
         <div className="tx-info compact-row-info movement-row-info">
           <div className="tx-name compact-row-name movement-row-name income-row-name">{payment.client}</div>
-          <div className="tx-sub compact-row-sub movement-row-sub income-row-sub">
-            {payment.method}
-            {payment.currency !== 'COP' && payment.currency ? ` · ${payment.currency} ${payment.originalAmount?.toLocaleString('es-CO')}` : ''}
-          </div>
+          <div className="tx-sub compact-row-sub movement-row-sub income-row-sub">{sub}</div>
         </div>
 
         <div className="compact-row-amount movement-row-amount income-row-amount">
@@ -197,12 +203,21 @@ function I1VacioFiltro({ period, onReset }) {
 }
 
 export default function I1Pagos() {
-  const { payments, navigate, setSelectedPayment, removePayment, showToast } = useAppStore()
+  const {
+    payments, navigate, setSelectedPayment, removePayment, showToast,
+    bannerI1Dismissed, setBannerI1Dismissed,
+  } = useAppStore()
+
   const [loading, setLoading] = useState(true)
   const [period, setPeriod] = useState('mes')
   const [groupBy, setGroupBy] = useState('fecha')
+  const [typeFilter, setTypeFilter] = useState('todos')
+  const [search, setSearch] = useState('')
+  const [showSearch, setShowSearch] = useState(false)
   const [deleteId, setDeleteId] = useState(null)
   const [openRowId, setOpenRowId] = useState(null)
+  const [footerExpanded, setFooterExpanded] = useState(false)
+  const pageRef = useRef(null)
 
   const now = new Date()
   const currentMonth = now.getMonth()
@@ -211,6 +226,19 @@ export default function I1Pagos() {
   useEffect(() => {
     setLoading(false)
   }, [])
+
+  const scrollToTop = () => {
+    const el = pageRef.current
+    if (!el) return
+    let target = el
+    while (target) {
+      if (target.scrollHeight > target.clientHeight && target.scrollTop > 0) {
+        target.scrollTo({ top: 0, behavior: 'smooth' })
+        return
+      }
+      target = target.parentElement
+    }
+  }
 
   if (payments.length === 0) return <I1Vacio />
 
@@ -223,10 +251,21 @@ export default function I1Pagos() {
     return true
   })
 
-  const incomePayments = filtered.filter((payment) => payment.type !== 'pila' && payment.type !== 'renta')
-  const filteredDisponible = filtered.reduce((sum, payment) => sum + (payment.disponible || 0), 0)
-  const filteredBruto = incomePayments.reduce((sum, payment) => sum + (payment.gross || 0), 0)
+  const incomePayments = filtered.filter((p) => p.type !== 'pila' && p.type !== 'renta')
+  const filteredDisponible = filtered.reduce((sum, p) => sum + (p.disponible || 0), 0)
+  const filteredBruto = incomePayments.reduce((sum, p) => sum + (p.gross || 0), 0)
   const filteredCount = filtered.length
+
+  // Stacked bar data (based on period income payments)
+  const totalRetencion = incomePayments.reduce((s, p) => s + (p.retencion || 0), 0)
+  const totalPila      = incomePayments.reduce((s, p) => s + (p.pila      || 0), 0)
+  const totalReserva   = incomePayments.reduce((s, p) => s + (p.reserva   || 0), 0)
+  const totalDisp      = incomePayments.reduce((s, p) => s + (p.disponible|| 0), 0)
+  const pctDisp = filteredBruto > 0 ? (totalDisp      / filteredBruto) * 100 : 0
+  const pctRet  = filteredBruto > 0 ? (totalRetencion / filteredBruto) * 100 : 0
+  const pctPila = filteredBruto > 0 ? (totalPila      / filteredBruto) * 100 : 0
+  const pctRes  = filteredBruto > 0 ? (totalReserva   / filteredBruto) * 100 : 0
+
   const periodEyebrow =
     period === 'mes' ? 'Período actual' :
     period === 'anio' ? 'Año en curso' :
@@ -247,8 +286,27 @@ export default function I1Pagos() {
     period === 'anio' ? 'este año' :
     'visibles'
 
-  const rawGrouped = filtered.reduce((acc, payment) => {
-    const key = groupBy === 'cliente'
+  // Type filter
+  const byType = typeFilter === 'ingresos'
+    ? filtered.filter(p => p.type !== 'pila' && p.type !== 'renta')
+    : typeFilter === 'pila'
+    ? filtered.filter(p => p.type === 'pila')
+    : filtered
+
+  // Search filter
+  const searchLower = search.toLowerCase()
+  const bySearch = search
+    ? byType.filter(p =>
+        (p.client || '').toLowerCase().includes(searchLower) ||
+        (p.method || '').toLowerCase().includes(searchLower) ||
+        (getPaymentDateLabel(p) || '').toLowerCase().includes(searchLower)
+      )
+    : byType
+
+  // Grouping — disable when search active
+  const effectiveGroupBy = search ? 'fecha' : groupBy
+  const rawGrouped = bySearch.reduce((acc, payment) => {
+    const key = effectiveGroupBy === 'cliente'
       ? (payment.type === 'pila' ? 'Pagos PILA' : (payment.client || 'Sin cliente'))
       : getPaymentDateLabel(payment)
     if (!acc[key]) acc[key] = []
@@ -256,7 +314,7 @@ export default function I1Pagos() {
     return acc
   }, {})
 
-  const groupEntries = groupBy === 'cliente'
+  const groupEntries = effectiveGroupBy === 'cliente'
     ? Object.entries(rawGrouped).sort(([a], [b]) => a.localeCompare(b, 'es'))
     : Object.entries(rawGrouped)
 
@@ -268,31 +326,55 @@ export default function I1Pagos() {
     showToast({ type: 'success', message: 'Pago eliminado' })
   }
 
-  return (
-    <div className="q-body-inner income-page" style={{ position: 'relative' }}>
+  const changePeriod = (v) => {
+    setPeriod(v)
+    setOpenRowId(null)
+    setSearch('')
+    scrollToTop()
+  }
 
-      {/* ── E1.1 Banner orientación: tu disponible está en Mi Dinero ── */}
-      <div style={{
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        gap: 'var(--s3)', padding: 'var(--s3) var(--s4)',
-        background: 'var(--volt-dim)', border: '1px solid var(--volt-border)',
-        borderRadius: 'var(--r-lg)', marginBottom: 'var(--s4)',
-      }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s2)', flex: 1, minWidth: 0 }}>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--volt-text)" strokeWidth="2.2" style={{ flexShrink: 0 }}>
-            <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
-          </svg>
-          <span style={{ fontSize: 'var(--t-xs)', color: 'var(--volt-text)', fontFamily: 'var(--font-body)', lineHeight: 1.4 }}>
-            Tu dinero disponible real está en <strong>Mi Dinero</strong>
-          </span>
+  const changeTypeFilter = (v) => {
+    setTypeFilter(v)
+    setOpenRowId(null)
+    scrollToTop()
+  }
+
+  return (
+    <div className="q-body-inner income-page" ref={pageRef} style={{ position: 'relative' }}>
+
+      {/* Banner orientación — dismissible */}
+      {!bannerI1Dismissed && (
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          gap: 'var(--s3)', padding: 'var(--s3) var(--s4)',
+          background: 'var(--volt-dim)', border: '1px solid var(--volt-border)',
+          borderRadius: 'var(--r-lg)', marginBottom: 'var(--s4)',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s2)', flex: 1, minWidth: 0 }}>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="var(--volt-text)" strokeWidth="2.2" style={{ flexShrink: 0 }}>
+              <circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <span style={{ fontSize: 'var(--t-xs)', color: 'var(--volt-text)', fontFamily: 'var(--font-body)', lineHeight: 1.4 }}>
+              Tu dinero disponible real está en <strong>Mi Dinero</strong>
+            </span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s2)', flexShrink: 0 }}>
+            <button
+              onClick={() => navigate('D1')}
+              style={{ fontSize: 'var(--t-xs)', fontWeight: 700, color: 'var(--volt-text)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: 'var(--font-display)', whiteSpace: 'nowrap' }}
+            >
+              Ver →
+            </button>
+            <button
+              onClick={() => setBannerI1Dismissed(true)}
+              aria-label="Cerrar aviso"
+              style={{ fontSize: 'var(--t-sm)', color: 'var(--txt-m)', background: 'none', border: 'none', cursor: 'pointer', padding: '2px 4px', lineHeight: 1 }}
+            >
+              ×
+            </button>
+          </div>
         </div>
-        <button
-          onClick={() => navigate('D1')}
-          style={{ flexShrink: 0, fontSize: 'var(--t-xs)', fontWeight: 700, color: 'var(--volt-text)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: 'var(--font-display)', whiteSpace: 'nowrap' }}
-        >
-          Ver →
-        </button>
-      </div>
+      )}
 
       {deleteId && (
         <div className="dialog-overlay">
@@ -349,19 +431,111 @@ export default function I1Pagos() {
               </div>
             </div>
 
+            {/* Stacked bar — distribución del ingreso en el período */}
+            {incomePayments.length > 0 && filteredBruto > 0 && (
+              <div style={{ padding: '0 0 var(--s1)' }}>
+                <div className="i1-breakdown-bar">
+                  <div className="i1-breakdown-seg" style={{ width: `${pctDisp}%`, background: 'var(--fin-income)' }} />
+                  <div className="i1-breakdown-seg" style={{ width: `${pctRet}%`,  background: 'var(--fin-deduct)' }} />
+                  <div className="i1-breakdown-seg" style={{ width: `${pctPila}%`, background: 'var(--fin-reserve)' }} />
+                  <div className="i1-breakdown-seg" style={{ width: `${pctRes}%`,  background: 'var(--volt-border)' }} />
+                </div>
+                <div className="i1-breakdown-legend">
+                  <div className="i1-breakdown-item">
+                    <div className="i1-breakdown-dot" style={{ background: 'var(--fin-income)' }} />
+                    Disponible {fmtCompact(totalDisp)}
+                  </div>
+                  {totalRetencion > 0 && (
+                    <div className="i1-breakdown-item">
+                      <div className="i1-breakdown-dot" style={{ background: 'var(--fin-deduct)' }} />
+                      Retención {fmtCompact(totalRetencion)}
+                    </div>
+                  )}
+                  {totalPila > 0 && (
+                    <div className="i1-breakdown-item">
+                      <div className="i1-breakdown-dot" style={{ background: 'var(--fin-reserve)' }} />
+                      PILA {fmtCompact(totalPila)}
+                    </div>
+                  )}
+                  {totalReserva > 0 && (
+                    <div className="i1-breakdown-item">
+                      <div className="i1-breakdown-dot" style={{ background: 'var(--volt-border)' }} />
+                      Reserva {fmtCompact(totalReserva)}
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             <div className="income-summary-filter">
-              <div className="seg-ctrl">
-                <button className={`seg-btn${period === 'mes' ? ' active' : ''}`} onClick={() => { setPeriod('mes'); setOpenRowId(null) }}>Este mes</button>
-                <button className={`seg-btn${period === 'anio' ? ' active' : ''}`} onClick={() => { setPeriod('anio'); setOpenRowId(null) }}>Este año</button>
-                <button className={`seg-btn${period === 'todo' ? ' active' : ''}`} onClick={() => { setPeriod('todo'); setOpenRowId(null) }}>Todo</button>
+              {/* Search input */}
+              {showSearch && (
+                <div className="i1-search-wrap">
+                  <svg className="i1-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                    <circle cx="11" cy="11" r="7.5" />
+                    <path d="M20 20l-3.5-3.5" />
+                  </svg>
+                  <input
+                    className="q-input"
+                    style={{ paddingLeft: 34 }}
+                    placeholder="Buscar cliente, método..."
+                    value={search}
+                    onChange={e => setSearch(e.target.value)}
+                    autoFocus
+                  />
+                  {search && (
+                    <button className="i1-search-clear" onClick={() => setSearch('')} aria-label="Limpiar búsqueda">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                        <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+              )}
+
+              {/* Period filter + search toggle */}
+              <div style={{ display: 'flex', gap: 'var(--s2)', alignItems: 'center' }}>
+                <div className="seg-ctrl" style={{ flex: 1 }}>
+                  <button className={`seg-btn${period === 'mes'  ? ' active' : ''}`} onClick={() => changePeriod('mes')}>Este mes</button>
+                  <button className={`seg-btn${period === 'anio' ? ' active' : ''}`} onClick={() => changePeriod('anio')}>Este año</button>
+                  <button className={`seg-btn${period === 'todo' ? ' active' : ''}`} onClick={() => changePeriod('todo')}>Todo</button>
+                </div>
+                <button
+                  onClick={() => { setShowSearch(v => !v); if (showSearch) setSearch('') }}
+                  aria-label="Buscar"
+                  style={{
+                    width: 36, height: 36, borderRadius: 'var(--r-full)',
+                    background: showSearch ? 'var(--volt-dim)' : 'var(--surf-2)',
+                    border: `1px solid ${showSearch ? 'var(--volt-border)' : 'var(--border)'}`,
+                    color: showSearch ? 'var(--volt-text)' : 'var(--txt-m)',
+                    cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    flexShrink: 0,
+                  }}
+                >
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                    <circle cx="11" cy="11" r="7.5" />
+                    <path d="M20 20l-3.5-3.5" />
+                  </svg>
+                </button>
               </div>
-              <div className="seg-ctrl" style={{ marginTop: 'var(--s2)' }}>
-                <button className={`seg-btn${groupBy === 'fecha' ? ' active' : ''}`} onClick={() => { setGroupBy('fecha'); setOpenRowId(null) }}>Por fecha</button>
-                <button className={`seg-btn${groupBy === 'cliente' ? ' active' : ''}`} onClick={() => { setGroupBy('cliente'); setOpenRowId(null) }}>Por cliente</button>
-              </div>
+
+              {/* Group + type filters — hidden when search active */}
+              {!search && (
+                <>
+                  <div className="seg-ctrl" style={{ marginTop: 'var(--s2)' }}>
+                    <button className={`seg-btn${groupBy === 'fecha'   ? ' active' : ''}`} onClick={() => { setGroupBy('fecha');   setOpenRowId(null) }}>Por fecha</button>
+                    <button className={`seg-btn${groupBy === 'cliente' ? ' active' : ''}`} onClick={() => { setGroupBy('cliente'); setOpenRowId(null) }}>Por cliente</button>
+                  </div>
+                  <div className="seg-ctrl" style={{ marginTop: 'var(--s2)' }}>
+                    <button className={`seg-btn${typeFilter === 'todos'    ? ' active' : ''}`} onClick={() => changeTypeFilter('todos')}>Todos</button>
+                    <button className={`seg-btn${typeFilter === 'ingresos' ? ' active' : ''}`} onClick={() => changeTypeFilter('ingresos')}>Solo ingresos</button>
+                    <button className={`seg-btn${typeFilter === 'pila'     ? ' active' : ''}`} onClick={() => changeTypeFilter('pila')}>Solo PILA</button>
+                  </div>
+                </>
+              )}
             </div>
 
-            {filtered.length > 0 && (
+            {bySearch.length > 0 && (
               <div className="income-summary-helper">
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M15 5l-6 7 6 7" />
@@ -371,15 +545,30 @@ export default function I1Pagos() {
             )}
           </div>
 
-          {filtered.length === 0 ? (
-            <I1VacioFiltro period={period} onReset={() => setPeriod('todo')} />
+          {bySearch.length === 0 ? (
+            search ? (
+              <div className="q-empty">
+                <div className="q-empty-visual">
+                  <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--txt-f)" strokeWidth="1.5">
+                    <circle cx="11" cy="11" r="8" /><path d="M21 21l-4.35-4.35" />
+                  </svg>
+                </div>
+                <h2 className="q-empty-headline">Sin resultados</h2>
+                <p className="q-empty-desc">No hay pagos que coincidan con "{search}".</p>
+                <button className="btn btn-ghost" onClick={() => setSearch('')} style={{ marginTop: 'var(--s3)' }}>
+                  Limpiar búsqueda
+                </button>
+              </div>
+            ) : (
+              <I1VacioFiltro period={period} onReset={() => changePeriod('todo')} />
+            )
           ) : (
             <div className="tx-list income-list">
               <div className="income-list-summary">
                 <div className="income-list-summary-label">{periodLabel}</div>
                 <div className="income-list-summary-value">{fmt(filteredBruto)}</div>
                 <div className="income-list-summary-meta">
-                  {filteredCount} {filteredCount === 1 ? 'movimiento visible' : 'movimientos visibles'}
+                  {bySearch.length} {bySearch.length === 1 ? 'movimiento visible' : 'movimientos visibles'}
                 </div>
               </div>
 
@@ -402,15 +591,67 @@ export default function I1Pagos() {
                         setOpenRowId(null)
                         setDeleteId(payment.id)
                       }}
+                      showDate={effectiveGroupBy === 'cliente'}
                     />
                   ))}
+                  {effectiveGroupBy === 'cliente' && (() => {
+                    const groupIncome = rows.filter(p => p.type !== 'pila')
+                    const groupBruto  = groupIncome.reduce((s, p) => s + (p.gross      || 0), 0)
+                    const groupDisp   = groupIncome.reduce((s, p) => s + (p.disponible || 0), 0)
+                    return groupBruto > 0 ? (
+                      <div className="i1-client-subtotal">
+                        <span>{groupIncome.length} pago{groupIncome.length !== 1 ? 's' : ''}</span>
+                        <span>Bruto {fmtCompact(groupBruto)} · Disponible {fmtCompact(groupDisp)}</span>
+                      </div>
+                    ) : null
+                  })()}
                 </div>
               ))}
 
-              <div className="tx-total-row">
-                <div className="tx-total-l">{footerLabel}</div>
+              <div
+                className="tx-total-row"
+                role="button"
+                onClick={() => setFooterExpanded(e => !e)}
+                style={{ cursor: 'pointer' }}
+              >
+                <div className="tx-total-l" style={{ display: 'flex', alignItems: 'center', gap: 'var(--s2)' }}>
+                  {footerLabel}
+                  <svg
+                    width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+                    style={{ transform: footerExpanded ? 'rotate(180deg)' : 'none', transition: '200ms', flexShrink: 0 }}
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </div>
                 <div className="tx-total-v">{fmt(filteredDisponible)}</div>
               </div>
+
+              {footerExpanded && (
+                <div className="i1-footer-breakdown">
+                  <div className="i1-footer-row">
+                    <span>Ingreso bruto</span>
+                    <span style={{ color: 'var(--fin-income)' }}>{fmt(filteredBruto)}</span>
+                  </div>
+                  {totalRetencion > 0 && (
+                    <div className="i1-footer-row">
+                      <span>Retenciones</span>
+                      <span style={{ color: 'var(--fin-deduct)' }}>−{fmt(totalRetencion)}</span>
+                    </div>
+                  )}
+                  {totalPila > 0 && (
+                    <div className="i1-footer-row">
+                      <span>PILA reservada</span>
+                      <span style={{ color: 'var(--fin-reserve)' }}>−{fmt(totalPila)}</span>
+                    </div>
+                  )}
+                  {totalReserva > 0 && (
+                    <div className="i1-footer-row">
+                      <span>Reserva renta</span>
+                      <span style={{ color: 'var(--fin-reserve)' }}>−{fmt(totalReserva)}</span>
+                    </div>
+                  )}
+                </div>
+              )}
             </div>
           )}
         </>

@@ -354,6 +354,10 @@ export const useAppStore = create(
         set(state => ({ toasts: state.toasts.filter(t => t.id !== id) }))
       },
 
+      // ── UI prefs ─────────────────────────────────────────────────
+      bannerI1Dismissed: false,
+      setBannerI1Dismissed: (v) => set({ bannerI1Dismissed: v }),
+
       // ── Alerts toggles (C2) ───────────────────────────────────────
       alerts: {
         pila:           true,
@@ -408,6 +412,7 @@ export const useAppStore = create(
         kpis:          state.kpis,
         profile:       state.profile,
         alerts:        state.alerts,
+        bannerI1Dismissed: state.bannerI1Dismissed,
         theme:         state.theme,
         currentScreen: state.currentScreen,
         screenHistory: state.screenHistory,

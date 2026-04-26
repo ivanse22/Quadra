@@ -433,7 +433,7 @@ export default function I1Pagos() {
 
             {/* Stacked bar — distribución del ingreso en el período */}
             {incomePayments.length > 0 && filteredBruto > 0 && (
-              <div style={{ padding: '0 0 var(--s1)' }}>
+              <div className="income-breakdown-section">
                 <div className="i1-breakdown-bar">
                   <div className="i1-breakdown-seg" style={{ width: `${pctDisp}%`, background: 'var(--fin-income)' }} />
                   <div className="i1-breakdown-seg" style={{ width: `${pctRet}%`,  background: 'var(--fin-deduct)' }} />
@@ -494,8 +494,8 @@ export default function I1Pagos() {
               )}
 
               {/* Period filter + search toggle */}
-              <div style={{ display: 'flex', gap: 'var(--s2)', alignItems: 'center' }}>
-                <div className="seg-ctrl" style={{ flex: 1 }}>
+              <div className="income-filter-period">
+                <div className="seg-ctrl">
                   <button className={`seg-btn${period === 'mes'  ? ' active' : ''}`} onClick={() => changePeriod('mes')}>Este mes</button>
                   <button className={`seg-btn${period === 'anio' ? ' active' : ''}`} onClick={() => changePeriod('anio')}>Este año</button>
                   <button className={`seg-btn${period === 'todo' ? ' active' : ''}`} onClick={() => changePeriod('todo')}>Todo</button>
@@ -520,19 +520,17 @@ export default function I1Pagos() {
               </div>
 
               {/* Group + type filters — hidden when search active */}
-              {!search && (
-                <>
-                  <div className="seg-ctrl" style={{ marginTop: 'var(--s2)' }}>
-                    <button className={`seg-btn${groupBy === 'fecha'   ? ' active' : ''}`} onClick={() => { setGroupBy('fecha');   setOpenRowId(null) }}>Por fecha</button>
-                    <button className={`seg-btn${groupBy === 'cliente' ? ' active' : ''}`} onClick={() => { setGroupBy('cliente'); setOpenRowId(null) }}>Por cliente</button>
-                  </div>
-                  <div className="seg-ctrl" style={{ marginTop: 'var(--s2)' }}>
-                    <button className={`seg-btn${typeFilter === 'todos'    ? ' active' : ''}`} onClick={() => changeTypeFilter('todos')}>Todos</button>
-                    <button className={`seg-btn${typeFilter === 'ingresos' ? ' active' : ''}`} onClick={() => changeTypeFilter('ingresos')}>Solo ingresos</button>
-                    <button className={`seg-btn${typeFilter === 'pila'     ? ' active' : ''}`} onClick={() => changeTypeFilter('pila')}>Solo PILA</button>
-                  </div>
-                </>
-              )}
+              <div className="income-filter-secondary" aria-hidden={!!search}>
+                <div className="seg-ctrl">
+                  <button className={`seg-btn${groupBy === 'fecha'   ? ' active' : ''}`} onClick={() => { setGroupBy('fecha');   setOpenRowId(null) }}>Por fecha</button>
+                  <button className={`seg-btn${groupBy === 'cliente' ? ' active' : ''}`} onClick={() => { setGroupBy('cliente'); setOpenRowId(null) }}>Por cliente</button>
+                </div>
+                <div className="seg-ctrl">
+                  <button className={`seg-btn${typeFilter === 'todos'    ? ' active' : ''}`} onClick={() => changeTypeFilter('todos')}>Todos</button>
+                  <button className={`seg-btn${typeFilter === 'ingresos' ? ' active' : ''}`} onClick={() => changeTypeFilter('ingresos')}>Solo ingresos</button>
+                  <button className={`seg-btn${typeFilter === 'pila'     ? ' active' : ''}`} onClick={() => changeTypeFilter('pila')}>Solo PILA</button>
+                </div>
+              </div>
             </div>
 
             {bySearch.length > 0 && (

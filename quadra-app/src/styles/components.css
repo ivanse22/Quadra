@@ -2320,3 +2320,56 @@ textarea:focus-visible,
 .i1-footer-row{display:flex;justify-content:space-between;padding:6px var(--screen-px);font-size:var(--t-xs);color:var(--txt-m);font-family:var(--font-body);border-bottom:1px solid var(--volt-border);}
 .i1-footer-row:last-child{border-bottom:none;}
 
+/* ── I4TotalGanado — KPI grid ── */
+.kpi-grid{display:grid;grid-template-columns:1fr 1fr;gap:var(--s3);}
+.kpi-mini-card{background:var(--bg-subtle);border:1px solid var(--border);border-radius:var(--r-lg);padding:var(--s4);transition:background var(--motion-fast) var(--ease-out);}
+.kpi-mini-card:hover{background:var(--surf-2);}
+.kpi-mini-icon{width:28px;height:28px;border-radius:var(--r-sm);display:flex;align-items:center;justify-content:center;margin-bottom:var(--s2);}
+.kpi-mini-label{font-size:var(--t-xs);color:var(--txt-m);font-family:var(--font-body);margin-bottom:var(--s1);line-height:1.3;}
+.kpi-mini-value{font-size:var(--t-lg);font-weight:900;font-family:var(--font-display);line-height:1.1;font-variant-numeric:tabular-nums;}
+
+/* ── I4TotalGanado — mini bar chart ── */
+.i4-bar-chart{display:grid;gap:var(--s2);align-items:end;}
+.i4-bar-col{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.i4-bar-value{font-size:9px;font-weight:700;font-family:var(--font-display);color:var(--txt-m);height:14px;display:flex;align-items:center;font-variant-numeric:tabular-nums;}
+.i4-bar-track{width:100%;border-radius:var(--r-lg);background:var(--surf-1);border:1px solid var(--border);display:flex;align-items:flex-end;overflow:hidden;}
+.i4-bar-fill{width:100%;border-radius:8px 8px 0 0;background:var(--fin-income);transition:height .55s var(--ease-out);}
+.i4-bar-lbl{font-size:var(--t-xs);font-weight:500;color:var(--txt-m);font-family:var(--font-body);}
+.i4-bar-col--current .i4-bar-fill{background:var(--volt-text);}
+.i4-bar-col--current .i4-bar-lbl{color:var(--volt-text);font-weight:700;}
+.i4-bar-col--current .i4-bar-value{color:var(--volt-text);}
+
+/* ── I5HistorialPILA — month grid ── */
+.pila-month-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s3);margin:var(--s4) 0;}
+.pila-month-cell{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.pila-month-dot{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background var(--motion-fast) var(--ease-out),border-color var(--motion-fast) var(--ease-out);}
+.pila-month-dot--paid{background:rgba(22,163,74,0.12);border:1.5px solid var(--fin-income);}
+.pila-month-dot--pending{background:rgba(180,83,9,0.10);border:1.5px solid var(--fin-reserve);}
+.pila-month-dot--future{background:var(--surf-1);border:1.5px solid var(--border);}
+.pila-month-label{font-size:var(--t-xs);color:var(--txt-m);font-family:var(--font-body);font-weight:500;}
+.pila-month-label--paid{color:var(--fin-income);font-weight:700;}
+.pila-month-label--pending{color:var(--fin-reserve);font-weight:700;}
+
+/* ── I5 — pending row highlight ── */
+.pila-row-pending{background:rgba(180,83,9,0.04);border-left:3px solid var(--fin-reserve)!important;padding-left:calc(var(--screen-px) - 3px)!important;}
+
+/* ── I3Detalle — premium header ── */
+.i3-header-card{padding:var(--s5) var(--s5) var(--s4);background:var(--bg-subtle);border-bottom:1px solid var(--border);}
+.i3-header-icon{width:44px;height:44px;border-radius:var(--r-full);display:flex;align-items:center;justify-content:center;margin-bottom:var(--s3);}
+.i3-header-amount{font-family:var(--font-display);font-size:var(--t-2xl);font-weight:900;letter-spacing:-0.03em;line-height:1;margin-bottom:var(--s1);font-variant-numeric:tabular-nums;}
+.i3-header-disponible{font-size:var(--t-sm);font-weight:700;color:var(--volt-text);margin-bottom:var(--s3);}
+.i3-header-chips{display:flex;flex-wrap:wrap;gap:var(--s2);}
+.i3-header-chip{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;background:var(--surf-2);border:1px solid var(--border);border-radius:var(--r-full);font-size:var(--t-xs);color:var(--txt-m);font-family:var(--font-body);white-space:nowrap;}
+
+/* ── I2Registro — preview card premium ── */
+.i2-preview-card{background:var(--bg-subtle);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s5);margin-top:var(--s5);}
+.i2-preview-header{font-size:var(--t-xs);font-weight:700;color:var(--txt-m);font-family:var(--font-body);text-transform:uppercase;letter-spacing:.08em;margin-bottom:var(--s4);}
+.i2-pila-toggle{width:100%;background:none;border:none;display:flex;align-items:center;justify-content:space-between;padding:var(--s2) 0;cursor:pointer;font-family:var(--font-body);}
+.i2-pila-toggle-label{font-size:var(--t-xs);color:var(--txt-m);font-weight:600;}
+.i2-pila-detail{overflow:hidden;transition:max-height var(--motion-shift) var(--ease-out);}
+.i2-client-avatar{width:28px;height:28px;border-radius:50%;background:var(--volt-dim);border:1px solid var(--volt-border);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:var(--t-xs);font-weight:800;color:var(--volt-text);font-family:var(--font-display);}
+
+/* ── I2Resultado — pill close button ── */
+.i2r-close-pill{display:inline-flex;align-items:center;gap:4px;padding:4px 10px;background:var(--surf-1);border:1px solid var(--border);border-radius:var(--r-full);font-size:var(--t-xs);color:var(--txt-m);font-family:var(--font-body);font-weight:500;cursor:pointer;transition:background var(--motion-fast) var(--ease-out);}
+.i2r-close-pill:hover{background:var(--surf-2);}
+

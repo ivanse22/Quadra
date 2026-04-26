@@ -1038,7 +1038,7 @@ textarea:focus-visible,
 .badge-warn{background:var(--fin-reserve-dim);color:var(--fin-reserve);border:1px solid var(--fin-reserve-border);}
 .badge-volt{background:var(--volt);color:var(--volt-on);}
 .badge-neu{background:var(--surf-2);color:var(--txt-2);border:1px solid var(--border-s);}
-.trend-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:var(--r-full);font-size:var(--t-sm);font-weight:700;font-family:var(--font-display);}
+.trend-badge{display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:var(--r-full);font-size:var(--t-sm);font-weight:700;font-family:var(--font-display);white-space:nowrap;}
 .trend-up{background:var(--fin-income-dim);color:var(--fin-income);border:1px solid var(--fin-income-border);}
 .trend-down{background:var(--fin-deduct-dim);color:var(--fin-deduct);border:1px solid var(--fin-deduct-border);}
 

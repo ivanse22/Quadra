@@ -412,7 +412,7 @@ export default function I1Pagos() {
                   <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                     <path d="M18 15l-6-6-6 6" />
                   </svg>
-                  +{fmt(filteredBruto)} {periodTrendLabel}
+                  +{fmtCompact(filteredBruto)}
                 </span>
                 <button className="btn btn-ghost btn-sm income-summary-link" onClick={() => navigate('I4')}>
                   Ver KPIs →
@@ -527,8 +527,8 @@ export default function I1Pagos() {
                 </div>
                 <div className="seg-ctrl">
                   <button className={`seg-btn${typeFilter === 'todos'    ? ' active' : ''}`} onClick={() => changeTypeFilter('todos')}>Todos</button>
-                  <button className={`seg-btn${typeFilter === 'ingresos' ? ' active' : ''}`} onClick={() => changeTypeFilter('ingresos')}>Solo ingresos</button>
-                  <button className={`seg-btn${typeFilter === 'pila'     ? ' active' : ''}`} onClick={() => changeTypeFilter('pila')}>Solo PILA</button>
+                  <button className={`seg-btn${typeFilter === 'ingresos' ? ' active' : ''}`} onClick={() => changeTypeFilter('ingresos')}>Ingresos</button>
+                  <button className={`seg-btn${typeFilter === 'pila'     ? ' active' : ''}`} onClick={() => changeTypeFilter('pila')}>PILA</button>
                 </div>
               </div>
             </div>

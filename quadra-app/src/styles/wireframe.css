@@ -1,7 +1,9 @@
-/* Quadra — vista wireframe (solo activa con html[data-wireframe="true"]).
-   No afecta la app cuando el atributo no está presente. */
+/* Quadra — vista wireframe tipo “bloques” (solo html[data-wireframe="true"]). */
 
 html[data-wireframe="true"] {
+  --wf-outline: #262626;
+  --wf-grid: rgba(38, 38, 38, 0.06);
+  --wf-block-bg: #f0f0f0;
   --volt: #525252;
   --volt-on: #fafafa;
   --volt-text: #262626;
@@ -23,13 +25,13 @@ html[data-wireframe="true"] {
   --fin-available-dark: #a3a3a3;
   --bg: #fafafa;
   --bg-subtle: #f0f0f0;
-  --surf-1: #e8e8e8;
-  --surf-2: #e0e0e0;
-  --surf-3: #d4d4d4;
+  --surf-1: #ebebeb;
+  --surf-2: #e4e4e4;
+  --surf-3: #d9d9d9;
   --surf-inv: #171717;
-  --border: rgba(0, 0, 0, 0.18);
-  --border-s: rgba(0, 0, 0, 0.24);
-  --border-m: rgba(0, 0, 0, 0.3);
+  --border: rgba(38, 38, 38, 0.22);
+  --border-s: rgba(38, 38, 38, 0.3);
+  --border-m: rgba(38, 38, 38, 0.38);
   --txt: #171717;
   --txt-2: #404040;
   --txt-m: #525252;
@@ -40,9 +42,21 @@ html[data-wireframe="true"] {
   --shadow-md: none;
   --shadow-lg: none;
   --shadow-xl: none;
+  /* Esquinas casi rectas = lectura “bloque” */
+  --r-xs: 2px;
+  --r-sm: 2px;
+  --r-md: 3px;
+  --r-lg: 3px;
+  --r-xl: 4px;
+  --r-2xl: 4px;
+  --r-3xl: 4px;
+  --r-full: 4px;
 }
 
 html[data-wireframe="true"][data-theme="dark"] {
+  --wf-outline: #e5e5e5;
+  --wf-grid: rgba(245, 245, 245, 0.05);
+  --wf-block-bg: #1f1f1f;
   --volt: #a3a3a3;
   --volt-on: #0a0a0a;
   --volt-text: #e5e5e5;
@@ -64,9 +78,9 @@ html[data-wireframe="true"][data-theme="dark"] {
   --surf-2: #262626;
   --surf-3: #333333;
   --surf-inv: #fafafa;
-  --border: rgba(255, 255, 255, 0.14);
-  --border-s: rgba(255, 255, 255, 0.2);
-  --border-m: rgba(255, 255, 255, 0.28);
+  --border: rgba(245, 245, 245, 0.16);
+  --border-s: rgba(245, 245, 245, 0.22);
+  --border-m: rgba(245, 245, 245, 0.3);
   --txt: #f5f5f5;
   --txt-2: #d4d4d4;
   --txt-m: #a3a3a3;
@@ -74,6 +88,32 @@ html[data-wireframe="true"][data-theme="dark"] {
   --txt-inv: #171717;
 }
 
+/* Marco tipo dispositivo + rejilla de fondo en el scroll */
+html[data-wireframe="true"] .q-phone {
+  box-shadow: none !important;
+  border: 3px solid var(--wf-outline) !important;
+  background: var(--bg) !important;
+}
+
+html[data-wireframe="true"] .q-body {
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(var(--wf-grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--wf-grid) 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-attachment: local;
+}
+
+html[data-wireframe="true"] .q-body-inner {
+  border: 2px solid var(--wf-outline);
+  border-radius: var(--r-md);
+  padding: var(--s4);
+  margin: var(--s3);
+  background: var(--wf-block-bg);
+  box-sizing: border-box;
+}
+
+/* Tarjetas y paneles = bloques sólidos */
 html[data-wireframe="true"] .card,
 html[data-wireframe="true"] .hero-card,
 html[data-wireframe="true"] .kpi-card,
@@ -82,31 +122,193 @@ html[data-wireframe="true"] .tx-list,
 html[data-wireframe="true"] .dialog,
 html[data-wireframe="true"] .fab-sheet,
 html[data-wireframe="true"] .install-banner,
-html[data-wireframe="true"] .q-sheet {
+html[data-wireframe="true"] .q-sheet,
+html[data-wireframe="true"] .income-summary-card,
+html[data-wireframe="true"] .income-list-summary,
+html[data-wireframe="true"] .income-breakdown-section,
+html[data-wireframe="true"] .tx-detail-header,
+html[data-wireframe="true"] .calendar-shell,
+html[data-wireframe="true"] .toast {
   box-shadow: none !important;
-  border: 2px dashed #737373 !important;
+  border: 2px solid var(--wf-outline) !important;
+  background: var(--wf-block-bg) !important;
 }
 
-html[data-wireframe="true"] .btn,
+html[data-wireframe="true"] .hero-card::after {
+  display: none !important;
+}
+
+html[data-wireframe="true"][data-theme="dark"] .card,
+html[data-wireframe="true"][data-theme="dark"] .hero-card,
+html[data-wireframe="true"][data-theme="dark"] .kpi-card,
+html[data-wireframe="true"][data-theme="dark"] .desglose,
+html[data-wireframe="true"][data-theme="dark"] .tx-list,
+html[data-wireframe="true"][data-theme="dark"] .income-summary-card,
+html[data-wireframe="true"][data-theme="dark"] .income-list-summary,
+html[data-wireframe="true"][data-theme="dark"] .q-body-inner {
+  background: var(--wf-block-bg) !important;
+}
+
+/* Filas de lista = bloques apilados */
+html[data-wireframe="true"] .tx-row,
+html[data-wireframe="true"] .income-row,
+html[data-wireframe="true"] .compact-row,
+html[data-wireframe="true"] .tx-total-row {
+  border: 2px solid var(--wf-outline) !important;
+  border-radius: var(--r-sm) !important;
+  margin-bottom: var(--s2) !important;
+  background: var(--bg) !important;
+  box-shadow: none !important;
+}
+
+html[data-wireframe="true"] .tx-row:last-child,
+html[data-wireframe="true"] .income-row:last-child {
+  margin-bottom: 0 !important;
+}
+
+html[data-wireframe="true"] .tx-row:hover,
+html[data-wireframe="true"] .income-row:hover,
+html[data-wireframe="true"] .compact-row:hover,
+html[data-wireframe="true"] .tx-total-row:hover {
+  background: var(--surf-2) !important;
+}
+
+/* Cabecera y navegación inferior */
+html[data-wireframe="true"] .q-header,
+html[data-wireframe="true"] .bottom-nav {
+  box-shadow: none !important;
+  border: 2px solid var(--wf-outline) !important;
+  background: var(--wf-block-bg) !important;
+}
+
+html[data-wireframe="true"] .bottom-nav {
+  border-width: 3px 0 0 0 !important;
+  border-style: solid !important;
+  border-color: var(--wf-outline) !important;
+}
+
+html[data-wireframe="true"] .nav-item {
+  border: 2px solid transparent;
+  border-radius: var(--r-sm);
+}
+
+html[data-wireframe="true"] .nav-item.on {
+  border-color: var(--wf-outline) !important;
+  background: var(--bg) !important;
+}
+
+/* Botones e inputs = contornos claros, sin relleno “marca” */
+html[data-wireframe="true"] .btn {
+  box-shadow: none !important;
+  transform: none !important;
+  border: 2px solid var(--wf-outline) !important;
+  background: var(--bg) !important;
+  color: var(--txt) !important;
+}
+
+html[data-wireframe="true"] .btn:hover,
+html[data-wireframe="true"] .btn:active {
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+html[data-wireframe="true"] .btn-primary {
+  background: var(--surf-2) !important;
+  font-weight: 800;
+}
+
+html[data-wireframe="true"] .btn-secondary,
+html[data-wireframe="true"] .btn-ghost {
+  background: transparent !important;
+}
+
 html[data-wireframe="true"] .q-input,
 html[data-wireframe="true"] .q-toggle,
-html[data-wireframe="true"] .bottom-nav,
-html[data-wireframe="true"] .q-header,
-html[data-wireframe="true"] .calendar-shell {
+html[data-wireframe="true"] .ob-option,
+html[data-wireframe="true"] .seg-ctrl,
+html[data-wireframe="true"] .seg-ctrl button,
+html[data-wireframe="true"] .currency-btn,
+html[data-wireframe="true"] .date-btn,
+html[data-wireframe="true"] .amount-currency-pill,
+html[data-wireframe="true"] .numpad-key {
   box-shadow: none !important;
+  border: 2px solid var(--wf-outline) !important;
+}
+
+html[data-wireframe="true"] .ob-option.selected {
+  border-style: solid !important;
+  border-width: 3px !important;
+}
+
+html[data-wireframe="true"] .q-toggle {
+  background: var(--bg) !important;
+}
+
+html[data-wireframe="true"] .banner-info,
+html[data-wireframe="true"] .banner-warn,
+html[data-wireframe="true"] .banner-err,
+html[data-wireframe="true"] .banner-success {
+  border: 2px solid var(--wf-outline) !important;
+  box-shadow: none !important;
+  background: var(--wf-block-bg) !important;
+}
+
+html[data-wireframe="true"] .progress-track,
+html[data-wireframe="true"] .i1-breakdown-bar {
+  border: 2px solid var(--wf-outline) !important;
+  background: var(--bg) !important;
+}
+
+html[data-wireframe="true"] .progress-fill {
+  outline: 1px solid var(--wf-outline);
+  outline-offset: -1px;
+}
+
+html[data-wireframe="true"] .fab-sheet-option {
+  border: 2px solid var(--wf-outline) !important;
+  background: var(--bg) !important;
+}
+
+html[data-wireframe="true"] .fab-sheet-list {
+  gap: var(--s2);
 }
 
 html[data-wireframe="true"] button.fab-pulse,
 html[data-wireframe="true"] button.fab-open {
-  background: #e5e5e5 !important;
-  color: #171717 !important;
+  background: var(--surf-2) !important;
+  color: var(--txt) !important;
   box-shadow: none !important;
-  border: 2px dashed #525252 !important;
+  border: 3px solid var(--wf-outline) !important;
 }
 
-html[data-wireframe="true"][data-theme="dark"] button.fab-pulse,
-html[data-wireframe="true"][data-theme="dark"] button.fab-open {
-  background: #262626 !important;
-  color: #fafafa !important;
-  border-color: #a3a3a3 !important;
+html[data-wireframe="true"] .skel {
+  background: repeating-linear-gradient(
+    90deg,
+    var(--surf-2),
+    var(--surf-2) 8px,
+    var(--surf-3) 8px,
+    var(--surf-3) 16px
+  ) !important;
+  border: 2px dashed var(--wf-outline) !important;
+}
+
+/* Iconos circulares → cuadrados con borde */
+html[data-wireframe="true"] .tx-icon,
+html[data-wireframe="true"] .tx-detail-icon-wrap,
+html[data-wireframe="true"] .compact-row .tx-icon {
+  border-radius: var(--r-sm) !important;
+  border: 2px solid var(--wf-outline) !important;
+}
+
+html[data-wireframe="true"] img {
+  opacity: 0.85;
+  filter: grayscale(1);
+  border: 2px solid var(--wf-outline);
+  border-radius: var(--r-sm);
+}
+
+/* Overlay de diálogo */
+html[data-wireframe="true"] .dialog-overlay {
+  background: rgba(0, 0, 0, 0.35) !important;
+  backdrop-filter: none !important;
 }

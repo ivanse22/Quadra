@@ -1,0 +1,14 @@
+Quadra DS v9 — tokens para Tokens Studio (Figma)
+
+Fuente CSS: quadra-app/src/styles/tokens.css
+
+Archivo único de tokens: quadra-ds-v9.json
+- En la raíz: border, color.reference, font, motion, radius, space, screen, compact
+- theme.light / theme.dark: color + shadow resueltos por modo (usa theme.light.color.surface.bg, theme.dark.shadow.sm, etc.)
+
+Import sugerido:
+1. Tokens Studio → añade un Token Set llamado exactamente quadra-ds-v9 y pega / sincroniza el JSON.
+2. $metadata.json apunta solo a ese set; $themes.json tiene un tema Default que lo activa.
+3. Al exportar a Variables, los nombres incluirán el prefijo theme.light o theme.dark según referencies.
+
+Si prefieres el flujo con modos nativos del plugin (Light/Dark como modos de una colección), vuelve a separar en varios token sets o duplica referencias en el plugin según su guía Pro.

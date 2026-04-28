@@ -1,0 +1,66 @@
+# Quadra Design System
+
+Quadra DS es el sistema de diseño que impulsa la aplicación de finanzas personales **Quadra**. Está construido sobre tokens CSS, clases de componentes globales y componentes React — sin CSS-in-JS ni módulos por componente.
+
+---
+
+## Principios
+
+### 📱 Mobile-first
+La app vive en un shell de teléfono de `390 × 844 px`. Cada componente se diseña para táctil primero, luego se escala hacia arriba.
+
+### 🎨 Token-driven
+Todos los valores de color, tipografía, espaciado, sombra y movimiento viven en **CSS custom properties** declaradas en `tokens.css`. Nunca hardcodees un valor: si no hay token, créalo.
+
+### 💰 Colores semánticos financieros
+El dominio de finanzas personales tiene significados fijos:
+- **Verde** (`--fin-income`) → ingresos
+- **Rojo** (`--fin-deduct`) → gastos / deducciones
+- **Naranja** (`--fin-reserve`) → reservas
+- **Volt** (`--volt`, `#BDF300`) → marca / acción principal
+
+Estos significados no se mezclan con otros usos de color.
+
+### 🧱 Clases globales
+Los estilos se aplican mediante clases CSS globales (`.btn`, `.card`, `.field`, etc.), no mediante props de componente. Esto permite usar el sistema desde HTML puro, React, o cualquier otro framework.
+
+---
+
+## Stack técnico
+
+| Capa | Tecnología |
+|------|-----------|
+| UI | React 19 |
+| Build | Vite |
+| Estado | Zustand |
+| Backend | Supabase |
+| PWA | vite-plugin-pwa |
+| Fuente display | Satoshi |
+| Fuente body | DM Sans |
+| Documentación | Storybook 7 |
+
+---
+
+## Estructura de archivos
+
+```
+src/
+├── styles/
+│   ├── tokens.css        ← CSS custom properties (única fuente de verdad)
+│   ├── components.css    ← Clases de componentes globales
+│   └── index.css         ← Importa tokens + componentes + resets
+├── components/
+│   └── ui/               ← Componentes React que consumen las clases
+└── docs/                 ← Esta documentación MDX
+```
+
+---
+
+## Cómo navegar esta documentación
+
+| Sección | Contenido |
+|---------|-----------|
+| **Design Tokens** | Colores, tipografía, espaciado, motion |
+| **App Components** | Botones, formularios, cards, feedback |
+| **App Shell** | Headers, bottom nav, phone shell |
+| **Guidelines** | Guía de inicio, dark mode, accesibilidad |

@@ -1,0 +1,98 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as FormsStories from './Forms.stories';
+
+<Meta of={FormsStories} />
+
+# Forms & Inputs
+
+Todos los elementos de formulario comparten la clase base `.field` y se construyen con la misma anatomía: label → input → hint.
+
+---
+
+## Anatomía
+
+```html
+<div class="field">
+  <label class="field-label">Nombre del campo</label>
+  <input class="field-input" type="text" placeholder="..." />
+  <span class="field-hint">Texto de ayuda opcional</span>
+</div>
+```
+
+### Clases
+
+| Clase | Elemento | Descripción |
+|-------|----------|-------------|
+| `.field` | Wrapper | Contenedor principal del campo |
+| `.field-label` | `<label>` | Etiqueta del campo |
+| `.field-input` | `<input>`, `<select>`, `<textarea>` | Input estilizado |
+| `.field-hint` | `<span>` | Texto de ayuda o descripción |
+| `.field-error` | Modificador del `.field` | Activa estilos de error |
+| `.field-hint-error` | Modificador del `.field-hint` | Texto de error en rojo |
+
+---
+
+## Estado de error
+
+Añadir `.field-error` al wrapper activa los estilos de borde rojo en el input:
+
+```html
+<div class="field field-error">
+  <label class="field-label">Email</label>
+  <input class="field-input" type="email" value="noválido" />
+  <span class="field-hint field-hint-error">Ingresa un correo válido</span>
+</div>
+```
+
+---
+
+## Segmented Control
+
+Selector de opción única con aspecto de pestañas. Usar en lugar de `<select>` cuando hay 2-4 opciones breves.
+
+```html
+<div class="seg-ctrl">
+  <button class="seg-opt on">Mensual</button>
+  <button class="seg-opt">Anual</button>
+  <button class="seg-opt">Total</button>
+</div>
+```
+
+La clase `.on` marca la opción activa. Mover con JS al hacer click.
+
+---
+
+## Toggle Switch
+
+Checkbox estilizado como toggle. El estado se controla con el `<input type="checkbox">` nativo.
+
+```html
+<label class="toggle">
+  <input type="checkbox" checked />
+  <span class="toggle-track">
+    <span class="toggle-thumb"></span>
+  </span>
+</label>
+```
+
+---
+
+## Vista previa
+
+<Canvas of={FormsStories.AllFormElements} />
+
+---
+
+## Select
+
+Usar la misma clase `.field-input` en `<select>`:
+
+```html
+<div class="field">
+  <label class="field-label">Tipo de contrato</label>
+  <select class="field-input">
+    <option>Persona natural</option>
+    <option>Empleado</option>
+  </select>
+</div>
+```

@@ -1,0 +1,75 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as AmountFieldStories from './AmountField.stories';
+
+<Meta of={AmountFieldStories} />
+
+# AmountField
+
+Campo de entrada de montos con numpad integrado. Diseñado específicamente para la entrada de valores monetarios en COP en contexto móvil.
+
+---
+
+## Características
+
+- **Numpad táctil** que aparece al tocar el campo
+- **Fuente dinámica** que se reduce automáticamente con valores largos (`clamp`)
+- **Feedback táctil** via `navigator.vibrate(30ms)` en dispositivos compatibles
+- **Soporte de teclado físico** — captura teclas numéricas y Backspace globalmente
+- **Formato local** — usa `toLocaleString('es-CO')` para separadores de miles
+- **Límite** de 9 dígitos
+- **Hint condicional** de "Calculando tu disponible..." cuando `showCalculatingHint=true` y el monto ≥ 10,000
+
+---
+
+## Props
+
+| Prop | Tipo | Por defecto | Descripción |
+|------|------|-------------|-------------|
+| `onChange` | `(value: number) => void` | — | Callback con el valor numérico en cada keystroke |
+| `showCalculatingHint` | `boolean` | `false` | Muestra el hint verde cuando el monto es ≥ 10,000 |
+
+---
+
+## Uso
+
+```jsx
+import AmountField from '@/components/ui/AmountField';
+
+function RegistrarPago() {
+  const [monto, setMonto] = useState(0);
+
+  return (
+    <AmountField
+      onChange={setMonto}
+      showCalculatingHint={true}
+    />
+  );
+}
+```
+
+---
+
+## Clases CSS relevantes
+
+| Clase | Elemento |
+|-------|----------|
+| `.amount-currency-pill` | Pill "COP" con icono y chevron |
+| `.amount-input-wrap` | Wrapper clickable del número grande |
+| `.amount-prefix` | Símbolo "$" |
+| `.amount-number` | Número formateado |
+| `.amount-number.has-val` | Activado cuando el monto ≥ 10,000 |
+| `.amount-divider` | Línea bajo el número |
+| `.amount-divider.focused` | Línea verde cuando hay valor |
+| `.amount-done-btn` | Botón "Listo" del numpad |
+| `.numpad` | Grid del teclado numérico |
+| `.numpad-key` | Tecla individual |
+| `.numpad-key.zero` | Tecla "0" (ancho completo) |
+| `.numpad-key.del` | Tecla borrar |
+
+---
+
+## Vista previa
+
+<Canvas of={AmountFieldStories.Default} />
+
+<Canvas of={AmountFieldStories.WithCalculatingHint} />

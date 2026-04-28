@@ -1,0 +1,93 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as NotifStories from './NotificationDrawer.stories';
+
+<Meta of={NotifStories} />
+
+# Notification Drawer
+
+Sheet deslizable que muestra las notificaciones de la app. Se activa desde el botón Bell del Header A.
+
+---
+
+## Estructura
+
+El drawer usa las clases `.fab-sheet` que definen el patrón de bottom sheet.
+
+```html
+<!-- Overlay -->
+<div class="fab-sheet-overlay"></div>
+
+<!-- Sheet -->
+<div class="fab-sheet">
+  <!-- Handle visual (drag indicator) -->
+  <div class="fab-sheet-handle"></div>
+
+  <!-- Cabecera -->
+  <div style="display:flex; justify-content:space-between; align-items:center">
+    <p class="fab-sheet-title">Notificaciones</p>
+    <button>Leer todo ×</button>
+  </div>
+
+  <!-- Lista de notificaciones -->
+  <div class="fab-sheet-list">
+    <!-- cards de notificación -->
+  </div>
+
+  <button class="btn btn-ghost btn-full">Configurar alertas →</button>
+</div>
+```
+
+---
+
+## Tarjeta de notificación
+
+Cada notificación es una card compacta con icono, título, descripción y CTA.
+
+```html
+<div style="background: var(--surf-1); border: 1px solid var(--border); border-radius: var(--r-xl); padding: var(--s4)">
+  <div style="display:flex; gap: var(--s3); margin-bottom: var(--s3)">
+    <span style="color: var(--txt-m)"><!-- icono --></span>
+    <div>
+      <div style="font-size: var(--t-sm); font-weight: 700; color: var(--txt)">Declaración de renta</div>
+      <div style="font-size: var(--t-xs); color: var(--txt-m)">Tienes hasta el 30 de junio...</div>
+    </div>
+  </div>
+  <button class="btn btn-secondary btn-full" style="height: 40px">Ver detalle</button>
+</div>
+```
+
+---
+
+## Iconos de notificación
+
+| Tipo | Icono | Descripción |
+|------|-------|-------------|
+| `shield` | `IconShield` | Alertas de seguridad, declaraciones |
+| `calendar` | `IconCalendar` | Vencimientos, fechas importantes |
+| `chart` | `IconBarChart` | Actualizaciones de métricas |
+| `file` | `IconFileText` | Documentos, reportes |
+
+---
+
+## Clases del FAB Sheet
+
+| Clase | Descripción |
+|-------|-------------|
+| `.fab-sheet` | Contenedor principal del sheet |
+| `.fab-sheet-overlay` | Fondo oscuro semi-transparente |
+| `.fab-sheet-handle` | Indicador de arrastre (línea gris) |
+| `.fab-sheet-title` | Título del sheet |
+| `.fab-sheet-list` | Contenedor de ítems |
+
+---
+
+## Componente React
+
+En React usar el componente `NotificationDrawer` de `src/components/ui/NotificationDrawer.jsx`. Lee y escribe el estado desde el store de Zustand (notificaciones, marcar como leídas, navegación por acción).
+
+---
+
+## Vista previa
+
+<Canvas of={NotifStories.WithNotifications} />
+<Canvas of={NotifStories.Empty} />

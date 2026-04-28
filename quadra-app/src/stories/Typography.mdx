@@ -1,0 +1,81 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as TypographyStories from './Typography.stories';
+
+<Meta of={TypographyStories} />
+
+# Typography
+
+Quadra usa una escala tipográfica fluida basada en `clamp()`. Los tamaños se adaptan automáticamente al viewport, sin media queries.
+
+---
+
+## Fuentes
+
+| Token | Familia | Uso |
+|-------|---------|-----|
+| `--font-display` | Satoshi | Headings, display, UI prominente |
+| `--font-body` | DM Sans | Cuerpo de texto, labels, párrafos |
+| `--font-mono` | Courier New | Valores monetarios, código |
+| `--font` | alias de `--font-display` | Por defecto en la app |
+
+```css
+font-family: var(--font-display);
+font-family: var(--font-body);
+font-family: var(--font-mono);
+```
+
+---
+
+## Escala de tamaños
+
+Todos los tamaños usan `clamp()` para escalar fluidamente entre un mínimo y máximo.
+
+| Token | Valor clamp | Uso recomendado |
+|-------|-------------|-----------------|
+| `--t-xs` | `clamp(.625rem, .60rem + .13vw, .6875rem)` | Metadata, badges, timestamps |
+| `--t-sm` | `clamp(.75rem, .72rem + .15vw, .8125rem)` | Labels, captions, hints |
+| `--t-base` | `clamp(.8125rem, .78rem + .16vw, .875rem)` | Cuerpo de texto principal |
+| `--t-md` | `clamp(.9375rem, .90rem + .19vw, 1rem)` | Subtítulos, valores |
+| `--t-lg` | `clamp(1.0625rem, 1rem + .31vw, 1.1875rem)` | Títulos de sección |
+| `--t-xl` | `clamp(1.375rem, 1.2rem + .88vw, 1.75rem)` | Headings de pantalla |
+| `--t-2xl` | `clamp(1.75rem, 1.4rem + 1.75vw, 2.25rem)` | Display grande |
+| `--t-3xl` | `clamp(2.25rem, 1.8rem + 2.25vw, 3rem)` | Hero / splash |
+| `--t-hero` | `clamp(3.5rem, 2.8rem + 3.5vw, 5rem)` | Número principal del hero card |
+
+---
+
+## Pesos
+
+| Valor | Uso |
+|-------|-----|
+| `300` | Light — decorativo, display muy grande |
+| `400` | Regular — cuerpo de texto |
+| `500` | Medium — labels, UI |
+| `700` | Bold — énfasis, headings |
+| `900` | Black — display, números hero |
+
+---
+
+## Vista previa
+
+<Canvas of={TypographyStories.TypeScale} />
+<Canvas of={TypographyStories.FontWeights} />
+
+---
+
+## Uso
+
+```css
+.mi-titulo {
+  font-family: var(--font-display);
+  font-size: var(--t-xl);
+  font-weight: 700;
+  color: var(--txt);
+}
+
+.mi-monto {
+  font-family: var(--font-mono);
+  font-size: var(--t-hero);
+  font-weight: 900;
+}
+```

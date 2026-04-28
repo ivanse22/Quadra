@@ -14,7 +14,7 @@ export default function ToastContainer() {
   )
 }
 
-function ToastItem({ toast, onDismiss }) {
+export function ToastItem({ toast, onDismiss }) {
   const variantClass = {
     success: 'toast-success',
     error:   'toast-error',

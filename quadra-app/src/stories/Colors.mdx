@@ -1,0 +1,88 @@
+import { Meta, Story, Canvas } from '@storybook/addon-docs/blocks';
+import * as ColorsStories from './Colors.stories';
+
+<Meta of={ColorsStories} />
+
+# Colors
+
+El sistema de color de Quadra está organizado en cuatro grupos semánticos. Todos los valores son CSS custom properties declaradas en `tokens.css` y disponibles globalmente.
+
+---
+
+## Brand
+
+El color de marca es **Volt** (`#BDF300`), un verde-lima de alto contraste usado para acciones primarias, acentos y el logo.
+
+| Token | Valor | Uso |
+|-------|-------|-----|
+| `--volt` | `#BDF300` | Fondo de botón primario, acentos |
+| `--volt-on` | `#1A2400` | Texto sobre fondo volt |
+| `--volt-text` | `#3D5200` | Texto de enlace volt (light mode) |
+| `--volt-dim` | `rgba(189,243,0,0.08)` | Fondo sutil volt |
+| `--volt-border` | `rgba(189,243,0,0.20)` | Borde volt |
+
+---
+
+## Financial Semantic
+
+Colores con significado financiero fijo. **No reutilizar** para otros propósitos.
+
+| Token | Valor | Significado |
+|-------|-------|-------------|
+| `--fin-income` | `#16A34A` | Ingresos |
+| `--fin-income-dim` | `rgba(22,163,74,0.07)` | Fondo sutil de ingreso |
+| `--fin-income-border` | `rgba(22,163,74,0.18)` | Borde de ingreso |
+| `--fin-deduct` | `#DC2626` | Gastos / deducciones |
+| `--fin-deduct-dim` | `rgba(220,38,38,0.07)` | Fondo sutil de gasto |
+| `--fin-deduct-border` | `rgba(220,38,38,0.16)` | Borde de gasto |
+| `--fin-reserve` | `#B45309` | Reservas / ahorros |
+| `--fin-reserve-dim` | `rgba(180,83,9,0.07)` | Fondo sutil de reserva |
+| `--fin-reserve-border` | `rgba(180,83,9,0.18)` | Borde de reserva |
+| `--fin-available` | `#3D5200` | Disponible / saldo |
+
+> En dark mode estos tokens se sobrescriben automáticamente con sus equivalentes de mayor contraste (ver `[data-theme="dark"]` en `tokens.css`).
+
+---
+
+## Surfaces
+
+Escala de superficies de menor a mayor elevación. Usar en orden: `--bg` → `--bg-subtle` → `--surf-1` → `--surf-2` → `--surf-3`.
+
+| Token | Light | Dark |
+|-------|-------|------|
+| `--bg` | `#FFFFFF` | `#090D0B` |
+| `--bg-subtle` | `#F8F9F8` | `#111B14` |
+| `--surf-1` | `#F3F4F2` | `#111810` |
+| `--surf-2` | `#ECEEED` | `#172014` |
+| `--surf-3` | `#E4E6E3` | `#1E2B1A` |
+| `--surf-inv` | `#111410` | `#F1F2EF` |
+
+---
+
+## Text
+
+Escala de texto de mayor a menor énfasis.
+
+| Token | Light | Uso |
+|-------|-------|-----|
+| `--txt` | `#0F1410` | Texto principal |
+| `--txt-2` | `#3D4A3F` | Texto secundario |
+| `--txt-m` | `#6B7B6D` | Texto medio / labels |
+| `--txt-f` | `#9DAD9F` | Texto faint / placeholders |
+| `--txt-inv` | `#F1F2EF` | Texto sobre fondo oscuro |
+
+---
+
+## Borders
+
+| Token | Valor | Uso |
+|-------|-------|-----|
+| `--border` | `rgba(0,0,0,0.07)` | Separadores sutiles |
+| `--border-s` | `rgba(0,0,0,0.12)` | Bordes de campos |
+| `--border-m` | `rgba(0,0,0,0.18)` | Bordes con más énfasis |
+
+---
+
+## Vista previa
+
+<Canvas of={ColorsStories.ColorTokens} />

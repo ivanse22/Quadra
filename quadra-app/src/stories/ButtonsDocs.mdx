@@ -1,0 +1,78 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as ButtonsStories from './Buttons.stories';
+
+<Meta of={ButtonsStories} />
+
+# Buttons
+
+Los botones de Quadra son clases CSS globales. No hay componente React específico — cualquier `<button>` o `<a>` puede usarlos.
+
+---
+
+## Variantes
+
+### Primary
+Acción principal de la pantalla. Solo debe existir **un botón primary por pantalla**.
+
+```html
+<button class="btn btn-primary">Continuar</button>
+<button class="btn btn-primary btn-full">Ocupar todo el ancho</button>
+<button class="btn btn-primary" disabled>Deshabilitado</button>
+```
+
+### Secondary
+Acción secundaria o alternativa. Puede coexistir con un primary.
+
+```html
+<button class="btn btn-secondary">Cancelar</button>
+<button class="btn btn-secondary btn-sm">Compacto</button>
+```
+
+### Ghost
+Acción terciaria o navegacional. Sin fondo visible.
+
+```html
+<button class="btn btn-ghost">Ver más →</button>
+<button class="btn btn-ghost btn-full">Ancho completo</button>
+```
+
+### Confirm sequence
+Para acciones destructivas o de alto impacto. Tiene tres estados que se aplican cambiando clases.
+
+```html
+<!-- Estado inicial -->
+<button class="btn-confirm">Confirmar pago</button>
+
+<!-- Procesando (mostrar durante la petición) -->
+<button class="btn-confirm loading">Procesando...</button>
+
+<!-- Éxito -->
+<button class="btn-confirm success">¡Pago enviado! ✓</button>
+```
+
+---
+
+## Modificadores
+
+| Clase | Efecto |
+|-------|--------|
+| `btn-sm` | Tamaño reducido (padding menor) |
+| `btn-full` | `width: 100%` |
+| `disabled` / `[disabled]` | Opacidad reducida, no interactivo |
+
+---
+
+## Vista previa
+
+<Canvas of={ButtonsStories.AllButtons} />
+
+---
+
+## Cuándo usar cada variante
+
+| Situación | Variante |
+|-----------|----------|
+| CTA principal de pantalla | `btn-primary` |
+| Cancelar / volver | `btn-secondary` |
+| Enlace textual, ver más | `btn-ghost` |
+| Confirmar transferencia / borrar dato | `btn-confirm` |

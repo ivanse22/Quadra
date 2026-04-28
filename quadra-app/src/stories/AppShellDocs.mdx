@@ -1,0 +1,152 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as AppShellStories from './AppShell.stories';
+
+<Meta of={AppShellStories} />
+
+# App Shell & Layout
+
+El shell de la app define la estructura de cada pantalla. Está optimizado para `390 × 844 px` (iPhone 14 / estándar) con barras de estado y navegación inferior.
+
+---
+
+## Estructura del phone shell
+
+```html
+<div class="q-phone">
+  <!-- Barra de estado simulada -->
+  <div class="q-status">
+    <span class="q-status-time">9:41</span>
+    <span>🔋 📶</span>
+  </div>
+
+  <!-- Header de la pantalla -->
+  <header class="q-header">
+    <!-- ver variantes abajo -->
+  </header>
+
+  <!-- Contenido scrollable -->
+  <div class="q-body">
+    <div class="q-body-inner">
+      <!-- contenido de la pantalla -->
+    </div>
+  </div>
+
+  <!-- Footer fijo (opcional) -->
+  <div class="q-sticky-footer">
+    <!-- CTA primario -->
+  </div>
+
+  <!-- Navegación inferior -->
+  <nav class="bottom-nav">
+    <!-- ver Bottom Nav abajo -->
+  </nav>
+</div>
+```
+
+---
+
+## Variantes de Header
+
+### Header A — Logo + Bell
+Para la pantalla de inicio. Muestra el logo de Quadra a la izquierda y el botón de notificaciones a la derecha.
+
+```html
+<header class="q-header">
+  <div class="q-hdr-logo">
+    <div class="q-hdr-logo-mark"><!-- logo SVG --></div>
+    <span class="q-hdr-logo-name">quadra</span>
+  </div>
+  <div class="q-hdr-right">
+    <button class="q-hdr-btn"><!-- icono bell --></button>
+  </div>
+</header>
+```
+
+<Canvas of={AppShellStories.HeaderVariantA} />
+
+---
+
+### Header B — Back + Título centrado
+Para pantallas de detalle o flujos. Botón volver a la izquierda, título centrado.
+
+```html
+<header class="q-header">
+  <button class="q-hdr-back"><!-- icono chevron left --></button>
+  <span class="q-hdr-title-center">Nuevo pago</span>
+  <div class="q-hdr-right"></div>
+</header>
+```
+
+<Canvas of={AppShellStories.HeaderVariantB} />
+
+---
+
+### Header C — Título a la izquierda
+Para pantallas de listado. Título a la izquierda, acción a la derecha.
+
+```html
+<header class="q-header">
+  <span class="q-hdr-title-left">Mis Ingresos</span>
+  <div class="q-hdr-right">
+    <button class="q-hdr-btn"><!-- icono + --></button>
+  </div>
+</header>
+```
+
+<Canvas of={AppShellStories.HeaderVariantC} />
+
+---
+
+## Bottom Nav
+
+Navegación inferior fija con 4 tabs. La clase `.on` marca el tab activo.
+
+```html
+<nav class="bottom-nav">
+  <button class="nav-item on">
+    <!-- icono SVG -->
+    <span>Mi Dinero</span>
+  </button>
+  <button class="nav-item">
+    <!-- icono SVG -->
+    <span>Mis Ingresos</span>
+    <!-- badge opcional -->
+    <span class="nav-badge">2</span>
+  </button>
+  <button class="nav-item">
+    <!-- icono SVG -->
+    <span>Mi Año</span>
+  </button>
+  <button class="nav-item">
+    <!-- icono SVG -->
+    <span>Mi Cuenta</span>
+  </button>
+</nav>
+```
+
+Los badges del bottom nav usan `background: var(--volt)` con `color: var(--volt-on)` y borde `var(--bg)` para separarse visualmente.
+
+<Canvas of={AppShellStories.BottomNavStory} />
+
+---
+
+## Clases del shell
+
+| Clase | Descripción |
+|-------|-------------|
+| `.q-phone` | Wrapper del teléfono (390×844, overflow hidden) |
+| `.q-status` | Barra de estado (hora, batería, señal) |
+| `.q-status-time` | Hora en la barra de estado |
+| `.q-header` | Header de pantalla (height: 56px) |
+| `.q-hdr-back` | Botón volver (círculo con icono) |
+| `.q-hdr-btn` | Botón de acción del header |
+| `.q-hdr-title-center` | Título centrado |
+| `.q-hdr-title-left` | Título alineado a la izquierda |
+| `.q-hdr-logo` | Contenedor logo + nombre |
+| `.q-hdr-right` | Zona derecha del header |
+| `.q-body` | Área de contenido scrollable |
+| `.q-body-inner` | Padding interno del body |
+| `.q-sticky-footer` | Footer fijo sobre el bottom nav |
+| `.bottom-nav` | Barra de navegación inferior |
+| `.nav-item` | Tab de navegación |
+| `.nav-item.on` | Tab activo |

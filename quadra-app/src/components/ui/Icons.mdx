@@ -1,0 +1,95 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as IconsStories from './Icons.stories';
+
+<Meta of={IconsStories} />
+
+# Icons
+
+Librería de iconos SVG inline de Quadra. Todos los iconos están en `src/components/ui/Icons.jsx` como componentes React individuales.
+
+---
+
+## Uso en React
+
+```jsx
+import { IconArrowLeft, IconCheck, IconDollar } from '@/components/ui/Icons';
+
+// Tamaño por defecto (16px)
+<IconCheck />
+
+// Con color personalizado
+<IconDollar style={{ color: 'var(--fin-income)' }} />
+```
+
+La mayoría de iconos aceptan `size` y heredan el color de `currentColor`, por lo que responden a `color` en CSS.
+
+---
+
+## Iconos disponibles
+
+### Navegación
+| Componente | Descripción |
+|-----------|-------------|
+| `IconArrowLeft` | Flecha izquierda — botón volver |
+| `IconArrowRight` | Flecha derecha |
+| `IconArrowUp` | Flecha arriba |
+| `IconArrowDown` | Flecha abajo |
+| `IconChevronDown` | Chevron hacia abajo — dropdowns |
+| `IconChevronRight` | Chevron hacia la derecha — listas |
+| `IconHome` | Inicio |
+
+### Acciones
+| Componente | Descripción |
+|-----------|-------------|
+| `IconPlus` | Añadir |
+| `IconX` | Cerrar / cancelar |
+| `IconCheck` | Confirmar / éxito |
+| `IconDelete` | Borrar carácter (numpad) |
+| `IconTrash` | Eliminar |
+| `IconDownload` | Descargar |
+| `IconSend` | Enviar |
+| `IconSettings` | Configuración |
+
+### Dominio financiero
+| Componente | Descripción |
+|-----------|-------------|
+| `IconDollar` | Dinero / monto |
+| `IconWallet` | Billetera |
+| `IconBarChart` | Gráfico de barras |
+| `IconTrendingUp` | Tendencia al alza |
+| `IconCreditCard` | Tarjeta de crédito |
+| `IconBuildingBank` | Banco |
+| `IconReceipt` | Recibo |
+| `IconBriefcase` | Trabajo / empresa |
+| `IconTarget` | Meta / objetivo |
+
+### Sistema
+| Componente | Descripción |
+|-----------|-------------|
+| `IconBell` | Notificación |
+| `IconShield` | Seguridad |
+| `IconInfo` | Información |
+| `IconAlertTriangle` | Advertencia |
+| `IconHelpCircle` | Ayuda |
+| `IconCalendar` | Fecha |
+| `IconClock` | Hora |
+| `IconFileText` | Documento |
+| `IconGlobe` | Web / idioma |
+| `IconLink` | Enlace |
+| `IconZap` | Acción rápida |
+| `IconSmartphone` | Móvil |
+
+### Tema
+| Componente | Descripción |
+|-----------|-------------|
+| `IconMoon` | Dark mode |
+| `IconSun` | Light mode |
+| `IconHeart` | Favorito |
+| `IconUser` | Usuario / perfil |
+| `QuadraLogo` | Logo de Quadra (acepta `size` y `color`) |
+
+---
+
+## Galería interactiva
+
+<Canvas of={IconsStories.IconGallery} />

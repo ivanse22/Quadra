@@ -1,0 +1,105 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as CardsStories from './Cards.stories';
+
+<Meta of={CardsStories} />
+
+# Cards
+
+Quadra tiene tres patrones de card, cada uno para un propósito específico.
+
+---
+
+## Hero Card
+
+La card principal de la pantalla de inicio. Muestra el saldo disponible y el desglose de ingresos, gastos y reservas del mes.
+
+```html
+<div class="hero-card">
+  <div class="hero-eye">Disponible</div>
+  <div class="hero-amount">$12,450.00</div>
+  <div class="hero-sub">Balance total del mes</div>
+  <div class="hero-breakdown">
+    <div>
+      <div class="hero-bk-lbl">Ingresos</div>
+      <div class="hero-bk-val" style="color: var(--fin-income)">+$15,000</div>
+    </div>
+    <div>
+      <div class="hero-bk-lbl">Gastos</div>
+      <div class="hero-bk-val" style="color: var(--fin-deduct)">-$2,550</div>
+    </div>
+    <div>
+      <div class="hero-bk-lbl">Reserva</div>
+      <div class="hero-bk-val" style="color: var(--fin-reserve)">$0</div>
+    </div>
+  </div>
+</div>
+```
+
+<Canvas of={CardsStories.HeroCard} />
+
+---
+
+## Desglose Card
+
+Lista de ítems con dot de color y monto, más un total al final. Se usa para mostrar el detalle de ingresos o gastos por categoría.
+
+```html
+<div class="desglose">
+  <div class="drow">
+    <div class="drow-l">
+      <div class="drow-dot" style="background: var(--volt)"></div>
+      Nómina cliente A
+    </div>
+    <div class="drow-v">$8,000,000</div>
+  </div>
+  <!-- más filas... -->
+  <div class="dtotal">
+    <div class="dtotal-l">Total Ingresos</div>
+    <div class="dtotal-v">$13,450,000</div>
+  </div>
+</div>
+```
+
+<Canvas of={CardsStories.DesgloseCard} />
+
+---
+
+## Transaction List
+
+Lista de transacciones agrupadas por fecha. Cada fila tiene icono, nombre + categoría, y monto coloreado.
+
+```html
+<div class="tx-list">
+  <div class="tx-section-header">Hoy</div>
+  <div class="tx-row">
+    <div class="tx-icon">🍟</div>
+    <div class="tx-info">
+      <div class="tx-name">Rappi — Almuerzo</div>
+      <div class="tx-sub">Comida · 12:30 pm</div>
+    </div>
+    <div class="tx-amount" style="color: var(--fin-deduct)">-$35,000</div>
+  </div>
+</div>
+```
+
+El color del `.tx-amount` debe ser:
+- `var(--fin-income)` para ingresos (+)
+- `var(--fin-deduct)` para gastos (-)
+- `var(--fin-reserve)` para reservas
+
+<Canvas of={CardsStories.TransactionList} />
+
+---
+
+## Card genérica
+
+Para contenedores simples, usar las clases base:
+
+```html
+<div class="card">
+  <div class="card-title">Título</div>
+  <div class="card-sub">Subtítulo o descripción</div>
+  <div class="card-divider"></div>
+  <!-- contenido -->
+</div>
+```

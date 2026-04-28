@@ -1,0 +1,86 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as SpacingStories from './SpacingRadii.stories';
+
+<Meta of={SpacingStories} />
+
+# Spacing, Radii & Shadows
+
+---
+
+## Escala de espaciado base
+
+Escala de múltiplos de 4px. Los números en el token corresponden al valor en píxeles dividido por 4 (excepto `--s10`, `--s12`, etc. que siguen la escala).
+
+| Token | px | Uso común |
+|-------|----|-----------|
+| `--s1` | 4px | Micro gaps, icon padding |
+| `--s2` | 8px | Padding interno pequeño |
+| `--s3` | 12px | Gap entre elementos relacionados |
+| `--s4` | 16px | Padding de card small, gap estándar |
+| `--s5` | 20px | Padding horizontal de pantalla |
+| `--s6` | 24px | Padding de card, separación de secciones |
+| `--s7` | 28px | — |
+| `--s8` | 32px | Espaciado de sección |
+| `--s10` | 40px | — |
+| `--s12` | 48px | Sección grande |
+| `--s14` | 56px | Altura de bottom nav |
+| `--s16` | 64px | — |
+| `--s18` | 72px | — |
+| `--s20` | 80px | — |
+
+<Canvas of={SpacingStories.SpacingScale} />
+
+---
+
+## Espaciado semántico
+
+Tokens nombrados por contexto — usar estos antes que los numéricos.
+
+| Token | Valor | Contexto |
+|-------|-------|----------|
+| `--screen-px` | 20px | Padding horizontal de pantalla |
+| `--screen-px-lg` | 24px | Padding horizontal en vistas anchas |
+| `--screen-pt` | 16px | Padding top de pantalla |
+| `--screen-pb` | 32px | Padding bottom de pantalla |
+| `--space-section` | 32px | Separación entre secciones |
+| `--space-section-lg` | 48px | Separación grande entre secciones |
+| `--space-between-cards` | 12px | Gap entre cards en lista |
+| `--space-card` | 24px | Padding interno de card |
+| `--space-card-sm` | 16px | Padding interno de card compacta |
+| `--space-form-gap` | 24px | Separación entre campos de formulario |
+| `--space-field-gap` | 8px | Gap label → input |
+| `--space-icon-text` | 8px | Gap icono → texto |
+| `--space-inline` | 6px | Gap entre elementos inline |
+
+---
+
+## Radii
+
+| Token | Valor | Uso |
+|-------|-------|-----|
+| `--r-xs` | 4px | Badges, tags pequeños |
+| `--r-sm` | 6px | Inputs, botones pequeños |
+| `--r-md` | 10px | Cards compactas, chips |
+| `--r-lg` | 14px | Cards estándar |
+| `--r-xl` | 18px | Modales, drawers |
+| `--r-2xl` | 24px | Sheets, paneles grandes |
+| `--r-3xl` | 32px | Hero cards |
+| `--r-full` | 9999px | Pills, avatares circulares |
+
+<Canvas of={SpacingStories.RadiiScale} />
+
+---
+
+## Sombras
+
+Escala de elevación de menor (`xs`) a mayor (`xl`). En dark mode las sombras incluyen un sutil borde volt para mejorar la separación.
+
+| Token | Uso |
+|-------|-----|
+| `--shadow-xs` | Hover states sutiles |
+| `--shadow-sm` | Cards en reposo |
+| `--shadow-md` | Cards elevadas, popovers |
+| `--shadow-lg` | Modales, drawers |
+| `--shadow-xl` | Toasts, notificaciones flotantes |
+
+<Canvas of={SpacingStories.ShadowScale} />

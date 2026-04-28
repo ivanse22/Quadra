@@ -1,0 +1,90 @@
+import { Meta, Canvas } from '@storybook/addon-docs/blocks';
+import * as MotionStories from './Motion.stories';
+
+<Meta of={MotionStories} />
+
+# Motion
+
+El sistema de motion de Quadra usa tokens **semánticos** — nombrados por su propósito, no por su duración. Esto garantiza coherencia y facilita ajustes globales.
+
+> **Regla de oro:** Las salidas siempre son más rápidas que las entradas (`--motion-dismiss` < `--motion-appear`).
+
+---
+
+## Duraciones base
+
+| Token | ms | Descripción |
+|-------|----|-------------|
+| `--motion-instant` | 80ms | Sin percepción de latencia |
+| `--motion-fast` | 160ms | Microinteracciones rápidas |
+| `--motion-base` | 260ms | Duración por defecto |
+| `--motion-slow` | 400ms | Transiciones deliberadas |
+| `--motion-xslow` | 580ms | Animaciones complejas o largas |
+
+---
+
+## Duraciones semánticas
+
+Usar estos tokens en lugar de los base cuando el contexto lo permite:
+
+| Token | ms | Cuándo usarlo |
+|-------|----|---------------|
+| `--motion-tap` | 80ms | Press de botón, toggle ON/OFF |
+| `--motion-appear` | 200ms | Elemento que entra al viewport |
+| `--motion-dismiss` | 180ms | Elemento que sale (siempre < appear) |
+| `--motion-shift` | 260ms | Cambio de layout, collapse/expand |
+| `--motion-reveal` | 400ms | Transición entre pantallas completas |
+| `--motion-settle` | 600ms | Animaciones con spring/bounce |
+
+---
+
+## Curvas de easing
+
+| Token | Curva | Uso |
+|-------|-------|-----|
+| `--ease-out` | `cubic-bezier(0.16,1,0.3,1)` | Entrada de elementos — la mayoría de transiciones |
+| `--ease-in-out` | `cubic-bezier(0.4,0,0.2,1)` | Cambios de estado bidireccionales |
+| `--ease-in` | `cubic-bezier(0.4,0,1,1)` | Salida de elementos |
+| `--ease-spring` | `cubic-bezier(0.34,1.56,0.64,1)` | FAB, success burst — rebote pronunciado |
+| `--ease-spring-gentle` | `cubic-bezier(0.22,1,0.36,1)` | Sheets, cards — spring sin overshoot |
+| `--ease-decel` | `cubic-bezier(0,0,0.2,1)` | Elementos entrando desde fuera del viewport |
+| `--ease-accel` | `cubic-bezier(0.4,0,1,1)` | Elementos saliendo hacia afuera |
+| `--ease-standard` | `cubic-bezier(0.4,0,0.2,1)` | Cambios de layout (mismo que ease-in-out) |
+
+---
+
+## Vista previa
+
+<Canvas of={MotionStories.MotionDurations} />
+
+---
+
+## Uso
+
+```css
+.mi-panel {
+  transition: transform var(--motion-reveal) var(--ease-spring-gentle);
+}
+
+.mi-boton:active {
+  transition: opacity var(--motion-tap) var(--ease-out);
+}
+
+.toast-saliendo {
+  transition: opacity var(--motion-dismiss) var(--ease-in);
+}
+```
+
+---
+
+## Accesibilidad
+
+Respetar `prefers-reduced-motion`. Los tokens de motion deben usarse junto con:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  .mi-animacion {
+    transition-duration: 0.01ms;
+  }
+}
+```

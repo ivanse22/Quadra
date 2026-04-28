@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__Claude_Preview__preview_start",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:6006)",
+      "Bash(cp docs/00-Introduction.mdx stories/Introduction.mdx)",
+      "Bash(cp docs/01-Tokens/Colors.mdx stories/Colors.mdx)",
+      "Bash(cp docs/01-Tokens/Typography.mdx stories/Typography.mdx)",
+      "Bash(cp docs/01-Tokens/Spacing.mdx stories/Spacing.mdx)",
+      "Bash(cp docs/01-Tokens/Motion.mdx stories/MotionDocs.mdx)",
+      "Bash(sed -i '' \"s|from '../../stories/Colors.stories'|from './Colors.stories'|g\" Colors.mdx)",
+      "Bash(sed -i '' \"s|from '../../stories/Typography.stories'|from './Typography.stories'|g\" Typography.mdx)",
+      "Bash(sed -i '' \"s|from '../../stories/SpacingRadii.stories'|from './SpacingRadii.stories'|g\" Spacing.mdx)",
+      "Bash(sed -i '' \"s|from '../../stories/Motion.stories'|from './Motion.stories'|g\" MotionDocs.mdx)",
+      "Bash(sed -i '' \"s|from '../../stories/Buttons.stories'|from './Buttons.stories'|g\" ButtonsDocs.mdx)",
+      "Bash(sed -i '' \"s|from '../../components/ui/Icons.stories'|from './Icons.stories'|g\" Icons.mdx)",
+      "Bash(sed -i '' \"s|from '../../components/ui/AmountField.stories'|from './AmountField.stories'|g\" AmountField.mdx)",
+      "Bash(python3 -c \"import sys,json; p=json.load\\(sys.stdin\\); print\\(list\\(p.get\\('exports',{}\\).keys\\(\\)\\)[:20]\\)\")",
+      "Bash(python3 -c \"import sys,json; p=json.load\\(sys.stdin\\); keys=[k for k in p.get\\('exports',{}\\).keys\\(\\) if 'block' in k.lower\\(\\) or 'doc' in k.lower\\(\\)]; print\\(keys\\)\")",
+      "Bash(python3 -c \"import sys,json; p=json.load\\(sys.stdin\\); print\\(list\\(p.get\\('exports',{}\\).keys\\(\\)\\)\\)\")"
+    ]
+  }
+}

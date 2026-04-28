@@ -139,7 +139,7 @@ const SCREENS = {
 }
 
 export default function App() {
-  const { currentScreen, theme, session, setSession, navigate, navigateRoot, switchTab, payments, loadUserData, clearUserData, selectedAnnualMonth, kpis, profile, alerts, syncNotifications, notifDrawerOpen } = useAppStore()
+  const { currentScreen, theme, wireframeMode, session, setSession, navigate, navigateRoot, switchTab, payments, loadUserData, clearUserData, selectedAnnualMonth, kpis, profile, alerts, syncNotifications, notifDrawerOpen } = useAppStore()
   const deferredPrompt = useRef(null)
   const [showInstallBanner, setShowInstallBanner] = useState(false)
   const [showQuickMenu, setShowQuickMenu] = useState(false)
@@ -271,6 +271,14 @@ export default function App() {
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme)
   }, [theme])
+
+  useEffect(() => {
+    if (wireframeMode) {
+      document.documentElement.setAttribute('data-wireframe', 'true')
+    } else {
+      document.documentElement.removeAttribute('data-wireframe')
+    }
+  }, [wireframeMode])
 
   // Cargar / limpiar datos según sesión (solo tras el primer getSession, para no vaciar el store antes)
   const AUTH_SCREENS = ['O1', 'O1C', 'O2', 'O3', 'O4', 'O5', 'B1', 'B2']

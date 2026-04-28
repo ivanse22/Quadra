@@ -124,6 +124,11 @@ export const useAppStore = create(
         set({ theme: next })
       },
 
+      wireframeMode: false,
+      toggleWireframeMode: () => {
+        set({ wireframeMode: !get().wireframeMode })
+      },
+
       // ── User profile ─────────────────────────────────────────────
       profile: {
         name:           'Valentina Gómez',
@@ -414,6 +419,7 @@ export const useAppStore = create(
         alerts:        state.alerts,
         bannerI1Dismissed: state.bannerI1Dismissed,
         theme:         state.theme,
+        wireframeMode: state.wireframeMode,
         currentScreen: state.currentScreen,
         screenHistory: state.screenHistory,
         activeTab:     state.activeTab,

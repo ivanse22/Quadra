@@ -1,0 +1,97 @@
+# Dark Mode
+
+Quadra soporta dark mode mediante el atributo `data-theme="dark"` en el elemento raíz. Todos los tokens de superficie, texto y sombra se redefinen automáticamente.
+
+---
+
+## Activación
+
+```js
+// Activar dark mode
+document.documentElement.setAttribute('data-theme', 'dark');
+
+// Volver a light mode
+document.documentElement.removeAttribute('data-theme');
+// o
+document.documentElement.setAttribute('data-theme', 'light');
+```
+
+---
+
+## Tokens que cambian
+
+### Superficies
+
+| Token | Light | Dark |
+|-------|-------|------|
+| `--bg` | `#FFFFFF` | `#090D0B` |
+| `--bg-subtle` | `#F8F9F8` | `#111B14` |
+| `--surf-1` | `#F3F4F2` | `#111810` |
+| `--surf-2` | `#ECEEED` | `#172014` |
+| `--surf-3` | `#E4E6E3` | `#1E2B1A` |
+| `--surf-inv` | `#111410` | `#F1F2EF` |
+
+### Texto
+
+| Token | Light | Dark |
+|-------|-------|------|
+| `--txt` | `#0F1410` | `#F1F2EF` |
+| `--txt-2` | `#3D4A3F` | `#A0B3A2` |
+| `--txt-m` | `#6B7B6D` | `#617063` |
+| `--txt-f` | `#9DAD9F` | `#506654` |
+| `--txt-inv` | `#F1F2EF` | `#0F1410` |
+
+### Bordes
+
+En dark mode los bordes toman un tinte verde-volt sutil:
+
+| Token | Light | Dark |
+|-------|-------|------|
+| `--border` | `rgba(0,0,0,0.07)` | `rgba(189,243,0,0.06)` |
+| `--border-s` | `rgba(0,0,0,0.12)` | `rgba(189,243,0,0.10)` |
+| `--border-m` | `rgba(0,0,0,0.18)` | `rgba(189,243,0,0.16)` |
+
+### Colores financieros
+
+En dark mode se usan tonos más brillantes para mantener el contraste:
+
+| Token | Light | Dark |
+|-------|-------|------|
+| `--fin-income` | `#16A34A` | `#4ADE80` |
+| `--fin-deduct` | `#DC2626` | `#F87171` |
+| `--fin-reserve` | `#B45309` | `#FBBF24` |
+| `--fin-available` | `#3D5200` | `#BDF300` |
+
+### Volt
+
+| Token | Light | Dark |
+|-------|-------|------|
+| `--volt-text` | `#3D5200` | `#BDF300` |
+
+---
+
+## Sombras en dark mode
+
+Las sombras en dark mode aumentan la opacidad y añaden un sutil borde volt para compensar la falta de contraste natural:
+
+```css
+/* Light */
+--shadow-sm: 0 1px 4px rgba(0,0,0,0.07), 0 2px 8px rgba(0,0,0,0.04);
+
+/* Dark */
+--shadow-sm: 0 1px 4px rgba(0,0,0,0.5), 0 0 0 1px rgba(189,243,0,0.04);
+```
+
+---
+
+## Buenas prácticas
+
+- **Nunca** usar valores de color fijos en componentes. Siempre `var(--txt)`, `var(--surf-1)`, etc.
+- Las imágenes y emojis no cambian con el tema — úsalos con moderación en áreas que cambien de fondo drásticamente.
+- Probar siempre ambos modos antes de hacer merge.
+
+---
+
+## Implementación en React
+
+El tema se gestiona en el store de Zustand. Consultar `src/store/useAppStore.js` para la lógica de persistencia en `localStorage` y sincronización con `prefers-color-scheme`.

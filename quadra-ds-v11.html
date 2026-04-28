@@ -1,0 +1,1067 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quadra — Design System v11</title>
+<link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700,900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,400;0,500;0,700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="quadra-app/src/styles/tokens.css">
+<link rel="stylesheet" href="quadra-app/src/styles/components.css">
+<style>
+/* ================================================================
+   DOCUMENTATION OVERRIDES (components.css resets some body props)
+   ================================================================ */
+body {
+  font-family: var(--font-display, 'Satoshi', system-ui, sans-serif) !important;
+  user-select: auto !important;
+  -webkit-user-select: auto !important;
+  overscroll-behavior-y: auto !important;
+  background: var(--bg);
+  color: var(--txt);
+  font-size: var(--t-base);
+  line-height: 1.6;
+  letter-spacing: -0.01em;
+  -webkit-font-smoothing: antialiased;
+  transition: background .3s var(--ease-out), color .3s var(--ease-out);
+}
+a { color: inherit; text-decoration: none; }
+
+/* ================================================================
+   LAYOUT — mobile-first topbar → desktop sidebar
+   ================================================================ */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 54px;
+  background: var(--bg); border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 var(--s4); z-index: 200;
+  transition: background .3s var(--ease-out);
+}
+.topbar-brand { display: flex; align-items: center; gap: var(--s2); }
+.topbar-name  { font-size: var(--t-md); font-weight: 900; letter-spacing: -0.05em; }
+.topbar-tag   {
+  font-size: 8px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  background: var(--volt); color: var(--volt-on);
+  padding: 2px 6px; border-radius: var(--r-full);
+}
+.topbar-right { display: flex; align-items: center; gap: var(--s2); }
+.theme-toggle {
+  height: 34px; padding: 0 var(--s3);
+  background: var(--surf-2); border: 1px solid var(--border-s);
+  border-radius: var(--r-full);
+  font-size: var(--t-xs); font-weight: 700; color: var(--txt-2); cursor: pointer;
+  transition: all var(--motion-fast) var(--ease-out);
+  font-family: var(--font-display);
+}
+.theme-toggle:hover { background: var(--surf-3); }
+.menu-btn {
+  width: 36px; height: 36px;
+  background: var(--surf-2); border: 1px solid var(--border-s);
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--txt-m); cursor: pointer;
+}
+.menu-btn svg { width: 16px; height: 16px; }
+
+/* Sidebar */
+.sidebar {
+  position: fixed; top: 0; left: 0; width: 100%; height: 100vh;
+  background: var(--bg); border-right: 1px solid var(--border);
+  padding: var(--s14) var(--s3) var(--s8);
+  overflow-y: auto; z-index: 150;
+  display: flex; flex-direction: column; gap: 1px;
+  transform: translateX(-100%);
+  transition: transform .28s var(--ease-out), background .3s var(--ease-out);
+}
+.sidebar.open { transform: none; }
+.sidebar-overlay {
+  position: fixed; inset: 0; background: rgba(15,20,16,0.5);
+  backdrop-filter: blur(2px); z-index: 140;
+  opacity: 0; pointer-events: none;
+  transition: opacity .28s var(--ease-out);
+}
+.sidebar-overlay.open { opacity: 1; pointer-events: auto; }
+.nav-section {
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--txt-m); padding: var(--s4) var(--s3) var(--s1); margin-top: var(--s2);
+}
+.nav-link {
+  display: flex; align-items: center; gap: var(--s2);
+  padding: 7px var(--s3); border-radius: var(--r-md);
+  font-size: var(--t-sm); font-weight: 500; color: var(--txt-2);
+  transition: all var(--motion-fast) var(--ease-out);
+}
+.nav-link:hover { color: var(--volt-text); background: var(--volt-dim); }
+.nav-link.on    { color: var(--volt-text); background: var(--volt-dim); font-weight: 700; }
+[data-theme="dark"] .nav-link:hover,
+[data-theme="dark"] .nav-link.on { color: var(--volt); }
+
+.main { padding: calc(54px + var(--s6)) var(--s4) var(--s16); max-width: 100%; }
+
+@media(min-width:768px){
+  .topbar { display: none; }
+  .sidebar { transform: none; width: 224px; padding: var(--s6) var(--s3) var(--s8); }
+  .sidebar-overlay { display: none !important; }
+  .menu-btn { display: none; }
+  .main { margin-left: 224px; padding: var(--s12) var(--s8) var(--s16); max-width: 1080px; }
+  .theme-float { display: block !important; }
+}
+@media(min-width:1280px){
+  .sidebar { width: 240px; }
+  .main { margin-left: 240px; padding: var(--s12) var(--s16) var(--s16); }
+}
+.theme-float {
+  display: none;
+  position: fixed; top: var(--s5); right: var(--s6); z-index: 300;
+  height: 36px; padding: 0 var(--s4);
+  background: var(--volt); color: var(--volt-on);
+  border: none; border-radius: var(--r-full);
+  font-family: var(--font-display); font-size: var(--t-xs); font-weight: 700;
+  box-shadow: 0 4px 16px rgba(189,243,0,0.22); cursor: pointer;
+  transition: all var(--motion-fast) var(--ease-out);
+}
+.theme-float:hover { box-shadow: 0 6px 24px rgba(189,243,0,0.32); transform: translateY(-1px); }
+
+/* ================================================================
+   SECTION STRUCTURE
+   ================================================================ */
+.sec { padding: var(--s12) 0; border-bottom: 1px solid var(--border); }
+.sec:last-child { border-bottom: none; }
+.sec-eye {
+  font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .14em;
+  color: var(--volt-text); margin-bottom: var(--s2);
+}
+[data-theme="dark"] .sec-eye { color: var(--volt); }
+.sec-h {
+  font-size: var(--t-xl); font-weight: 900; letter-spacing: -0.05em;
+  line-height: 1.0; color: var(--txt); margin-bottom: var(--s3);
+}
+.sec-p {
+  font-size: var(--t-base); color: var(--txt-2);
+  max-width: 580px; line-height: 1.7; margin-bottom: var(--s8);
+}
+.sub {
+  font-size: var(--t-md); font-weight: 700; color: var(--txt);
+  margin: var(--s10) 0 var(--s5); letter-spacing: -0.02em;
+  display: flex; align-items: center; gap: var(--s3);
+}
+.sub::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* Simple grid helpers */
+.ds-g2 { display: grid; grid-template-columns: 1fr; gap: var(--s4); }
+.ds-g3 { display: grid; grid-template-columns: 1fr; gap: var(--s4); }
+.ds-g4 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); }
+@media(min-width:640px){
+  .ds-g2 { grid-template-columns: 1fr 1fr; }
+  .ds-g3 { grid-template-columns: repeat(3,1fr); }
+  .ds-g4 { grid-template-columns: repeat(4,1fr); }
+}
+.mb4  { margin-bottom: var(--s4); }
+.mb6  { margin-bottom: var(--s6); }
+.mb8  { margin-bottom: var(--s8); }
+.mb10 { margin-bottom: var(--s10); }
+
+/* Code blocks */
+pre {
+  font-family: var(--font-mono); font-size: 11.5px; line-height: 1.8;
+  background: #111410; color: #E8F0E8;
+  border-radius: var(--r-lg); padding: var(--s5);
+  overflow-x: auto; margin: var(--s4) 0;
+}
+pre .k { color: #7DD3A8; }
+pre .v { color: #BDF300; font-weight: 600; }
+pre .c { color: #4A6A4C; font-style: italic; }
+pre .s { color: #A0C0A0; }
+code {
+  font-family: var(--font-mono); font-size: .83em;
+  background: var(--surf-2); padding: 2px 5px;
+  border-radius: var(--r-xs); color: var(--volt-text);
+}
+[data-theme="dark"] code { color: var(--volt); }
+
+/* Spec cards */
+.spec {
+  background: var(--bg-subtle); border: 1px solid var(--border);
+  border-radius: var(--r-xl); padding: var(--s5);
+}
+.spec-title {
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--txt-m); margin-bottom: var(--s4);
+}
+.spec-items { display: flex; flex-direction: column; gap: var(--s3); }
+.spec-item { font-size: var(--t-xs); color: var(--txt-2); line-height: 1.65; }
+
+/* ================================================================
+   01 — COLOR
+   ================================================================ */
+.swatch-row { display: flex; gap: var(--s3); flex-wrap: wrap; margin-bottom: var(--s6); }
+.swatch { border-radius: var(--r-lg); overflow: hidden; box-shadow: var(--shadow-sm); flex: 1; min-width: 120px; }
+.swatch-color { height: 64px; }
+.swatch-info { padding: var(--s3); background: var(--bg); }
+.swatch-name { font-size: var(--t-sm); font-weight: 700; color: var(--txt); }
+.swatch-hex  { font-size: var(--t-xs); font-family: monospace; color: var(--txt-m); }
+.swatch-role { font-size: 9px; color: var(--txt-f); margin-top: 2px; }
+.wcag-pill {
+  font-size: 9px; font-weight: 700; padding: 2px 6px;
+  border-radius: var(--r-full); display: inline-block; margin-top: var(--s2);
+  background: rgba(22,163,74,0.09); color: var(--fin-income);
+}
+.ratio-bar {
+  display: grid; grid-template-columns: 6fr 3fr 1fr;
+  border-radius: var(--r-xl); overflow: hidden; height: 68px;
+  box-shadow: var(--shadow-md); margin-bottom: var(--s4);
+}
+.ratio-seg { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; }
+.ratio-pct { font-size: 18px; font-weight: 900; letter-spacing: -0.05em; }
+.ratio-lbl { font-size: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; opacity: .7; }
+.fin-chip { border-radius: var(--r-xl); overflow: hidden; border: 1px solid var(--border); box-shadow: var(--shadow-xs); }
+.fin-chip-top { padding: var(--s3) var(--s4); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: var(--s3); }
+.fin-chip-icon { width: 30px; height: 30px; border-radius: var(--r-md); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.fin-chip-body { background: var(--bg); padding: var(--s3) var(--s4); }
+.fin-chip-name { font-weight: 700; font-size: var(--t-sm); color: var(--txt); }
+.fin-chip-var  { font-size: 10px; font-family: monospace; color: var(--txt-m); margin-top: 1px; }
+.fin-chip-hex  { font-size: 10px; font-family: monospace; color: var(--txt-f); }
+.fin-chip-note { font-size: var(--t-xs); color: var(--txt-2); line-height: 1.55; margin-top: var(--s2); }
+
+/* ================================================================
+   02 — TYPOGRAPHY
+   ================================================================ */
+.type-scale { display: flex; flex-direction: column; }
+.type-row   { display: grid; grid-template-columns: 160px 1fr; gap: var(--s6); align-items: baseline; padding: var(--s4) 0; border-bottom: 1px solid var(--border); }
+.type-row:last-child { border-bottom: none; }
+.type-token { font-size: 10px; font-weight: 700; color: var(--volt-text); font-family: monospace; }
+[data-theme="dark"] .type-token { color: var(--volt); }
+.type-spec  { font-size: 10px; color: var(--txt-m); margin-top: 2px; }
+
+/* ================================================================
+   DOCUMENTATION PHONE FRAME
+   ================================================================ */
+.ds-phone {
+  width: 320px;
+  min-height: 580px;
+  background: var(--bg);
+  border: 1px solid var(--border-s);
+  border-radius: 36px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-xl);
+  flex-shrink: 0;
+  position: relative;
+  transition: background .3s var(--ease-out);
+}
+[data-theme="dark"] .ds-phone {
+  background: var(--surf-1);
+  border-color: rgba(189,243,0,0.10);
+}
+.ds-ph-status {
+  height: 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 20px;
+  flex-shrink: 0;
+  background: inherit;
+}
+.ds-ph-time { font-size: 13px; font-weight: 700; color: var(--txt); font-family: var(--font-display); }
+.ds-ph-icons { display: flex; align-items: center; gap: 5px; color: var(--txt); }
+.ds-ph-icons svg { width: 14px; height: 14px; }
+.ds-ph-body { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+.ds-phone-row { display: flex; gap: var(--s6); overflow-x: auto; padding-bottom: var(--s4); }
+.ds-phone-label {
+  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .10em; color: var(--txt-m); margin-bottom: var(--s2); text-align: center;
+}
+
+/* ================================================================
+   10 — ICONOGRAPHY
+   ================================================================ */
+.icon-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(86px,1fr)); gap: var(--s3); }
+.icon-cell {
+  background: var(--bg-subtle); border: 1px solid var(--border);
+  border-radius: var(--r-lg); padding: var(--s4) var(--s3) var(--s3);
+  display: flex; flex-direction: column; align-items: center; gap: var(--s2);
+  text-align: center; cursor: pointer;
+  transition: all var(--motion-fast) var(--ease-out); position: relative;
+}
+.icon-cell:hover { border-color: var(--volt-border); background: var(--volt-dim); }
+.icon-cell.custom { border-color: var(--volt-border); background: var(--volt-dim); }
+.icon-n { font-size: 10px; font-weight: 700; color: var(--txt); }
+.icon-u { font-size: 9px; color: var(--txt-m); line-height: 1.3; }
+.custom-tag {
+  position: absolute; top: 4px; right: 4px;
+  font-size: 7px; font-weight: 700; text-transform: uppercase;
+  color: var(--volt-text); background: var(--volt-dim);
+  padding: 1px 4px; border-radius: var(--r-full);
+}
+[data-theme="dark"] .custom-tag { color: var(--volt); }
+
+/* ================================================================
+   MOTION TIMELINE
+   ================================================================ */
+.tl-motion { display: flex; flex-direction: column; }
+.tlm-step  { display: flex; gap: var(--s4); }
+.tlm-time  { min-width: 46px; font-size: 10px; font-family: monospace; font-weight: 700; color: var(--volt-text); padding-top: 2px; flex-shrink: 0; }
+[data-theme="dark"] .tlm-time { color: var(--volt); }
+.tlm-track { display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.tlm-dot   { width: 10px; height: 10px; border-radius: 50%; background: var(--volt-text); margin-top: 3px; }
+[data-theme="dark"] .tlm-dot { background: var(--volt); }
+.tlm-line  { width: 1px; flex: 1; min-height: 24px; background: var(--border); margin: 4px 0; }
+.tlm-body  { flex: 1; padding-bottom: var(--s4); }
+.tlm-label { font-size: var(--t-sm); font-weight: 700; color: var(--txt); margin-bottom: 3px; }
+.tlm-desc  { font-size: var(--t-xs); color: var(--txt-m); line-height: 1.6; }
+.tlm-tag   {
+  font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em;
+  color: var(--volt-text); background: var(--volt-dim);
+  padding: 2px 7px; border-radius: var(--r-full); display: inline-block; margin-top: var(--s2);
+}
+[data-theme="dark"] .tlm-tag { color: var(--volt); }
+.ease-table { border: 1px solid var(--border); border-radius: var(--r-xl); overflow: hidden; }
+.ease-row   { display: flex; align-items: flex-start; gap: var(--s4); flex-wrap: wrap; padding: var(--s4) var(--s5); border-bottom: 1px solid var(--border); }
+.ease-row:last-child { border-bottom: none; }
+.ease-meta  { min-width: 180px; flex-shrink: 0; }
+.ease-tok   { font-size: var(--t-xs); font-family: monospace; color: var(--volt-text); font-weight: 700; }
+[data-theme="dark"] .ease-tok { color: var(--volt); }
+.ease-val   { font-size: var(--t-xs); color: var(--txt-m); margin-top: 2px; font-family: monospace; }
+.ease-use   { font-size: var(--t-xs); color: var(--txt-2); margin-top: 2px; }
+.ease-body  { flex: 1; min-width: 160px; font-size: var(--t-xs); color: var(--txt-2); line-height: 1.65; }
+.ease-demo  {
+  width: 48px; height: 6px; background: var(--volt); border-radius: 3px;
+  animation: none; cursor: pointer; transition: all var(--motion-base);
+  flex-shrink: 0; margin-top: 6px;
+}
+
+/* Rules list */
+.rules-ul { list-style: none; display: flex; flex-direction: column; gap: var(--s3); }
+.rules-ul li { font-size: var(--t-sm); color: var(--txt-2); padding-left: var(--s5); position: relative; line-height: 1.6; }
+.rules-ul li::before { content: '—'; position: absolute; left: 0; color: var(--volt-text); font-weight: 700; }
+[data-theme="dark"] .rules-ul li::before { color: var(--volt); }
+
+/* Spec table */
+.spec-table { width: 100%; border-collapse: collapse; font-size: var(--t-xs); }
+.spec-table th { text-align: left; padding: var(--s3) var(--s4); background: var(--surf-1); color: var(--txt-m); font-weight: 700; text-transform: uppercase; font-size: 9px; letter-spacing: .10em; }
+.spec-table td { padding: var(--s3) var(--s4); border-bottom: 1px solid var(--border); color: var(--txt-2); vertical-align: top; line-height: 1.55; }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table .cls { font-family: monospace; color: var(--volt-text); font-weight: 700; }
+[data-theme="dark"] .spec-table .cls { color: var(--volt); }
+
+/* Misc */
+.ds-demo-box {
+  background: var(--bg-subtle); border: 1px solid var(--border);
+  border-radius: var(--r-xl); padding: var(--s6); margin-bottom: var(--s8);
+}
+</style>
+</head>
+<body>
+
+<!-- ── TOP BAR (mobile) ── -->
+<header class="topbar">
+  <div class="topbar-brand">
+    <svg width="26" height="26" viewBox="68 67 164 196" fill="none">
+      <path d="M78 161C78 157.686 80.686 155 84 155H139C142.314 155 145 157.686 145 161V217C145 220.314 142.314 223 139 223H120C96.804 223 78 204.196 78 181V161Z" fill="currentColor"/>
+      <path d="M155 83C155 79.686 157.686 77 161 77H180C203.196 77 222 95.804 222 119V139C222 142.314 219.314 145 216 145H161C157.686 145 155 142.314 155 139V83Z" fill="currentColor"/>
+      <path d="M155 197C155 173.804 173.804 155 197 155L216 155C219.314 155 222 157.686 222 161L222 247C222 250.314 219.314 253 216 253L161 253C157.686 253 155 250.314 155 247L155 197Z" fill="#BDF300"/>
+      <path d="M78 119C78 95.804 96.804 77 120 77H139C142.314 77 145 79.686 145 83V139C145 142.314 142.314 145 139 145H84C80.686 145 78 142.314 78 139V119Z" fill="currentColor"/>
+    </svg>
+    <span class="topbar-name">Quadra</span>
+    <span class="topbar-tag">DS v11</span>
+  </div>
+  <div class="topbar-right">
+    <button class="theme-toggle" onclick="toggleTheme()" id="tbtn-mob">Luna</button>
+    <button class="menu-btn" onclick="openSidebar()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="sidebar-overlay" id="overlay" onclick="closeSidebar()"></div>
+
+<!-- ── SIDEBAR ── -->
+<nav class="sidebar" id="sidebar">
+  <div style="display:flex;align-items:center;gap:var(--s2);padding:var(--s2) var(--s3);margin-bottom:var(--s5);">
+    <svg width="26" height="26" viewBox="68 67 164 196" fill="none">
+      <path d="M78 161C78 157.686 80.686 155 84 155H139C142.314 155 145 157.686 145 161V217C145 220.314 142.314 223 139 223H120C96.804 223 78 204.196 78 181V161Z" fill="currentColor"/>
+      <path d="M155 83C155 79.686 157.686 77 161 77H180C203.196 77 222 95.804 222 119V139C222 142.314 219.314 145 216 145H161C157.686 145 155 142.314 155 139V83Z" fill="currentColor"/>
+      <path d="M155 197C155 173.804 173.804 155 197 155L216 155C219.314 155 222 157.686 222 161L222 247C222 250.314 219.314 253 216 253L161 253C157.686 253 155 250.314 155 247L155 197Z" fill="#BDF300"/>
+      <path d="M78 119C78 95.804 96.804 77 120 77H139C142.314 77 145 79.686 145 83V139C145 142.314 142.314 145 139 145H84C80.686 145 78 142.314 78 139V119Z" fill="currentColor"/>
+    </svg>
+    <span style="font-size:var(--t-md);font-weight:900;letter-spacing:-0.05em;">Quadra</span>
+    <span style="font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;background:var(--volt);color:var(--volt-on);padding:2px 6px;border-radius:var(--r-full);">DS v11</span>
+  </div>
+
+  <span class="nav-section">Identidad</span>
+  <a class="nav-link" href="#s01">01 Color</a>
+  <a class="nav-link" href="#s02">02 Tipografía</a>
+  <a class="nav-link" href="#s03">03 Logo</a>
+
+  <span class="nav-section">Componentes</span>
+  <a class="nav-link" href="#s04">04 Monto financiero</a>
+  <a class="nav-link" href="#s05">05 Formularios</a>
+  <a class="nav-link" href="#s06">06 Botones</a>
+  <a class="nav-link" href="#s07">07 Cards y KPIs</a>
+  <a class="nav-link" href="#s08">08 Transacciones</a>
+  <a class="nav-link" href="#s09">09 Detalle transacción</a>
+  <a class="nav-link" href="#s10">10 Badges y feedback</a>
+  <a class="nav-link" href="#s11">11 Navegación y shell</a>
+
+  <span class="nav-section">Flujos</span>
+  <a class="nav-link" href="#s12">12 Onboarding</a>
+  <a class="nav-link" href="#s13">13 Registro de pago</a>
+  <a class="nav-link" href="#s14">14 Resultado</a>
+
+  <span class="nav-section">Dominios financieros</span>
+  <a class="nav-link" href="#s15">15 Income y filtros</a>
+  <a class="nav-link" href="#s16">16 Calendario</a>
+  <a class="nav-link" href="#s17">17 Charts y proyecciones</a>
+
+  <span class="nav-section">Sistema</span>
+  <a class="nav-link" href="#s18">18 Motion</a>
+  <a class="nav-link" href="#s19">19 Iconografía</a>
+  <a class="nav-link" href="#s20">20 Estados del sistema</a>
+</nav>
+
+<button class="theme-float" onclick="toggleTheme()" id="tbtn">Luna Dark</button>
+
+<main class="main">
+
+<!-- ================================================================
+     01 — COLOR SYSTEM
+     ================================================================ -->
+<section class="sec" id="s01">
+  <p class="sec-eye">01 · Identidad</p>
+  <h2 class="sec-h">Sistema de Color</h2>
+  <p class="sec-p">60% blanco puro · 30% grises funcionales · 10% Volt. Light mode es el modo primario. Los tokens financieros son semánticos — su nombre no cambia entre modos, solo su valor.</p>
+
+  <div class="ratio-bar mb6">
+    <div class="ratio-seg" style="background:#FFFFFF;border-right:1px solid rgba(0,0,0,0.06);">
+      <span class="ratio-pct" style="color:#111410;">60%</span>
+      <span class="ratio-lbl" style="color:#6B7B6D;">Blanco + grises</span>
+    </div>
+    <div class="ratio-seg" style="background:#F3F4F2;border-right:1px solid rgba(0,0,0,0.06);">
+      <span class="ratio-pct" style="color:#3D4A3F;">30%</span>
+      <span class="ratio-lbl" style="color:#6B7B6D;">Surf + texto</span>
+    </div>
+    <div class="ratio-seg" style="background:#BDF300;">
+      <span class="ratio-pct" style="color:#1A2400;">10%</span>
+      <span class="ratio-lbl" style="color:rgba(26,36,0,0.6);">Volt</span>
+    </div>
+  </div>
+
+  <p class="sub">Paleta primitiva</p>
+  <div class="swatch-row mb8">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#FFFFFF;border:1px solid #E4E6E3;"></div>
+      <div class="swatch-info"><div class="swatch-name">--bg</div><div class="swatch-hex">#FFFFFF</div><div class="swatch-role">Base primaria · 60%</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#F3F4F2;"></div>
+      <div class="swatch-info"><div class="swatch-name">--surf-1</div><div class="swatch-hex">#F3F4F2</div><div class="swatch-role">Nav, sidebars</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#ECEEED;"></div>
+      <div class="swatch-info"><div class="swatch-name">--surf-2</div><div class="swatch-hex">#ECEEED</div><div class="swatch-role">Inputs, chips</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#E4E6E3;"></div>
+      <div class="swatch-info"><div class="swatch-name">--surf-3</div><div class="swatch-hex">#E4E6E3</div><div class="swatch-role">Estado pressed</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#BDF300;"></div>
+      <div class="swatch-info"><div class="swatch-name">--volt</div><div class="swatch-hex">#BDF300</div><div class="swatch-role">Acento · 10%</div><span class="wcag-pill">vs #1A2400 — 9.4:1 AAA</span></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#0F1410;"></div>
+      <div class="swatch-info"><div class="swatch-name">--txt</div><div class="swatch-hex">#0F1410</div><div class="swatch-role">Texto primario</div><span class="wcag-pill">vs white 18.9:1 AAA</span></div>
+    </div>
+  </div>
+
+  <p class="sub">Colores financieros semánticos</p>
+  <div class="ds-g2 mb8">
+    <div class="fin-chip">
+      <div class="fin-chip-top" style="background:var(--fin-income-dim);border-bottom-color:var(--fin-income-border);">
+        <div class="fin-chip-icon" style="background:var(--fin-income-dim);border:1.5px solid var(--fin-income-border);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--fin-income)" stroke-width="2.5"><polyline points="18,15 12,9 6,15"/></svg>
+        </div>
+        <div><div style="font-size:var(--t-sm);font-weight:700;color:var(--fin-income);">Ingreso</div><div style="font-size:var(--t-xs);color:var(--fin-income);opacity:.7;">Lo que entra</div></div>
+      </div>
+      <div class="fin-chip-body">
+        <div class="fin-chip-name">Income</div>
+        <div class="fin-chip-var">--fin-income</div>
+        <div class="fin-chip-hex">#16A34A light · #4ADE80 dark</div>
+        <div class="fin-chip-note">Pagos recibidos, ingresos registrados</div>
+        <span class="wcag-pill">5.1:1 AA</span>
+      </div>
+    </div>
+    <div class="fin-chip">
+      <div class="fin-chip-top" style="background:var(--fin-deduct-dim);border-bottom-color:var(--fin-deduct-border);">
+        <div class="fin-chip-icon" style="background:var(--fin-deduct-dim);border:1.5px solid var(--fin-deduct-border);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--fin-deduct)" stroke-width="2.5"><polyline points="6,9 12,15 18,9"/></svg>
+        </div>
+        <div><div style="font-size:var(--t-sm);font-weight:700;color:var(--fin-deduct);">Deducción</div><div style="font-size:var(--t-xs);color:var(--fin-deduct);opacity:.7;">Lo que se descuenta</div></div>
+      </div>
+      <div class="fin-chip-body">
+        <div class="fin-chip-name">Deduction</div>
+        <div class="fin-chip-var">--fin-deduct</div>
+        <div class="fin-chip-hex">#DC2626 light · #F87171 dark</div>
+        <div class="fin-chip-note">Retención en la fuente, impuestos</div>
+        <span class="wcag-pill">5.9:1 AA</span>
+      </div>
+    </div>
+    <div class="fin-chip">
+      <div class="fin-chip-top" style="background:var(--fin-reserve-dim);border-bottom-color:var(--fin-reserve-border);">
+        <div class="fin-chip-icon" style="background:var(--fin-reserve-dim);border:1.5px solid var(--fin-reserve-border);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--fin-reserve)" stroke-width="2.5"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v14a2 2 0 01-2 2z"/></svg>
+        </div>
+        <div><div style="font-size:var(--t-sm);font-weight:700;color:var(--fin-reserve);">Reserva</div><div style="font-size:var(--t-xs);color:var(--fin-reserve);opacity:.7;">Lo que se guarda</div></div>
+      </div>
+      <div class="fin-chip-body">
+        <div class="fin-chip-name">Reserve</div>
+        <div class="fin-chip-var">--fin-reserve</div>
+        <div class="fin-chip-hex">#B45309 light · #FBBF24 dark</div>
+        <div class="fin-chip-note">PILA, reserva declaración</div>
+        <span class="wcag-pill">5.3:1 AA</span>
+      </div>
+    </div>
+    <div class="fin-chip">
+      <div class="fin-chip-top" style="background:var(--volt-dim);border-bottom-color:var(--volt-border);">
+        <div class="fin-chip-icon" style="background:var(--volt-dim);border:1.5px solid var(--volt-border);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--volt-text)" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+        </div>
+        <div><div style="font-size:var(--t-sm);font-weight:700;color:var(--volt-text);">Disponible</div><div style="font-size:var(--t-xs);color:var(--volt-text);opacity:.7;">Lo que es tuyo</div></div>
+      </div>
+      <div class="fin-chip-body">
+        <div class="fin-chip-name">Available (Volt)</div>
+        <div class="fin-chip-var">--fin-available</div>
+        <div class="fin-chip-hex">#3D5200 light · #BDF300 dark</div>
+        <div class="fin-chip-note">El número más importante — Volt oscurecido en light mode</div>
+        <span class="wcag-pill">6.1:1 AA</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="sub">Texto y bordes</p>
+  <div class="swatch-row mb8">
+    <div class="swatch">
+      <div class="swatch-color" style="background:#0F1410;"></div>
+      <div class="swatch-info"><div class="swatch-name">--txt</div><div class="swatch-hex">#0F1410</div><div class="swatch-role">Primario</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#3D4A3F;"></div>
+      <div class="swatch-info"><div class="swatch-name">--txt-2</div><div class="swatch-hex">#3D4A3F</div><div class="swatch-role">Secundario</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#6B7B6D;"></div>
+      <div class="swatch-info"><div class="swatch-name">--txt-m</div><div class="swatch-hex">#6B7B6D</div><div class="swatch-role">Muted</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:#9DAD9F;"></div>
+      <div class="swatch-info"><div class="swatch-name">--txt-f</div><div class="swatch-hex">#9DAD9F</div><div class="swatch-role">Faint</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:rgba(0,0,0,0.07);border:1px solid #ccc;"></div>
+      <div class="swatch-info"><div class="swatch-name">--border</div><div class="swatch-hex">rgba(0,0,0,.07)</div><div class="swatch-role">Sutil</div></div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color" style="background:rgba(0,0,0,0.18);"></div>
+      <div class="swatch-info"><div class="swatch-name">--border-m</div><div class="swatch-hex">rgba(0,0,0,.18)</div><div class="swatch-role">Medio</div></div>
+    </div>
+  </div>
+
+  <pre>
+<span class="c">/* ─── Color tokens v11 ─── */</span>
+<span class="k">:root</span> {
+  <span class="k">--volt</span>:          <span class="v">#BDF300</span>;   <span class="c">/* igual en ambos modos */</span>
+  <span class="k">--volt-on</span>:       <span class="v">#1A2400</span>;   <span class="c">/* texto sobre volt bg */</span>
+  <span class="k">--volt-text</span>:     <span class="v">#3D5200</span>;   <span class="c">/* volt legible sobre blanco — 6.1:1 AA */</span>
+  <span class="k">--fin-income</span>:    <span class="v">#16A34A</span>;
+  <span class="k">--fin-deduct</span>:    <span class="v">#DC2626</span>;
+  <span class="k">--fin-reserve</span>:   <span class="v">#B45309</span>;
+  <span class="k">--fin-available</span>: <span class="v">#3D5200</span>;
+}
+<span class="k">[data-theme="dark"]</span> {
+  <span class="k">--volt-text</span>:     <span class="v">#BDF300</span>;   <span class="c">/* Volt directo en dark */</span>
+  <span class="k">--fin-income</span>:    <span class="v">#4ADE80</span>;
+  <span class="k">--fin-deduct</span>:    <span class="v">#F87171</span>;
+  <span class="k">--fin-reserve</span>:   <span class="v">#FBBF24</span>;
+  <span class="k">--fin-available</span>: <span class="v">#BDF300</span>;
+}</pre>
+</section>
+
+
+<!-- ================================================================
+     02 — TYPOGRAPHY
+     ================================================================ -->
+<section class="sec" id="s02">
+  <p class="sec-eye">02 · Identidad</p>
+  <h2 class="sec-h">Tipografía</h2>
+  <p class="sec-p">Satoshi como display font (headings, UI), DM Sans para cuerpo. Escala fluida con <code>clamp()</code>. Tracking negativo en headings y cifras. <code>font-variant-numeric: tabular-nums</code> en todos los números financieros.</p>
+
+  <p class="sub">Familias tipográficas</p>
+  <div class="ds-g3 mb8">
+    <div style="background:var(--surf-1);border-radius:var(--r-xl);padding:var(--s5);">
+      <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--txt-m);margin-bottom:var(--s3);">--font-display</div>
+      <div style="font-family:'Satoshi',sans-serif;font-size:28px;font-weight:700;color:var(--txt);line-height:1.1;">Satoshi</div>
+      <div style="font-size:var(--t-xs);color:var(--txt-m);margin-top:var(--s2);">Headings, UI labels, números</div>
+    </div>
+    <div style="background:var(--surf-1);border-radius:var(--r-xl);padding:var(--s5);">
+      <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--txt-m);margin-bottom:var(--s3);">--font-body</div>
+      <div style="font-family:'DM Sans',sans-serif;font-size:28px;font-weight:400;color:var(--txt);line-height:1.1;">DM Sans</div>
+      <div style="font-size:var(--t-xs);color:var(--txt-m);margin-top:var(--s2);">Cuerpo de texto, descripciones</div>
+    </div>
+    <div style="background:var(--surf-1);border-radius:var(--r-xl);padding:var(--s5);">
+      <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--txt-m);margin-bottom:var(--s3);">--font-mono</div>
+      <div style="font-family:'Courier New',monospace;font-size:22px;font-weight:400;color:var(--txt);line-height:1.1;">$1.240.000</div>
+      <div style="font-size:var(--t-xs);color:var(--txt-m);margin-top:var(--s2);">Monospace, code blocks</div>
+    </div>
+  </div>
+
+  <p class="sub">Type scale — fluid (clamp)</p>
+  <div class="type-scale mb8">
+    <div class="type-row">
+      <div class="type-meta"><div class="type-token">--t-hero</div><div class="type-spec">3.5–5rem · W900 · -0.05em</div></div>
+      <div style="font-size:var(--t-hero);font-weight:900;letter-spacing:-0.05em;line-height:.95;color:var(--volt-text);">$2.000.000</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-token">--t-3xl</div><div class="type-spec">2.25–3rem · W900 · -0.05em</div></div>
+      <div style="font-size:var(--t-3xl);font-weight:900;letter-spacing:-0.05em;line-height:.95;color:var(--txt);">$1.240.000</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-token">--t-2xl</div><div class="type-spec">1.75–2.25rem · W900 · -0.05em</div></div>
+      <div style="font-size:var(--t-2xl);font-weight:900;letter-spacing:-0.05em;line-height:1;color:var(--txt);">Tu disponible hoy</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-token">--t-xl</div><div class="type-spec">1.375–1.75rem · W900 · -0.04em</div></div>
+      <div style="font-size:var(--t-xl);font-weight:900;letter-spacing:-0.04em;color:var(--txt);">Registra un pago</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-token">--t-lg</div><div class="type-spec">1.0625–1.1875rem · W700</div></div>
+      <div style="font-size:var(--t-lg);font-weight:700;color:var(--txt);">Agencia Creativa SAS</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-token">--t-md</div><div class="type-spec">0.9375–1rem · W500</div></div>
+      <div style="font-size:var(--t-md);font-weight:500;color:var(--txt);">Detalle del pago recibido</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-token">--t-base</div><div class="type-spec">0.8125–0.875rem · W400</div></div>
+      <div style="font-size:var(--t-base);color:var(--txt);">Quadra calcula lo que debes reservar para no tener sorpresas con la DIAN.</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-token">--t-sm</div><div class="type-spec">0.75–0.8125rem · W500</div></div>
+      <div style="font-size:var(--t-sm);font-weight:500;color:var(--txt-2);">Hoy · Wise · USD 500 · Pago recibido</div>
+    </div>
+    <div class="type-row">
+      <div class="type-meta"><div class="type-token">--t-xs CAPS</div><div class="type-spec">0.625–0.6875rem · W700 · 0.12em</div></div>
+      <div style="font-size:var(--t-xs);font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--txt-m);">Actualizado · hace 2 min</div>
+    </div>
+  </div>
+
+  <p class="sub">Font weights — Satoshi</p>
+  <div style="display:flex;flex-direction:column;gap:var(--s3);">
+    <div style="display:flex;align-items:baseline;gap:var(--s6);padding:var(--s3) 0;border-bottom:1px solid var(--border);">
+      <span style="font-family:'Satoshi';font-size:22px;font-weight:400;">Quadra — weight 400</span>
+      <span style="font-size:var(--t-xs);color:var(--txt-m);">Regular</span>
+    </div>
+    <div style="display:flex;align-items:baseline;gap:var(--s6);padding:var(--s3) 0;border-bottom:1px solid var(--border);">
+      <span style="font-family:'Satoshi';font-size:22px;font-weight:500;">Quadra — weight 500</span>
+      <span style="font-size:var(--t-xs);color:var(--txt-m);">Medium</span>
+    </div>
+    <div style="display:flex;align-items:baseline;gap:var(--s6);padding:var(--s3) 0;border-bottom:1px solid var(--border);">
+      <span style="font-family:'Satoshi';font-size:22px;font-weight:700;">Quadra — weight 700</span>
+      <span style="font-size:var(--t-xs);color:var(--txt-m);">Bold</span>
+    </div>
+    <div style="display:flex;align-items:baseline;gap:var(--s6);padding:var(--s3) 0;">
+      <span style="font-family:'Satoshi';font-size:22px;font-weight:900;">Quadra — weight 900</span>
+      <span style="font-size:var(--t-xs);color:var(--txt-m);">Black — headings, numbers</span>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================================
+     03 — LOGO
+     ================================================================ -->
+<section class="sec" id="s03">
+  <p class="sec-eye">03 · Identidad</p>
+  <h2 class="sec-h">Logo — 9 variantes oficiales</h2>
+  <p class="sec-p">4 formas orgánicas: ingreso bruto (top-left), retención (top-right), seguridad social (bottom-left), disponible real en Volt (bottom-right — la más alta). ViewBox tight: <code>68 67 164 196</code>.</p>
+
+  <p class="sub">Isotipos base</p>
+  <div class="ds-g3 mb8">
+    <div style="background:#FFFFFF;border:1px solid var(--border);border-radius:var(--r-2xl);padding:var(--s8);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:var(--s3);">
+      <svg width="120" height="120" viewBox="68 67 164 196" fill="none">
+        <path d="M78 161C78 157.686 80.686 155 84 155H139C142.314 155 145 157.686 145 161V217C145 220.314 142.314 223 139 223H120C96.804 223 78 204.196 78 181V161Z" fill="#0F1410"/>
+        <path d="M155 83C155 79.686 157.686 77 161 77H180C203.196 77 222 95.804 222 119V139C222 142.314 219.314 145 216 145H161C157.686 145 155 142.314 155 139V83Z" fill="#0F1410"/>
+        <path d="M155 197C155 173.804 173.804 155 197 155L216 155C219.314 155 222 157.686 222 161L222 247C222 250.314 219.314 253 216 253L161 253C157.686 253 155 250.314 155 247L155 197Z" fill="#BDF300"/>
+        <path d="M78 119C78 95.804 96.804 77 120 77H139C142.314 77 145 79.686 145 83V139C145 142.314 142.314 145 139 145H84C80.686 145 78 142.314 78 139V119Z" fill="#0F1410"/>
+      </svg>
+      <span style="font-size:var(--t-xs);color:var(--txt-m);">Isotype · White bg</span>
+    </div>
+    <div style="background:#0F1410;border-radius:var(--r-2xl);padding:var(--s8);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:var(--s3);">
+      <svg width="120" height="120" viewBox="68 67 164 196" fill="none">
+        <path d="M78 161C78 157.686 80.686 155 84 155H139C142.314 155 145 157.686 145 161V217C145 220.314 142.314 223 139 223H120C96.804 223 78 204.196 78 181V161Z" fill="#F1F2EF"/>
+        <path d="M155 83C155 79.686 157.686 77 161 77H180C203.196 77 222 95.804 222 119V139C222 142.314 219.314 145 216 145H161C157.686 145 155 142.314 155 139V83Z" fill="#F1F2EF"/>
+        <path d="M155 197C155 173.804 173.804 155 197 155L216 155C219.314 155 222 157.686 222 161L222 247C222 250.314 219.314 253 216 253L161 253C157.686 253 155 250.314 155 247L155 197Z" fill="#BDF300"/>
+        <path d="M78 119C78 95.804 96.804 77 120 77H139C142.314 77 145 79.686 145 83V139C145 142.314 142.314 145 139 145H84C80.686 145 78 142.314 78 139V119Z" fill="#F1F2EF"/>
+      </svg>
+      <span style="font-size:var(--t-xs);color:rgba(241,242,239,0.4);">Isotype · Dark bg</span>
+    </div>
+    <div style="background:#BDF300;border-radius:var(--r-2xl);padding:var(--s8);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:var(--s3);">
+      <svg width="120" height="120" viewBox="68 67 164 196" fill="none">
+        <path d="M78 161C78 157.686 80.686 155 84 155H139C142.314 155 145 157.686 145 161V217C145 220.314 142.314 223 139 223H120C96.804 223 78 204.196 78 181V161Z" fill="#1A2400"/>
+        <path d="M155 83C155 79.686 157.686 77 161 77H180C203.196 77 222 95.804 222 119V139C222 142.314 219.314 145 216 145H161C157.686 145 155 142.314 155 139V83Z" fill="#1A2400"/>
+        <path d="M155 197C155 173.804 173.804 155 197 155L216 155C219.314 155 222 157.686 222 161L222 247C222 250.314 219.314 253 216 253L161 253C157.686 253 155 250.314 155 247L155 197Z" fill="rgba(26,36,0,0.35)"/>
+        <path d="M78 119C78 95.804 96.804 77 120 77H139C142.314 77 145 79.686 145 83V139C145 142.314 142.314 145 139 145H84C80.686 145 78 142.314 78 139V119Z" fill="#1A2400"/>
+      </svg>
+      <span style="font-size:var(--t-xs);color:rgba(26,36,0,0.5);">Isotype · Volt bg</span>
+    </div>
+  </div>
+
+  <p class="sub">Aplicaciones digitales</p>
+  <div class="ds-g4 mb8">
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s5);display:flex;flex-direction:column;align-items:center;gap:var(--s3);">
+      <div style="width:96px;height:96px;background:#0F1410;border-radius:22px;display:flex;align-items:center;justify-content:center;padding:16px;box-shadow:var(--shadow-md);">
+        <svg width="100%" height="100%" viewBox="68 67 164 196" fill="none"><path d="M78 161C78 157.686 80.686 155 84 155H139C142.314 155 145 157.686 145 161V217C145 220.314 142.314 223 139 223H120C96.804 223 78 204.196 78 181V161Z" fill="#F1F2EF"/><path d="M155 83C155 79.686 157.686 77 161 77H180C203.196 77 222 95.804 222 119V139C222 142.314 219.314 145 216 145H161C157.686 145 155 142.314 155 139V83Z" fill="#F1F2EF"/><path d="M155 197C155 173.804 173.804 155 197 155L216 155C219.314 155 222 157.686 222 161L222 247C222 250.314 219.314 253 216 253L161 253C157.686 253 155 250.314 155 247L155 197Z" fill="#BDF300"/><path d="M78 119C78 95.804 96.804 77 120 77H139C142.314 77 145 79.686 145 83V139C145 142.314 142.314 145 139 145H84C80.686 145 78 142.314 78 139V119Z" fill="#F1F2EF"/></svg>
+      </div>
+      <div style="text-align:center;"><div style="font-size:var(--t-xs);font-weight:700;color:var(--txt);">App Icon</div><div style="font-size:9px;color:var(--txt-m);">iOS · Android · 1024px</div></div>
+    </div>
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s5);display:flex;flex-direction:column;align-items:center;gap:var(--s3);">
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 16px;display:flex;align-items:center;gap:8px;box-shadow:var(--shadow-sm);">
+        <svg width="18" height="18" viewBox="68 67 164 196" fill="none"><path d="M78 161C78 157.686 80.686 155 84 155H139C142.314 155 145 157.686 145 161V217C145 220.314 142.314 223 139 223H120C96.804 223 78 204.196 78 181V161Z" fill="#0F1410"/><path d="M155 83C155 79.686 157.686 77 161 77H180C203.196 77 222 95.804 222 119V139C222 142.314 219.314 145 216 145H161C157.686 145 155 142.314 155 139V83Z" fill="#0F1410"/><path d="M155 197C155 173.804 173.804 155 197 155L216 155C219.314 155 222 157.686 222 161L222 247C222 250.314 219.314 253 216 253L161 253C157.686 253 155 250.314 155 247L155 197Z" fill="#BDF300"/><path d="M78 119C78 95.804 96.804 77 120 77H139C142.314 77 145 79.686 145 83V139C145 142.314 142.314 145 139 145H84C80.686 145 78 142.314 78 139V119Z" fill="#0F1410"/></svg>
+        <span style="font-size:12px;font-weight:500;color:var(--txt-m);">quadra.app</span>
+      </div>
+      <div style="text-align:center;"><div style="font-size:var(--t-xs);font-weight:700;color:var(--txt);">Favicon</div><div style="font-size:9px;color:var(--txt-m);">Browser tab · 32px</div></div>
+    </div>
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s5);display:flex;flex-direction:column;align-items:center;gap:var(--s3);">
+      <div style="background:#0F1410;border-radius:10px;padding:10px 16px;display:flex;align-items:center;gap:var(--s3);width:100%;">
+        <svg width="22" height="22" viewBox="68 67 164 196" fill="none"><path d="M78 161C78 157.686 80.686 155 84 155H139C142.314 155 145 157.686 145 161V217C145 220.314 142.314 223 139 223H120C96.804 223 78 204.196 78 181V161Z" fill="#F1F2EF"/><path d="M155 83C155 79.686 157.686 77 161 77H180C203.196 77 222 95.804 222 119V139C222 142.314 219.314 145 216 145H161C157.686 145 155 142.314 155 139V83Z" fill="#F1F2EF"/><path d="M155 197C155 173.804 173.804 155 197 155L216 155C219.314 155 222 157.686 222 161L222 247C222 250.314 219.314 253 216 253L161 253C157.686 253 155 250.314 155 247L155 197Z" fill="#BDF300"/><path d="M78 119C78 95.804 96.804 77 120 77H139C142.314 77 145 79.686 145 83V139C145 142.314 142.314 145 139 145H84C80.686 145 78 142.314 78 139V119Z" fill="#F1F2EF"/></svg>
+        <span style="font-size:13px;font-weight:900;letter-spacing:-.04em;color:#F1F2EF;">quadra</span>
+      </div>
+      <div style="text-align:center;"><div style="font-size:var(--t-xs);font-weight:700;color:var(--txt);">Web header</div><div style="font-size:9px;color:var(--txt-m);">Dark bg · 24px isotype</div></div>
+    </div>
+    <div style="background:var(--bg-subtle);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s5);display:flex;flex-direction:column;align-items:center;gap:var(--s3);">
+      <div style="width:72px;height:72px;border-radius:50%;background:#BDF300;display:flex;align-items:center;justify-content:center;padding:14px;">
+        <svg width="100%" height="100%" viewBox="68 67 164 196" fill="none"><path d="M78 161C78 157.686 80.686 155 84 155H139C142.314 155 145 157.686 145 161V217C145 220.314 142.314 223 139 223H120C96.804 223 78 204.196 78 181V161Z" fill="#1A2400"/><path d="M155 83C155 79.686 157.686 77 161 77H180C203.196 77 222 95.804 222 119V139C222 142.314 219.314 145 216 145H161C157.686 145 155 142.314 155 139V83Z" fill="#1A2400"/><path d="M155 197C155 173.804 173.804 155 197 155L216 155C219.314 155 222 157.686 222 161L222 247C222 250.314 219.314 253 216 253L161 253C157.686 253 155 250.314 155 247L155 197Z" fill="rgba(26,36,0,0.3)"/><path d="M78 119C78 95.804 96.804 77 120 77H139C142.314 77 145 79.686 145 83V139C145 142.314 142.314 145 139 145H84C80.686 145 78 142.314 78 139V119Z" fill="#1A2400"/></svg>
+      </div>
+      <div style="text-align:center;"><div style="font-size:var(--t-xs);font-weight:700;color:var(--txt);">Avatar social</div><div style="font-size:9px;color:var(--txt-m);">Volt bg · invertido</div></div>
+    </div>
+  </div>
+
+  <ul class="rules-ul">
+    <li>El bloque Volt (bottom-right) representa el disponible real — siempre más prominente que los otros 3</li>
+    <li>Nunca rotar ni distorsionar el isotipo — las proporciones son fijas</li>
+    <li>ViewBox tight <code>68 67 164 196</code> — no añadir padding externo al SVG</li>
+    <li>Mínimo de 24px para uso en header, 16px en favicon SVG</li>
+  </ul>
+</section>
+
+
+<!-- ================================================================
+     04 — FINANCIAL AMOUNT FIELD
+     ================================================================ -->
+<section class="sec" id="s04">
+  <p class="sec-eye">04 · Componentes</p>
+  <h2 class="sec-h">Campo de monto financiero</h2>
+  <p class="sec-p">El elemento más crítico de Quadra. Inspirado en Wise — número grande sin chrome, selector de moneda como pill separado. El color cambia semánticamente según el valor ingresado.</p>
+
+  <div class="ds-g2 mb8">
+    <!-- Empty state -->
+    <div>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--txt-m);margin-bottom:var(--s3);">Vacío — default</div>
+      <button class="amount-currency-pill" style="margin-bottom:var(--s3);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+        COP
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6,9 12,15 18,9"/></svg>
+      </button>
+      <div class="amount-input-wrap" id="demo-div">
+        <span class="amount-prefix">$</span>
+        <input class="amount-number" id="demo-amt" type="text" inputmode="numeric" placeholder="0" style="background:transparent;outline:none;border:none;font-variant-numeric:tabular-nums;text-align:right;flex:1;color:var(--txt);font-size:clamp(2.4rem,8vw,3.2rem);font-weight:900;letter-spacing:-0.05em;">
+      </div>
+      <div style="height:2px;background:var(--border-m);border-radius:2px;margin-bottom:var(--s3);"></div>
+      <div class="field-helper">Ingresa el monto bruto</div>
+    </div>
+
+    <!-- With value -->
+    <div>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--txt-m);margin-bottom:var(--s3);">Con valor — color semántico</div>
+      <button class="amount-currency-pill" style="margin-bottom:var(--s3);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+        COP
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6,9 12,15 18,9"/></svg>
+      </button>
+      <div class="amount-input-wrap">
+        <span class="amount-prefix" style="font-size:var(--t-xl);color:var(--fin-available);">$</span>
+        <div class="twotone" style="font-size:clamp(2.4rem,8vw,3.2rem);flex:1;text-align:right;line-height:1;">
+          <span class="twotone-main" style="font-weight:900;letter-spacing:-0.05em;color:var(--fin-available);">2.000</span><span class="twotone-dec" style="font-weight:900;letter-spacing:-0.05em;color:var(--fin-available);opacity:.22;">.000</span>
+        </div>
+      </div>
+      <div style="height:2px;background:var(--fin-available);border-radius:2px;margin-bottom:var(--s3);opacity:.4;"></div>
+      <div class="field-helper" style="color:var(--fin-available);">Monto válido — continúa</div>
+    </div>
+  </div>
+
+  <p class="sub">Selector de moneda</p>
+  <div style="margin-bottom:var(--s8);">
+    <div class="field" style="max-width:320px;">
+      <label class="field-label">Moneda</label>
+      <div class="currency-group" style="margin-top:var(--s2);">
+        <button class="currency-btn active">COP</button>
+        <button class="currency-btn">USD<span class="currency-rate">$4.200</span></button>
+        <button class="currency-btn">EUR<span class="currency-rate">$4.560</span></button>
+      </div>
+    </div>
+  </div>
+
+  <table class="spec-table mb8" style="border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;">
+    <thead><tr><th>Clase</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td class="cls">.amount-currency-pill</td><td>Selector de moneda — pill separado del input</td></tr>
+      <tr><td class="cls">.amount-input-wrap</td><td>Contenedor del input grande (flex, baseline)</td></tr>
+      <tr><td class="cls">.amount-prefix</td><td>Símbolo $ — tamaño xl, color semántico</td></tr>
+      <tr><td class="cls">.amount-number</td><td>Input numérico — hero size, tabular-nums</td></tr>
+      <tr><td class="cls">.twotone</td><td>Wrapper para two-tone display</td></tr>
+      <tr><td class="cls">.twotone-main</td><td>Parte entera — 100% opacidad</td></tr>
+      <tr><td class="cls">.twotone-dec</td><td>Decimales — 22% opacidad</td></tr>
+      <tr><td class="cls">.currency-group</td><td>Grupo de botones de moneda</td></tr>
+      <tr><td class="cls">.currency-btn</td><td>Botón individual de moneda</td></tr>
+      <tr><td class="cls">.currency-rate</td><td>Tasa de cambio dentro del currency-btn</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ================================================================
+     05 — FORMS
+     ================================================================ -->
+<section class="sec" id="s05">
+  <p class="sec-eye">05 · Componentes</p>
+  <h2 class="sec-h">Formularios e Inputs</h2>
+  <p class="sec-p">Jerarquía field → label → input → helper. Focus state con borde Volt. Estados semánticos: error en rojo, ok en verde.</p>
+
+  <div class="ds-g2 mb8">
+    <div style="display:flex;flex-direction:column;gap:var(--s5);">
+      <!-- Default -->
+      <div class="field">
+        <label class="field-label">Cliente</label>
+        <div class="field-sub">Nombre o RUT</div>
+        <input class="q-input" style="margin-top:var(--s2);" placeholder="Agencia Creativa SAS">
+        <div class="field-helper">Ingresa el nombre del cliente</div>
+      </div>
+      <!-- Error -->
+      <div class="field">
+        <label class="field-label">RUT</label>
+        <input class="q-input err" style="margin-top:var(--s2);" value="900.123">
+        <div class="field-helper" style="color:var(--fin-deduct);">Formato inválido — usa 900.123.456-7</div>
+      </div>
+      <!-- OK -->
+      <div class="field">
+        <label class="field-label">Correo</label>
+        <input class="q-input ok" style="margin-top:var(--s2);" value="maria@agencia.co">
+        <div class="field-helper" style="color:var(--fin-income);">Correo verificado</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:var(--s5);">
+      <!-- Toggle -->
+      <div>
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--txt-m);margin-bottom:var(--s3);">Toggle switch</div>
+        <div class="q-toggle">
+          <div class="q-toggle-left">
+            <div class="q-toggle-title">Calcular PILA automático</div>
+            <div class="q-toggle-desc">Reserva el 12.5% de tu IBC</div>
+          </div>
+          <label style="position:relative;display:inline-block;width:44px;height:26px;flex-shrink:0;">
+            <input type="checkbox" checked style="opacity:0;width:0;height:0;position:absolute;">
+            <div style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--volt-text);border-radius:13px;transition:.28s;"></div>
+            <div style="position:absolute;content:'';height:20px;width:20px;left:3px;top:3px;background:white;border-radius:50%;transition:.28s;transform:translateX(18px);box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+          </label>
+        </div>
+        <div class="q-toggle" style="margin-top:var(--s3);">
+          <div class="q-toggle-left">
+            <div class="q-toggle-title">Notificaciones push</div>
+            <div class="q-toggle-desc">Avisos de pagos pendientes</div>
+          </div>
+          <label style="position:relative;display:inline-block;width:44px;height:26px;flex-shrink:0;">
+            <input type="checkbox" style="opacity:0;width:0;height:0;position:absolute;">
+            <div style="position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:var(--surf-3);border-radius:13px;transition:.28s;"></div>
+            <div style="position:absolute;height:20px;width:20px;left:3px;top:3px;background:white;border-radius:50%;transition:.28s;box-shadow:0 1px 3px rgba(0,0,0,.3);"></div>
+          </label>
+        </div>
+      </div>
+      <!-- Seg ctrl -->
+      <div>
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--txt-m);margin-bottom:var(--s3);">Segmented control</div>
+        <div class="seg-ctrl">
+          <button class="seg-btn active">Mensual</button>
+          <button class="seg-btn">Trimestral</button>
+          <button class="seg-btn">Anual</button>
+        </div>
+      </div>
+      <!-- Date filter -->
+      <div>
+        <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--txt-m);margin-bottom:var(--s3);">Date filter strip</div>
+        <div class="date-filter-strip">
+          <button class="date-chip active">Hoy</button>
+          <button class="date-chip">Ayer</button>
+          <button class="date-chip">Esta semana</button>
+          <button class="date-chip">Este mes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="sub">Numpad</p>
+  <div style="max-width:280px;margin-bottom:var(--s8);">
+    <div class="numpad">
+      <button class="numpad-key">1</button><button class="numpad-key">2</button><button class="numpad-key">3</button>
+      <button class="numpad-key">4</button><button class="numpad-key">5</button><button class="numpad-key">6</button>
+      <button class="numpad-key">7</button><button class="numpad-key">8</button><button class="numpad-key">9</button>
+      <button class="numpad-key">.</button><button class="numpad-key">0</button>
+      <button class="numpad-key">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 4H8l-7 8 7 8h13a2 2 0 002-2V6a2 2 0 00-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <table class="spec-table" style="border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;">
+    <thead><tr><th>Clase</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td class="cls">.field</td><td>Contenedor del campo — apila label, input, helper</td></tr>
+      <tr><td class="cls">.field-label</td><td>Etiqueta del campo — t-md, 700 weight</td></tr>
+      <tr><td class="cls">.field-sub</td><td>Sub-etiqueta — t-xs, muted</td></tr>
+      <tr><td class="cls">.field-helper</td><td>Texto de ayuda bajo el input — t-xs</td></tr>
+      <tr><td class="cls">.q-input</td><td>Input base — 52px, surf-1 bg, focus con volt border</td></tr>
+      <tr><td class="cls">.q-input.err</td><td>Estado error — fin-deduct border</td></tr>
+      <tr><td class="cls">.q-input.ok</td><td>Estado válido — fin-income border</td></tr>
+      <tr><td class="cls">.q-toggle</td><td>Fila de toggle — flex, space-between</td></tr>
+      <tr><td class="cls">.seg-ctrl / .seg-btn</td><td>Control segmentado estilo Wise</td></tr>
+      <tr><td class="cls">.date-filter-strip / .date-chip</td><td>Tira de chips de filtro de fecha</td></tr>
+      <tr><td class="cls">.numpad / .numpad-key</td><td>Teclado numérico para AmountField</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ================================================================
+     06 — BUTTONS
+     ================================================================ -->
+<section class="sec" id="s06">
+  <p class="sec-eye">06 · Componentes</p>
+  <h2 class="sec-h">Botones</h2>
+  <p class="sec-p">Pill-shaped (border-radius: full), touch target mínimo 44px. El botón primario usa Volt. El confirm button tiene máquina de estados: default → loading → success → reset.</p>
+
+  <p class="sub">Variantes principales</p>
+  <div style="display:flex;flex-wrap:wrap;gap:var(--s3);margin-bottom:var(--s8);">
+    <button class="btn btn-primary">Confirmar y guardar</button>
+    <button class="btn btn-secondary">Ver desglose</button>
+    <button class="btn btn-ghost">Cancelar</button>
+    <button class="btn btn-primary btn-sm">Primario SM</button>
+    <button class="btn btn-secondary btn-sm">Secundario SM</button>
+    <button class="btn btn-primary" disabled style="opacity:.4;cursor:not-allowed;">Deshabilitado</button>
+    <button class="btn btn-primary btn-full" style="max-width:320px;">Botón full width</button>
+  </div>
+
+  <p class="sub">Confirm button — máquina de estados</p>
+  <div style="margin-bottom:var(--s8);">
+    <button class="btn-confirm" id="btn-demo" onclick="demoBtn()" style="width:100%;max-width:320px;">
+      <span id="btn-txt">Confirmar y guardar</span>
+    </button>
+    <p style="font-size:var(--t-xs);color:var(--txt-m);margin-top:var(--s3);">Haz clic para ver la secuencia: default → loading (1.2s) → success (2.8s) → reset</p>
+  </div>
+
+  <p class="sub">Dialog buttons (dbtn)</p>
+  <div style="display:flex;flex-wrap:wrap;gap:var(--s3);margin-bottom:var(--s8);">
+    <button class="dbtn dbtn-primary">Confirmar</button>
+    <button class="dbtn dbtn-secondary">Cancelar</button>
+    <button class="dbtn dbtn-ghost">Omitir</button>
+    <button class="dbtn dbtn-destructive">Eliminar</button>
+  </div>
+
+  <table class="spec-table" style="border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;">
+    <thead><tr><th>Clase</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td class="cls">.btn.btn-primary</td><td>Fondo Volt — acción principal</td></tr>
+      <tr><td class="cls">.btn.btn-secondary</td><td>Borde neutro — acción secundaria</td></tr>
+      <tr><td class="cls">.btn.btn-ghost</td><td>Solo texto — acción terciaria</td></tr>
+      <tr><td class="cls">.btn.btn-sm</td><td>Tamaño reducido (32px)</td></tr>
+      <tr><td class="cls">.btn.btn-full</td><td>Ancho completo del contenedor</td></tr>
+      <tr><td class="cls">.btn-confirm</td><td>Botón con estados animados</td></tr>
+      <tr><td class="cls">.btn-confirm.loading</td><td>Estado loading — spinner + texto</td></tr>
+      <tr><td class="cls">.btn-confirm.success</td><td>Estado éxito — verde + checkmark</td></tr>
+      <tr><td class="cls">.dbtn.dbtn-primary</td><td>Botón para dialogs — estilo compacto</td></tr>
+      <tr><td class="cls">.dbtn.dbtn-destructive</td><td>Botón destructivo en dialogs — rojo</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- PLACEHOLDER: Sections s07–s20 continue in next write -->
+</main>
+
+<script>
+/* ── Theme ── */
+let dark = false;
+function toggleTheme() {
+  dark = !dark;
+  document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light');
+  document.getElementById('tbtn').textContent = dark ? 'Sol Light' : 'Luna Dark';
+  document.getElementById('tbtn-mob').textContent = dark ? 'Sol' : 'Luna';
+}
+
+/* ── Sidebar ── */
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+window.addEventListener('resize', () => {
+  if (window.innerWidth >= 768) closeSidebar();
+});
+
+/* ── Nav highlight ── */
+const secs = document.querySelectorAll('.sec[id]');
+const links = document.querySelectorAll('.nav-link');
+secs.forEach(s => {
+  new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(l => l.classList.remove('on'));
+        const a = document.querySelector(`.nav-link[href="#${e.target.id}"]`);
+        if (a) a.classList.add('on');
+      }
+    });
+  }, { threshold: 0.2, rootMargin: '-10% 0px -55% 0px' }).observe(s);
+});
+
+/* ── Amount field demo ── */
+const amtInput = document.getElementById('demo-amt');
+const amtDiv   = document.getElementById('demo-div');
+if (amtInput && amtDiv) {
+  amtInput.addEventListener('focus', () => amtDiv.classList.add('focused'));
+  amtInput.addEventListener('blur',  () => amtDiv.classList.remove('focused'));
+  amtInput.addEventListener('input', () => {
+    const val = amtInput.value.replace(/[^0-9]/g,'');
+    amtInput.classList.toggle('has-val', val.length > 0);
+  });
+}
+
+/* ── Confirm button demo ── */
+function demoBtn() {
+  const btn = document.getElementById('btn-demo');
+  const txt = document.getElementById('btn-txt');
+  if (!btn || btn.classList.contains('loading') || btn.classList.contains('success')) return;
+  btn.classList.add('loading');
+  txt.innerHTML = '<div class="proc-spinner" style="width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:inline-block;margin-right:8px;vertical-align:middle;"></div>Calculando...';
+  setTimeout(() => {
+    btn.classList.remove('loading');
+    btn.classList.add('success');
+    txt.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" style="vertical-align:middle;margin-right:6px;"><polyline points="20,6 9,17 4,12"/></svg>Guardado`;
+  }, 1200);
+  setTimeout(() => {
+    btn.classList.remove('success');
+    txt.textContent = 'Confirmar y guardar';
+  }, 2800);
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,113 @@
+# Accessibility
+
+Quadra usa el addon `@storybook/addon-a11y` para detectar violaciones WCAG en cada story. Las violaciones están en modo `"todo"` (visibles en el panel de tests pero no bloquean CI).
+
+---
+
+## Principios
+
+### Contraste de texto
+Todos los tokens de texto cumplen WCAG 2.1 AA (≥ 4.5:1 para texto normal, ≥ 3:1 para texto grande):
+
+| Token | Sobre `--bg` light | Ratio |
+|-------|-------------------|-------|
+| `--txt` | `#0F1410` sobre `#FFFFFF` | ~18:1 ✅ |
+| `--txt-2` | `#3D4A3F` sobre `#FFFFFF` | ~9.5:1 ✅ |
+| `--txt-m` | `#6B7B6D` sobre `#FFFFFF` | ~5.2:1 ✅ |
+| `--txt-f` | `#9DAD9F` sobre `#FFFFFF` | ~2.5:1 ⚠️ — solo para texto decorativo/placeholder |
+
+> `--txt-f` está por debajo de AA para texto normal. Usarlo únicamente para placeholders, separadores o metadata que no sea informativa crítica.
+
+### Contraste en dark mode
+`--txt-f` en dark (`#506654` sobre `#090D0B`) tiene ratio ~3.3:1, suficiente para texto grande (≥18px).
+
+---
+
+## Roles y semántica
+
+### Botones
+Siempre usar `<button>` para acciones, no `<div>` o `<span>`:
+
+```html
+<!-- ✅ -->
+<button class="btn btn-primary">Confirmar</button>
+
+<!-- ❌ -->
+<div class="btn btn-primary" onclick="...">Confirmar</div>
+```
+
+### Iconos
+Los botones con solo icono deben tener `aria-label`:
+
+```html
+<button class="q-hdr-btn" aria-label="Abrir notificaciones">
+  <!-- icono bell -->
+</button>
+
+<button class="q-hdr-back" aria-label="Volver">
+  <!-- icono chevron -->
+</button>
+```
+
+### Formularios
+Siempre asociar `<label>` con `<input>` mediante `for` / `id`:
+
+```html
+<div class="field">
+  <label class="field-label" for="nombre">Nombre completo</label>
+  <input class="field-input" id="nombre" type="text" />
+</div>
+```
+
+### Toasts
+Los toasts deben tener rol `alert` o `status` para lectores de pantalla:
+
+```html
+<!-- Errores — interruptivos -->
+<div class="toast toast-error" role="alert" aria-live="assertive">...</div>
+
+<!-- Info / success — no interruptivos -->
+<div class="toast toast-success" role="status" aria-live="polite">...</div>
+```
+
+### AmountField
+El campo de monto expone `aria-label` en el pill de moneda:
+
+```html
+<div class="amount-currency-pill" aria-label="Moneda base COP">COP</div>
+```
+
+---
+
+## Motion y reduced motion
+
+Respetar `prefers-reduced-motion` para usuarios que lo necesiten:
+
+```css
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+```
+
+---
+
+## Focus visible
+
+Los elementos interactivos deben tener un outline de focus visible. Los estilos base de `components.css` incluyen `:focus-visible` en botones e inputs. No eliminar con `outline: none` sin reemplazar con un estilo alternativo.
+
+---
+
+## Revisar con el addon
+
+En Storybook, abrir el panel **Accessibility** en cada story para ver las violaciones detectadas. Las más comunes en Quadra:
+
+1. **Color contrast** — verificar combinaciones de texto/fondo personalizadas
+2. **Button name** — botones de icono sin `aria-label`
+3. **Label** — inputs sin `<label>` asociado
+
+Corregir antes de marcar un componente como "done".

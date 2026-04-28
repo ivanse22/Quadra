@@ -1,11 +1,44 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useAppStore } from '../../../store/useAppStore'
 import { supabase } from '../../../lib/supabase'
 import { IconInfo, IconMoon, IconSun } from '../../ui/Icons'
 
 export default function C1DatosPersonales() {
-  const { profile, session, setSession, navigateRoot, showToast, theme, toggleTheme, setProfile } = useAppStore()
+  const { profile, session, setSession, navigateRoot, showToast, theme, toggleTheme, wireframeMode, toggleWireframeMode, setProfile } = useAppStore()
   const [isEditing, setIsEditing] = useState(false)
+  const [showWireframeControl, setShowWireframeControl] = useState(false)
+  const appearanceInfoTapsRef = useRef([])
+  const appearanceInfoLongPressRef = useRef(null)
+
+  const clearAppearanceInfoLongPress = () => {
+    if (appearanceInfoLongPressRef.current != null) {
+      clearTimeout(appearanceInfoLongPressRef.current)
+      appearanceInfoLongPressRef.current = null
+    }
+  }
+
+  const onAppearanceInfoPointerDown = () => {
+    clearAppearanceInfoLongPress()
+    appearanceInfoLongPressRef.current = window.setTimeout(() => {
+      setShowWireframeControl(true)
+      appearanceInfoLongPressRef.current = null
+    }, 800)
+  }
+
+  const onAppearanceInfoPointerUp = () => {
+    clearAppearanceInfoLongPress()
+  }
+
+  const onAppearanceInfoClick = () => {
+    const now = Date.now()
+    const next = appearanceInfoTapsRef.current.filter((t) => now - t < 3000)
+    next.push(now)
+    appearanceInfoTapsRef.current = next
+    if (next.length >= 5) {
+      setShowWireframeControl(true)
+      appearanceInfoTapsRef.current = []
+    }
+  }
   const [form, setForm] = useState({
     name: profile.name || '',
     regimen: profile.regimen || 'ordinario',
@@ -151,7 +184,18 @@ export default function C1DatosPersonales() {
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--s3)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--s2)' }}>
               <div style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--t-base)', fontWeight: 700, color: 'var(--txt)' }}>Apariencia</div>
-              <button type="button" className="q-hdr-btn" aria-label="Más información sobre apariencia" title="Cambia entre modo claro y oscuro." style={{ width: 28, height: 28 }}>
+              <button
+                type="button"
+                className="q-hdr-btn"
+                aria-label="Más información sobre apariencia"
+                title="Cambia entre modo claro y oscuro. Mantén pulsado o toca 5 veces para opciones de vista."
+                style={{ width: 28, height: 28 }}
+                onClick={onAppearanceInfoClick}
+                onPointerDown={onAppearanceInfoPointerDown}
+                onPointerUp={onAppearanceInfoPointerUp}
+                onPointerCancel={onAppearanceInfoPointerUp}
+                onPointerLeave={onAppearanceInfoPointerUp}
+              >
                 <IconInfo />
               </button>
             </div>
@@ -160,6 +204,34 @@ export default function C1DatosPersonales() {
               {theme === 'light' ? 'Modo oscuro' : 'Modo claro'}
             </button>
           </div>
+          {showWireframeControl && (
+            <div
+              style={{
+                marginTop: 'var(--s4)',
+                paddingTop: 'var(--s4)',
+                borderTop: '1px solid var(--border)',
+              }}
+            >
+              <button
+                type="button"
+                className="q-toggle"
+                role="switch"
+                aria-checked={wireframeMode}
+                onClick={toggleWireframeMode}
+                style={{ width: '100%', boxSizing: 'border-box' }}
+              >
+                <div className="q-toggle-left">
+                  <div className="q-toggle-title">Vista wireframe</div>
+                  <div className="q-toggle-desc">
+                    Estructura monocroma y bordes guía. La preferencia se guarda en este dispositivo.
+                  </div>
+                </div>
+                <div className={`q-switch${wireframeMode ? ' on' : ''}`} aria-hidden>
+                  <div className="q-switch-thumb" />
+                </div>
+              </button>
+            </div>
+          )}
         </div>
       )}
 

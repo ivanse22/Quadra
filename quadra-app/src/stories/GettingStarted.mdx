@@ -1,0 +1,163 @@
+# Getting Started
+
+Guía para integrar el design system de Quadra en cualquier pantalla nueva.
+
+---
+
+## 1. Importar los estilos
+
+Los estilos ya están importados globalmente en `src/styles/index.css`. Si estás fuera del entry point principal, importar directamente:
+
+```js
+import '@/styles/index.css';
+```
+
+Esto carga en orden:
+1. `tokens.css` — todas las CSS custom properties
+2. `components.css` — todas las clases de componentes
+3. Reset y estilos base
+
+---
+
+## 2. Usar tokens de color
+
+Nunca hardcodees colores. Siempre usar variables CSS:
+
+```css
+/* ✅ Correcto */
+color: var(--txt);
+background: var(--surf-1);
+border-color: var(--border);
+
+/* ❌ Incorrecto */
+color: #0F1410;
+background: #F3F4F2;
+```
+
+---
+
+## 3. Usar clases de componentes
+
+Las clases están listas para usar en cualquier HTML o JSX:
+
+```jsx
+// Botón primario
+<button className="btn btn-primary">Continuar</button>
+
+// Campo de formulario
+<div className="field">
+  <label className="field-label">Nombre</label>
+  <input className="field-input" type="text" />
+</div>
+
+// Card con transacción
+<div className="tx-list">
+  <div className="tx-section-header">Hoy</div>
+  <div className="tx-row">
+    <div className="tx-icon">💰</div>
+    <div className="tx-info">
+      <div className="tx-name">Ingreso cliente</div>
+      <div className="tx-sub">Transferencia · 9:00 am</div>
+    </div>
+    <div className="tx-amount" style={{ color: 'var(--fin-income)' }}>+$500,000</div>
+  </div>
+</div>
+```
+
+---
+
+## 4. Estructura de pantalla
+
+Toda pantalla sigue este patrón:
+
+```jsx
+function MiPantalla() {
+  return (
+    <>
+      <header className="q-header">
+        <button className="q-hdr-back">←</button>
+        <span className="q-hdr-title-center">Mi Pantalla</span>
+        <div className="q-hdr-right" />
+      </header>
+
+      <div className="q-body">
+        <div className="q-body-inner">
+          {/* contenido aquí */}
+        </div>
+      </div>
+
+      <div className="q-sticky-footer">
+        <button className="btn btn-primary btn-full">Confirmar</button>
+      </div>
+    </>
+  );
+}
+```
+
+---
+
+## 5. Espaciado
+
+Usar tokens semánticos antes que los numéricos:
+
+```css
+/* ✅ Semántico — expresa la intención */
+padding: var(--space-card);
+gap: var(--space-between-cards);
+padding-inline: var(--screen-px);
+
+/* También válido para casos donde el semántico no aplica */
+margin-bottom: var(--s4);  /* 16px */
+gap: var(--s3);            /* 12px */
+```
+
+---
+
+## 6. Tipografía
+
+```css
+/* Display / headings */
+font-family: var(--font-display);
+font-size: var(--t-xl);
+font-weight: 700;
+
+/* Cuerpo */
+font-family: var(--font-body);
+font-size: var(--t-base);
+font-weight: 400;
+
+/* Montos / números */
+font-family: var(--font-mono);
+font-size: var(--t-hero);
+font-weight: 900;
+```
+
+---
+
+## 7. Colores financieros
+
+Siempre usar los tokens semánticos para montos:
+
+```jsx
+// Ingreso
+<span style={{ color: 'var(--fin-income)' }}>+$1,500,000</span>
+
+// Gasto
+<span style={{ color: 'var(--fin-deduct)' }}>-$350,000</span>
+
+// Reserva
+<span style={{ color: 'var(--fin-reserve)' }}>$200,000</span>
+```
+
+---
+
+## Checklist para una nueva pantalla
+
+- [ ] Header con la variante correcta (A, B o C)
+- [ ] `q-body` + `q-body-inner` para el contenido
+- [ ] `q-sticky-footer` si hay CTA primario fijo
+- [ ] Colores de monto usando `--fin-income` / `--fin-deduct` / `--fin-reserve`
+- [ ] Espaciado con tokens semánticos (`--screen-px`, `--space-card`, etc.)
+- [ ] Tipografía con tokens (`--t-*`) y familias (`--font-display`, `--font-body`)
+- [ ] Skeleton loaders durante carga de datos
+- [ ] Empty state si la lista puede estar vacía

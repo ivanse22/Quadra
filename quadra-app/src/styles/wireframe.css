@@ -1,0 +1,112 @@
+/* Quadra — vista wireframe (solo activa con html[data-wireframe="true"]).
+   No afecta la app cuando el atributo no está presente. */
+
+html[data-wireframe="true"] {
+  --volt: #525252;
+  --volt-on: #fafafa;
+  --volt-text: #262626;
+  --volt-dim: rgba(0, 0, 0, 0.06);
+  --volt-border: rgba(0, 0, 0, 0.22);
+  --fin-income: #404040;
+  --fin-income-dim: rgba(0, 0, 0, 0.06);
+  --fin-income-border: rgba(0, 0, 0, 0.2);
+  --fin-deduct: #404040;
+  --fin-deduct-dim: rgba(0, 0, 0, 0.06);
+  --fin-deduct-border: rgba(0, 0, 0, 0.2);
+  --fin-reserve: #404040;
+  --fin-reserve-dim: rgba(0, 0, 0, 0.06);
+  --fin-reserve-border: rgba(0, 0, 0, 0.2);
+  --fin-available: #262626;
+  --fin-income-dark: #a3a3a3;
+  --fin-deduct-dark: #a3a3a3;
+  --fin-reserve-dark: #a3a3a3;
+  --fin-available-dark: #a3a3a3;
+  --bg: #fafafa;
+  --bg-subtle: #f0f0f0;
+  --surf-1: #e8e8e8;
+  --surf-2: #e0e0e0;
+  --surf-3: #d4d4d4;
+  --surf-inv: #171717;
+  --border: rgba(0, 0, 0, 0.18);
+  --border-s: rgba(0, 0, 0, 0.24);
+  --border-m: rgba(0, 0, 0, 0.3);
+  --txt: #171717;
+  --txt-2: #404040;
+  --txt-m: #525252;
+  --txt-f: #737373;
+  --txt-inv: #fafafa;
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+}
+
+html[data-wireframe="true"][data-theme="dark"] {
+  --volt: #a3a3a3;
+  --volt-on: #0a0a0a;
+  --volt-text: #e5e5e5;
+  --volt-dim: rgba(255, 255, 255, 0.06);
+  --volt-border: rgba(255, 255, 255, 0.2);
+  --fin-income: #a3a3a3;
+  --fin-income-dim: rgba(255, 255, 255, 0.06);
+  --fin-income-border: rgba(255, 255, 255, 0.18);
+  --fin-deduct: #a3a3a3;
+  --fin-deduct-dim: rgba(255, 255, 255, 0.06);
+  --fin-deduct-border: rgba(255, 255, 255, 0.18);
+  --fin-reserve: #a3a3a3;
+  --fin-reserve-dim: rgba(255, 255, 255, 0.06);
+  --fin-reserve-border: rgba(255, 255, 255, 0.18);
+  --fin-available: #e5e5e5;
+  --bg: #0d0d0d;
+  --bg-subtle: #141414;
+  --surf-1: #1a1a1a;
+  --surf-2: #262626;
+  --surf-3: #333333;
+  --surf-inv: #fafafa;
+  --border: rgba(255, 255, 255, 0.14);
+  --border-s: rgba(255, 255, 255, 0.2);
+  --border-m: rgba(255, 255, 255, 0.28);
+  --txt: #f5f5f5;
+  --txt-2: #d4d4d4;
+  --txt-m: #a3a3a3;
+  --txt-f: #737373;
+  --txt-inv: #171717;
+}
+
+html[data-wireframe="true"] .card,
+html[data-wireframe="true"] .hero-card,
+html[data-wireframe="true"] .kpi-card,
+html[data-wireframe="true"] .desglose,
+html[data-wireframe="true"] .tx-list,
+html[data-wireframe="true"] .dialog,
+html[data-wireframe="true"] .fab-sheet,
+html[data-wireframe="true"] .install-banner,
+html[data-wireframe="true"] .q-sheet {
+  box-shadow: none !important;
+  border: 2px dashed #737373 !important;
+}
+
+html[data-wireframe="true"] .btn,
+html[data-wireframe="true"] .q-input,
+html[data-wireframe="true"] .q-toggle,
+html[data-wireframe="true"] .bottom-nav,
+html[data-wireframe="true"] .q-header,
+html[data-wireframe="true"] .calendar-shell {
+  box-shadow: none !important;
+}
+
+html[data-wireframe="true"] button.fab-pulse,
+html[data-wireframe="true"] button.fab-open {
+  background: #e5e5e5 !important;
+  color: #171717 !important;
+  box-shadow: none !important;
+  border: 2px dashed #525252 !important;
+}
+
+html[data-wireframe="true"][data-theme="dark"] button.fab-pulse,
+html[data-wireframe="true"][data-theme="dark"] button.fab-open {
+  background: #262626 !important;
+  color: #fafafa !important;
+  border-color: #a3a3a3 !important;
+}

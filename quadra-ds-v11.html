@@ -990,7 +990,1920 @@ code {
   </table>
 </section>
 
-<!-- PLACEHOLDER: Sections s07–s20 continue in next write -->
+
+<!-- ================================================================
+     07 — CARDS & KPIs
+     ================================================================ -->
+<section class="sec" id="s07">
+  <p class="sec-eye">07 · Componentes</p>
+  <h2 class="sec-h">Cards y KPIs</h2>
+  <p class="sec-p">Sistema de cards escalable: desde el hero-card con el número más importante, hasta KPI strips y task cards del home. Todas usan tokens de superficie y sombra.</p>
+
+  <p class="sub">Hero card</p>
+  <div style="max-width:360px;margin-bottom:var(--s8);">
+    <div class="hero-card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:var(--s3);">
+        <div style="font-size:var(--t-xs);font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--txt-m);">Lo que realmente es tuyo</div>
+        <button class="hero-eye">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        </button>
+      </div>
+      <div class="hero-amount">
+        <span class="twotone-main">$1.240</span><span class="twotone-dec">.000</span>
+      </div>
+      <div class="hero-sub">De $2.000.000 brutos · Agencia Creativa</div>
+      <div class="hero-breakdown">
+        <div style="display:flex;justify-content:space-between;font-size:var(--t-xs);padding:var(--s2) 0;border-bottom:1px solid var(--border);">
+          <span style="color:var(--txt-m);">Retención</span><span style="color:var(--fin-deduct);font-weight:700;">-$200k</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:var(--t-xs);padding:var(--s2) 0;">
+          <span style="color:var(--txt-m);">S+P</span><span style="color:var(--fin-reserve);font-weight:700;">-$560k</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="sub">Generic card</p>
+  <div style="max-width:360px;margin-bottom:var(--s8);">
+    <div class="card">
+      <div class="card-title">Reserva agosto</div>
+      <div class="card-sub">Declaración de renta · Vence 25 Aug</div>
+      <div class="card-divider"></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:var(--t-xs);color:var(--txt-m);">Acumulado</span>
+        <span style="font-size:var(--t-lg);font-weight:900;color:var(--fin-reserve);">$310.000</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="sub">KPI Cards</p>
+  <div class="ds-g3 mb8">
+    <div class="kpi-card">
+      <div class="kpi-card-lbl">Ingresos este mes</div>
+      <div class="kpi-card-val" style="color:var(--fin-income);">$4.800.000</div>
+      <div class="kpi-trend kpi-trend-up">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg> +12%
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-card-lbl">Retención acumulada</div>
+      <div class="kpi-card-val" style="color:var(--fin-deduct);">$528.000</div>
+      <div class="kpi-trend kpi-trend-down">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg> -3%
+      </div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-card-lbl">PILA reservado</div>
+      <div class="kpi-card-val" style="color:var(--fin-reserve);">$600.000</div>
+      <div class="kpi-trend" style="color:var(--txt-m);">Sin cambio</div>
+    </div>
+  </div>
+
+  <p class="sub">KPI Mini cards + KPI Strip</p>
+  <div class="kpi-strip mb8">
+    <div class="kpi-mini-card">
+      <div class="kpi-mini-icon" style="background:var(--fin-income-dim);color:var(--fin-income);">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+      </div>
+      <div class="kpi-mini-label">Ingresos</div>
+      <div style="font-size:var(--t-sm);font-weight:700;color:var(--txt);">$4.8M</div>
+    </div>
+    <div class="kpi-mini-card">
+      <div class="kpi-mini-icon" style="background:var(--fin-deduct-dim);color:var(--fin-deduct);">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+      </div>
+      <div class="kpi-mini-label">Retención</div>
+      <div style="font-size:var(--t-sm);font-weight:700;color:var(--txt);">$528k</div>
+    </div>
+    <div class="kpi-mini-card">
+      <div class="kpi-mini-icon" style="background:var(--fin-reserve-dim);color:var(--fin-reserve);">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div class="kpi-mini-label">PILA</div>
+      <div style="font-size:var(--t-sm);font-weight:700;color:var(--txt);">$600k</div>
+    </div>
+    <div class="kpi-mini-card">
+      <div class="kpi-mini-icon" style="background:var(--volt-dim);color:var(--volt-text);">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="kpi-mini-label">Disponible</div>
+      <div style="font-size:var(--t-sm);font-weight:700;color:var(--fin-available);">$3.67M</div>
+    </div>
+  </div>
+
+  <p class="sub">Home task card + Annual insights card</p>
+  <div class="ds-g2 mb8">
+    <div class="home-task-card">
+      <div class="home-task-chip">Pendiente</div>
+      <div style="font-size:var(--t-sm);font-weight:700;color:var(--txt);margin-top:var(--s2);">Registrar pago de Agencia Norte</div>
+      <div style="font-size:var(--t-xs);color:var(--txt-m);margin-top:var(--s1);">Vence hoy · $1.200.000</div>
+    </div>
+    <div class="annual-insights-card">
+      <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--txt-m);margin-bottom:var(--s3);">Resumen anual</div>
+      <div class="annual-insight-row">
+        <div class="annual-insight-copy">
+          <div class="annual-insight-label">Total ingresos 2024</div>
+          <div class="annual-insight-value" style="color:var(--fin-income);">$48.600.000</div>
+        </div>
+      </div>
+      <div class="annual-insight-row">
+        <div class="annual-insight-copy">
+          <div class="annual-insight-label">Retención pagada</div>
+          <div class="annual-insight-value" style="color:var(--fin-deduct);">$5.346.000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table class="spec-table" style="border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;">
+    <thead><tr><th>Clase</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td class="cls">.hero-card</td><td>Card principal con monto disponible — fondo surf-1</td></tr>
+      <tr><td class="cls">.hero-amount</td><td>Número hero dentro de la card</td></tr>
+      <tr><td class="cls">.hero-eye</td><td>Botón para ocultar/mostrar monto</td></tr>
+      <tr><td class="cls">.hero-sub</td><td>Subtexto bajo el hero amount</td></tr>
+      <tr><td class="cls">.hero-breakdown</td><td>Mini desglose dentro de la hero card</td></tr>
+      <tr><td class="cls">.card</td><td>Card genérica — surface-1, border, radius-xl</td></tr>
+      <tr><td class="cls">.card-title / .card-sub</td><td>Título y subtítulo de card</td></tr>
+      <tr><td class="cls">.kpi-card</td><td>Card KPI con label, valor y trend</td></tr>
+      <tr><td class="cls">.kpi-strip</td><td>Fila horizontal de kpi-mini-card</td></tr>
+      <tr><td class="cls">.kpi-mini-card</td><td>Card KPI compacta para strips</td></tr>
+      <tr><td class="cls">.kpi-trend-up / .kpi-trend-down</td><td>Indicador de tendencia positiva/negativa</td></tr>
+      <tr><td class="cls">.home-task-card</td><td>Card de tarea pendiente en home</td></tr>
+      <tr><td class="cls">.annual-insights-card</td><td>Card de resumen anual con filas de insight</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ================================================================
+     08 — TRANSACCIONES
+     ================================================================ -->
+<section class="sec" id="s08">
+  <p class="sec-eye">08 · Componentes</p>
+  <h2 class="sec-h">Transacciones y listas</h2>
+  <p class="sec-p">tx-list como vista principal de pagos. compact-row para listas densas. desglose (drow) para breakdowns financieros. income-row para la vista de ingresos con variantes por tipo.</p>
+
+  <p class="sub">Transaction list</p>
+  <div style="max-width:360px;margin-bottom:var(--s8);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;">
+    <div class="tx-list">
+      <div class="tx-section-header">Hoy · 19 abr</div>
+      <div class="tx-row">
+        <div class="tx-icon" style="background:var(--fin-income-dim);color:var(--fin-income);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+        </div>
+        <div class="tx-info">
+          <div class="tx-name">Agencia Creativa SAS</div>
+          <div class="tx-sub">Transferencia · COP</div>
+        </div>
+        <div class="tx-amount" style="color:var(--fin-income);">+$2.000.000</div>
+      </div>
+      <div class="tx-row">
+        <div class="tx-icon" style="background:var(--fin-deduct-dim);color:var(--fin-deduct);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="tx-info">
+          <div class="tx-name">Retención DIAN</div>
+          <div class="tx-sub">Deducción automática</div>
+        </div>
+        <div class="tx-amount" style="color:var(--fin-deduct);">-$200.000</div>
+      </div>
+      <div class="tx-section-header">Ayer · 18 abr</div>
+      <div class="tx-row">
+        <div class="tx-icon" style="background:var(--fin-reserve-dim);color:var(--fin-reserve);">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="tx-info">
+          <div class="tx-name">PILA — Salud y Pensión</div>
+          <div class="tx-sub">Reserva auto · 12.5%</div>
+        </div>
+        <div class="tx-amount" style="color:var(--fin-reserve);">-$250.000</div>
+      </div>
+      <div class="tx-total-row">
+        <div class="tx-total-l">Disponible real</div>
+        <div class="tx-total-v" style="color:var(--fin-available);">$1.240.000</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="sub">Compact row</p>
+  <div style="max-width:360px;margin-bottom:var(--s8);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;">
+    <div class="compact-row">
+      <div style="width:36px;height:36px;border-radius:var(--r-md);background:var(--fin-income-dim);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--fin-income)" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/></svg>
+      </div>
+      <div class="compact-row-info">
+        <div style="font-size:var(--t-sm);font-weight:700;color:var(--txt);">Agencia Norte</div>
+        <div style="font-size:var(--t-xs);color:var(--txt-m);">19 abr · Transferencia</div>
+      </div>
+      <div class="compact-row-amount" style="color:var(--fin-income);">$1.800.000</div>
+    </div>
+    <div class="compact-row" style="border-top:1px solid var(--border);">
+      <div style="width:36px;height:36px;border-radius:var(--r-md);background:var(--surf-2);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--txt-m)" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+      </div>
+      <div class="compact-row-info">
+        <div style="font-size:var(--t-sm);font-weight:700;color:var(--txt);">Empresa Digital SAS</div>
+        <div style="font-size:var(--t-xs);color:var(--txt-m);">17 abr · Nequi</div>
+      </div>
+      <div class="compact-row-amount">$3.200.000</div>
+    </div>
+  </div>
+
+  <p class="sub">Desglose (drow)</p>
+  <div style="max-width:360px;margin-bottom:var(--s8);">
+    <div class="desglose">
+      <div class="drow">
+        <div class="drow-l"><div class="drow-dot" style="background:var(--fin-income);"></div>Ingreso bruto</div>
+        <div class="drow-v">$2.000.000</div>
+      </div>
+      <div class="drow">
+        <div class="drow-l"><div class="drow-dot" style="background:var(--fin-deduct);"></div>Retención en la fuente</div>
+        <div class="drow-v" style="color:var(--fin-deduct);">-$200.000</div>
+      </div>
+      <div class="drow">
+        <div class="drow-l"><div class="drow-dot" style="background:var(--fin-reserve);"></div>Salud y pensión</div>
+        <div class="drow-v" style="color:var(--fin-reserve);">-$250.000</div>
+      </div>
+      <div class="drow">
+        <div class="drow-l"><div class="drow-dot" style="background:var(--fin-reserve);"></div>Reserva agosto</div>
+        <div class="drow-v" style="color:var(--fin-reserve);">-$310.000</div>
+      </div>
+      <div class="dtotal">
+        <div class="dtotal-l">Disponible real</div>
+        <div class="dtotal-v" style="color:var(--fin-available);">$1.240.000</div>
+      </div>
+    </div>
+  </div>
+
+  <p class="sub">Income rows (variantes)</p>
+  <div style="max-width:360px;margin-bottom:var(--s8);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;">
+    <div class="income-row income-row--income">
+      <div style="flex:1;">
+        <div style="font-size:var(--t-sm);font-weight:700;color:var(--txt);">Honorarios Agencia</div>
+        <div style="font-size:var(--t-xs);color:var(--txt-m);">Transferencia · 19 abr</div>
+      </div>
+      <div style="font-size:var(--t-sm);font-weight:700;color:var(--fin-income);">+$2.000.000</div>
+    </div>
+    <div class="income-row income-row--pila" style="border-top:1px solid var(--border);">
+      <div style="flex:1;">
+        <div style="font-size:var(--t-sm);font-weight:700;color:var(--txt);">PILA Auto</div>
+        <div style="font-size:var(--t-xs);color:var(--txt-m);">Salud y pensión · 12.5%</div>
+      </div>
+      <div style="font-size:var(--t-sm);font-weight:700;color:var(--fin-reserve);">-$250.000</div>
+    </div>
+    <div class="income-row income-row--renta" style="border-top:1px solid var(--border);">
+      <div style="flex:1;">
+        <div style="font-size:var(--t-sm);font-weight:700;color:var(--txt);">Reserva declaración</div>
+        <div style="font-size:var(--t-xs);color:var(--txt-m);">Renta 2024 · Ago</div>
+      </div>
+      <div style="font-size:var(--t-sm);font-weight:700;color:var(--fin-reserve);">-$310.000</div>
+    </div>
+  </div>
+
+  <table class="spec-table" style="border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;">
+    <thead><tr><th>Clase</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td class="cls">.tx-list</td><td>Contenedor de lista de transacciones</td></tr>
+      <tr><td class="cls">.tx-section-header</td><td>Encabezado de grupo por fecha</td></tr>
+      <tr><td class="cls">.tx-row</td><td>Fila de transacción — icon + info + amount</td></tr>
+      <tr><td class="cls">.tx-icon / .tx-info / .tx-amount</td><td>Partes de una tx-row</td></tr>
+      <tr><td class="cls">.tx-total-row</td><td>Fila de total al final de la lista</td></tr>
+      <tr><td class="cls">.compact-row</td><td>Fila compacta para listas densas</td></tr>
+      <tr><td class="cls">.compact-row-info / .compact-row-amount</td><td>Info y monto en compact-row</td></tr>
+      <tr><td class="cls">.desglose</td><td>Contenedor de desglose financiero</td></tr>
+      <tr><td class="cls">.drow / .drow-l / .drow-v</td><td>Fila de desglose con dot, label y valor</td></tr>
+      <tr><td class="cls">.drow-dot</td><td>Punto de color semántico en desglose</td></tr>
+      <tr><td class="cls">.dtotal / .dtotal-l / .dtotal-v</td><td>Fila total del desglose</td></tr>
+      <tr><td class="cls">.income-row</td><td>Fila de ingreso base</td></tr>
+      <tr><td class="cls">.income-row--income</td><td>Variante ingreso positivo</td></tr>
+      <tr><td class="cls">.income-row--pila</td><td>Variante PILA/reserva</td></tr>
+      <tr><td class="cls">.income-row--renta</td><td>Variante declaración de renta</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ================================================================
+     09 — TRANSACTION DETAIL
+     ================================================================ -->
+<section class="sec" id="s09">
+  <p class="sec-eye">09 · Componentes</p>
+  <h2 class="sec-h">Detalle de transacción</h2>
+  <p class="sec-p">Pantalla completa de detalle con metadata, timeline y desglose. El timeline (tl-) muestra el historial de estados de un pago.</p>
+
+  <div class="ds-g2 mb8">
+    <div>
+      <div class="ds-phone-label">Detalle de pago</div>
+      <div class="ds-phone">
+        <div class="ds-ph-status">
+          <span class="ds-ph-time">9:41</span>
+          <div class="ds-ph-icons">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.08 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+          </div>
+        </div>
+        <div class="q-header" style="background:var(--bg);">
+          <div class="q-hdr-back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+          </div>
+          <div class="q-hdr-title-center">Detalle de pago</div>
+          <div class="q-hdr-btn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+          </div>
+        </div>
+        <div class="ds-ph-body" style="padding:var(--s4) var(--s5);overflow-y:auto;gap:var(--s4);display:flex;flex-direction:column;">
+          <div style="text-align:center;padding:var(--s4) 0;">
+            <div style="font-size:var(--t-xs);font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--txt-m);margin-bottom:var(--s2);">Disponible de este pago</div>
+            <div style="font-size:var(--t-3xl);font-weight:900;letter-spacing:-0.05em;color:var(--fin-available);">$1.240.000</div>
+            <div style="font-size:var(--t-xs);color:var(--txt-m);margin-top:var(--s1);">De $2.000.000 brutos</div>
+            <span class="badge badge-ok" style="margin-top:var(--s3);">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg>
+              Confirmado
+            </span>
+          </div>
+          <div style="background:var(--surf-1);border-radius:var(--r-lg);padding:var(--s3);">
+            <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--txt-m);margin-bottom:var(--s3);">Detalles</div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2);">
+              <div style="display:flex;justify-content:space-between;font-size:var(--t-xs);"><span style="color:var(--txt-m);">Cliente</span><span style="font-weight:700;">Agencia Creativa</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:var(--t-xs);"><span style="color:var(--txt-m);">Fecha</span><span style="font-weight:700;">19 abr 2025</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:var(--t-xs);"><span style="color:var(--txt-m);">Moneda</span><span style="font-weight:700;">COP</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="ds-phone-label">Timeline de estados</div>
+      <div style="padding:var(--s5);background:var(--bg-subtle);border:1px solid var(--border);border-radius:var(--r-xl);">
+        <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--txt-m);margin-bottom:var(--s4);">Historial</div>
+        <div class="tx-timeline">
+          <div class="tl-row">
+            <div class="tl-left">
+              <div class="tl-date">19 abr</div>
+              <div class="tl-line-seg"></div>
+            </div>
+            <div class="tl-content">
+              <div class="tl-label">Pago confirmado</div>
+              <div class="tl-note">$2.000.000 recibidos de Agencia Creativa</div>
+              <div class="tl-check">
+                <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg>
+              </div>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-left">
+              <div class="tl-date">19 abr</div>
+              <div class="tl-line-seg"></div>
+            </div>
+            <div class="tl-content">
+              <div class="tl-label">Deducciones calculadas</div>
+              <div class="tl-note">Retención 11% + PILA 12.5% + Reserva</div>
+            </div>
+          </div>
+          <div class="tl-row">
+            <div class="tl-left">
+              <div class="tl-date">19 abr</div>
+            </div>
+            <div class="tl-content">
+              <div class="tl-label">Disponible actualizado</div>
+              <div class="tl-note">$1.240.000 disponibles en tu cuenta</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table class="spec-table" style="border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;">
+    <thead><tr><th>Clase</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td class="cls">.tx-timeline</td><td>Contenedor del timeline de estados</td></tr>
+      <tr><td class="cls">.tl-row</td><td>Fila del timeline</td></tr>
+      <tr><td class="cls">.tl-left</td><td>Columna izquierda — fecha + línea</td></tr>
+      <tr><td class="cls">.tl-date / .tl-label / .tl-note</td><td>Fecha, título y descripción del evento</td></tr>
+      <tr><td class="cls">.tl-line-seg</td><td>Línea vertical conectora entre eventos</td></tr>
+      <tr><td class="cls">.tl-check</td><td>Indicador de checkmark en eventos completados</td></tr>
+      <tr><td class="cls">.q-hdr-title-center</td><td>Título centrado del header</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ================================================================
+     10 — BADGES & FEEDBACK
+     ================================================================ -->
+<section class="sec" id="s10">
+  <p class="sec-eye">10 · Componentes</p>
+  <h2 class="sec-h">Badges y Feedback</h2>
+  <p class="sec-p">Sistema de badges semánticos para estados financieros. Toast para notificaciones. Progress bar, skeleton y trend badges para feedback visual.</p>
+
+  <p class="sub">Status badges</p>
+  <div style="display:flex;flex-wrap:wrap;gap:var(--s3);margin-bottom:var(--s8);">
+    <span class="badge badge-ok">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg>
+      Confirmado
+    </span>
+    <span class="badge badge-err">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      Error
+    </span>
+    <span class="badge badge-warn">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+      Pendiente
+    </span>
+    <span class="badge badge-volt">Disponible</span>
+    <span class="badge badge-neu">Sin cambio</span>
+    <span class="badge badge-bounce badge-volt" style="animation:none;">Nuevo</span>
+  </div>
+
+  <p class="sub">Trend badges</p>
+  <div style="display:flex;flex-wrap:wrap;gap:var(--s3);margin-bottom:var(--s8);">
+    <span class="trend-badge trend-up">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+      +12% vs mes anterior
+    </span>
+    <span class="trend-badge trend-down">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg>
+      -3% vs mes anterior
+    </span>
+    <div class="kpi-trend kpi-trend-up">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg> +8%
+    </div>
+    <div class="kpi-trend kpi-trend-down">
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M6 9l6 6 6-6"/></svg> -5%
+    </div>
+  </div>
+
+  <p class="sub">Toast notifications</p>
+  <div style="display:flex;flex-direction:column;gap:var(--s3);max-width:380px;margin-bottom:var(--s8);">
+    <div class="toast toast-success">
+      <div class="toast-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20,6 9,17 4,12"/></svg>
+      </div>
+      <div class="toast-text">Pago guardado correctamente</div>
+      <button class="toast-dismiss">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="toast toast-error">
+      <div class="toast-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="toast-text">Error al conectar con el servidor</div>
+      <button class="toast-action">Reintentar</button>
+      <button class="toast-dismiss">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="toast toast-info">
+      <div class="toast-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="toast-text">Recuerda declarar antes del 25 de agosto</div>
+      <button class="toast-dismiss">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <p class="sub">Progress bar y Skeleton</p>
+  <div class="ds-g2 mb8">
+    <div>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--txt-m);margin-bottom:var(--s3);">Progress bar</div>
+      <div style="display:flex;flex-direction:column;gap:var(--s3);">
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:var(--t-xs);color:var(--txt-m);margin-bottom:4px;"><span>Reserva agosto</span><span>62%</span></div>
+          <div class="kpi-progress-wrap"><div class="kpi-progress-bar" style="width:62%;background:var(--fin-reserve);"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:var(--t-xs);color:var(--txt-m);margin-bottom:4px;"><span>PILA acumulado</span><span>85%</span></div>
+          <div class="kpi-progress-wrap"><div class="kpi-progress-bar" style="width:85%;background:var(--fin-income);"></div></div>
+        </div>
+        <div>
+          <div style="display:flex;justify-content:space-between;font-size:var(--t-xs);color:var(--txt-m);margin-bottom:4px;"><span>Meta de ahorro</span><span>33%</span></div>
+          <div class="kpi-progress-wrap"><div class="kpi-progress-bar" style="width:33%;background:var(--volt-text);"></div></div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--txt-m);margin-bottom:var(--s3);">Skeleton loading</div>
+      <div style="background:var(--bg);border:1px solid var(--border);border-radius:var(--r-xl);padding:var(--s4);">
+        <span class="skel" style="height:10px;width:40%;margin-bottom:var(--s3);display:block;"></span>
+        <span class="skel" style="height:44px;width:65%;margin-bottom:var(--s3);border-radius:var(--r-md);display:block;"></span>
+        <div style="display:flex;gap:var(--s3);margin-bottom:var(--s4);">
+          <span class="skel" style="height:40px;flex:1;border-radius:var(--r-lg);"></span>
+          <span class="skel" style="height:40px;flex:1;border-radius:var(--r-lg);"></span>
+        </div>
+        <div style="display:flex;gap:var(--s3);align-items:center;">
+          <span class="skel" style="height:36px;width:36px;border-radius:50%;flex-shrink:0;"></span>
+          <div style="flex:1;"><span class="skel" style="height:9px;width:60%;display:block;margin-bottom:4px;"></span><span class="skel" style="height:8px;width:38%;display:block;"></span></div>
+          <span class="skel" style="height:9px;width:50px;border-radius:var(--r-sm);"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table class="spec-table" style="border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;">
+    <thead><tr><th>Clase</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td class="cls">.badge</td><td>Badge base — pill, 700 weight, flex inline</td></tr>
+      <tr><td class="cls">.badge-ok / .badge-err / .badge-warn</td><td>Variantes semánticas financieras</td></tr>
+      <tr><td class="cls">.badge-volt</td><td>Badge en color acento volt</td></tr>
+      <tr><td class="cls">.badge-neu</td><td>Badge neutro — surf-2</td></tr>
+      <tr><td class="cls">.badge-bounce</td><td>Badge con animación de rebote</td></tr>
+      <tr><td class="cls">.trend-badge.trend-up / .trend-down</td><td>Indicadores de tendencia con icono</td></tr>
+      <tr><td class="cls">.bell-badge</td><td>Dot de notificación sobre icono de campana</td></tr>
+      <tr><td class="cls">.toast</td><td>Notificación toast — posición fixed bottom</td></tr>
+      <tr><td class="cls">.toast-success / .toast-error / .toast-info</td><td>Variantes semánticas del toast</td></tr>
+      <tr><td class="cls">.toast-icon / .toast-text / .toast-action / .toast-dismiss</td><td>Partes del toast</td></tr>
+      <tr><td class="cls">.kpi-progress-wrap / .kpi-progress-bar</td><td>Barra de progreso para KPIs</td></tr>
+      <tr><td class="cls">.skel</td><td>Elemento skeleton con animación de fade-pulse</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ================================================================
+     11 — NAVEGACIÓN Y SHELL
+     ================================================================ -->
+<section class="sec" id="s11">
+  <p class="sec-eye">11 · Componentes</p>
+  <h2 class="sec-h">Navegación y App Shell</h2>
+  <p class="sec-p">Bottom nav, headers, FAB con sheet de opciones y bottom sheet (q-sheet). El phone shell completo usa q-phone + q-status + q-header + q-body + bottom-nav.</p>
+
+  <p class="sub">Bottom navigation</p>
+  <div style="max-width:390px;border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;margin-bottom:var(--s8);">
+    <div class="bottom-nav">
+      <div class="nav-item on">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        <span>Resumen</span>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        <span>Ingresos</span>
+      </div>
+      <div class="nav-item" style="position:relative;">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+        <span>Calendario</span>
+        <div class="nav-dot"></div>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="12" width="4" height="9"/><rect x="10" y="7" width="4" height="14"/><rect x="17" y="2" width="4" height="19"/></svg>
+        <span>Mi año</span>
+      </div>
+      <div class="nav-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>Perfil</span>
+      </div>
+    </div>
+  </div>
+
+  <p class="sub">Headers (variantes A / B / C)</p>
+  <div style="display:flex;flex-direction:column;gap:var(--s4);max-width:390px;margin-bottom:var(--s8);">
+    <!-- Header A: Logo centrado + campana -->
+    <div>
+      <div style="font-size:10px;color:var(--txt-m);margin-bottom:var(--s2);">Tipo A — Logo + Bell (Home)</div>
+      <div style="border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;">
+        <div class="q-header">
+          <div style="display:flex;align-items:center;gap:var(--s2);">
+            <svg width="22" height="22" viewBox="68 67 164 196" fill="none"><path d="M78 161C78 157.686 80.686 155 84 155H139C142.314 155 145 157.686 145 161V217C145 220.314 142.314 223 139 223H120C96.804 223 78 204.196 78 181V161Z" fill="currentColor"/><path d="M155 83C155 79.686 157.686 77 161 77H180C203.196 77 222 95.804 222 119V139C222 142.314 219.314 145 216 145H161C157.686 145 155 142.314 155 139V83Z" fill="currentColor"/><path d="M155 197C155 173.804 173.804 155 197 155L216 155C219.314 155 222 157.686 222 161L222 247C222 250.314 219.314 253 216 253L161 253C157.686 253 155 250.314 155 247L155 197Z" fill="#BDF300"/><path d="M78 119C78 95.804 96.804 77 120 77H139C142.314 77 145 79.686 145 83V139C145 142.314 142.314 145 139 145H84C80.686 145 78 142.314 78 139V119Z" fill="currentColor"/></svg>
+            <span style="font-size:var(--t-md);font-weight:900;letter-spacing:-0.04em;">quadra</span>
+          </div>
+          <div class="q-hdr-btn" style="position:relative;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <div class="bell-badge"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Header B: Back + Title center -->
+    <div>
+      <div style="font-size:10px;color:var(--txt-m);margin-bottom:var(--s2);">Tipo B — Back + Título centrado</div>
+      <div style="border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;">
+        <div class="q-header">
+          <div class="q-hdr-back"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div>
+          <div class="q-hdr-title-center">Nuevo pago</div>
+          <div style="width:36px;"></div>
+        </div>
+      </div>
+    </div>
+    <!-- Header C: Back + Title + Action -->
+    <div>
+      <div style="font-size:10px;color:var(--txt-m);margin-bottom:var(--s2);">Tipo C — Back + Título + Acción</div>
+      <div style="border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;">
+        <div class="q-header">
+          <div class="q-hdr-back"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div>
+          <div class="q-hdr-title-center">Mis ingresos</div>
+          <div class="q-hdr-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="sub">FAB y FAB Sheet</p>
+  <div class="ds-g2 mb8">
+    <div>
+      <div style="font-size:10px;color:var(--txt-m);margin-bottom:var(--s3);">FAB — botón flotante de acción</div>
+      <div style="position:relative;height:120px;background:var(--bg-subtle);border-radius:var(--r-xl);border:1px solid var(--border);">
+        <div style="position:absolute;bottom:var(--s5);right:var(--s5);">
+          <div class="q-fab">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div style="font-size:10px;color:var(--txt-m);margin-bottom:var(--s3);">FAB Sheet — opciones expandidas</div>
+      <div class="fab-sheet" style="position:relative;border:1px solid var(--border);border-radius:var(--r-xl);max-width:280px;">
+        <div class="fab-sheet-handle"></div>
+        <div class="fab-sheet-option">
+          <div class="fab-sheet-icon" style="background:var(--fin-income-dim);color:var(--fin-income);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          </div>
+          <div class="fab-sheet-label">Registrar pago</div>
+        </div>
+        <div class="fab-sheet-option">
+          <div class="fab-sheet-icon" style="background:var(--fin-reserve-dim);color:var(--fin-reserve);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v14a2 2 0 01-2 2z"/></svg>
+          </div>
+          <div class="fab-sheet-label">Guardar reserva</div>
+        </div>
+        <div class="fab-sheet-option">
+          <div class="fab-sheet-icon" style="background:var(--surf-2);color:var(--txt-m);">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+          </div>
+          <div class="fab-sheet-label">Agregar evento</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="sub">Bottom sheet (q-sheet)</p>
+  <div style="max-width:380px;margin-bottom:var(--s8);">
+    <div class="q-sheet" style="position:relative;border-radius:var(--r-2xl);border:1px solid var(--border);">
+      <div class="q-sheet-handle"></div>
+      <div class="q-sheet-header">
+        <div style="font-size:var(--t-md);font-weight:700;color:var(--txt);">Detalle del día</div>
+        <button class="q-hdr-btn"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+      </div>
+      <div class="q-sheet-body">
+        <div class="q-sheet-item">
+          <div style="flex:1;">
+            <div style="font-size:var(--t-sm);font-weight:700;">Agencia Creativa</div>
+            <div style="font-size:var(--t-xs);color:var(--txt-m);">Transferencia · COP</div>
+          </div>
+          <div style="font-size:var(--t-sm);font-weight:700;color:var(--fin-income);">+$2.000.000</div>
+        </div>
+        <div class="q-sheet-item">
+          <div style="flex:1;">
+            <div style="font-size:var(--t-sm);font-weight:700;">PILA automático</div>
+            <div style="font-size:var(--t-xs);color:var(--txt-m);">Salud y pensión</div>
+          </div>
+          <div style="font-size:var(--t-sm);font-weight:700;color:var(--fin-reserve);">-$250.000</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table class="spec-table" style="border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;">
+    <thead><tr><th>Clase</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td class="cls">.bottom-nav</td><td>Barra de navegación inferior</td></tr>
+      <tr><td class="cls">.nav-item / .nav-item.on</td><td>Tab de navegación — activo/inactivo</td></tr>
+      <tr><td class="cls">.nav-dot</td><td>Dot de notificación sobre nav tab</td></tr>
+      <tr><td class="cls">.q-header</td><td>Header de pantalla — 52px, flex, space-between</td></tr>
+      <tr><td class="cls">.q-hdr-back</td><td>Botón de regreso con fondo surf-2</td></tr>
+      <tr><td class="cls">.q-hdr-btn</td><td>Botón de acción en header (sin fondo)</td></tr>
+      <tr><td class="cls">.q-hdr-title-center</td><td>Título centrado con position:absolute</td></tr>
+      <tr><td class="cls">.bell-badge</td><td>Indicador de notificación sobre campana</td></tr>
+      <tr><td class="cls">.q-fab</td><td>Floating action button — volt bg, pill</td></tr>
+      <tr><td class="cls">.fab-sheet</td><td>Sheet de opciones del FAB</td></tr>
+      <tr><td class="cls">.fab-sheet-option / .fab-sheet-icon / .fab-sheet-label</td><td>Opción individual dentro del FAB sheet</td></tr>
+      <tr><td class="cls">.q-sheet</td><td>Bottom sheet genérico — modal desde abajo</td></tr>
+      <tr><td class="cls">.q-sheet-handle</td><td>Handle visual del sheet</td></tr>
+      <tr><td class="cls">.q-sheet-header / .q-sheet-body / .q-sheet-item</td><td>Partes del bottom sheet</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ================================================================
+     12 — ONBOARDING
+     ================================================================ -->
+<section class="sec" id="s12">
+  <p class="sec-eye">12 · Flujos</p>
+  <h2 class="sec-h">Onboarding</h2>
+  <p class="sec-p">4 pasos de configuración inicial. Cada paso usa ob-screen con pregunta, opciones de radio y CTA. La barra de progreso indica el avance.</p>
+
+  <div class="ds-phone-row">
+
+    <!-- Paso 1 -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:var(--s3);flex-shrink:0;">
+      <div class="ds-phone-label">Paso 1 · Régimen</div>
+      <div class="ds-phone">
+        <div class="ds-ph-status"><span class="ds-ph-time">9:41</span></div>
+        <div class="q-header" style="background:var(--bg);justify-content:flex-end;">
+          <div style="font-size:var(--t-xs);font-weight:700;color:var(--txt-m);">1 de 3</div>
+        </div>
+        <div style="padding:0 var(--s5) var(--s2);">
+          <div class="progress-bar"><div class="progress-fill" style="width:33%;"></div></div>
+        </div>
+        <div class="ob-screen ob-screen-main" style="padding:var(--s4) var(--s5);flex:1;overflow:hidden;">
+          <div class="ob-question">¿Cuál es tu régimen tributario?</div>
+          <div class="ob-context">Quadra calcula tus retenciones según tu régimen.</div>
+          <div class="ob-options">
+            <div class="ob-option selected">
+              <div class="ob-radio"><div class="ob-radio-dot"></div></div>
+              <div><div class="ob-option-title">Régimen Simple</div><div class="ob-option-desc">Tarifa fija sobre ingresos</div></div>
+            </div>
+            <div class="ob-option">
+              <div class="ob-radio"></div>
+              <div><div class="ob-option-title">Régimen Ordinario</div><div class="ob-option-desc">Retención en la fuente variable</div></div>
+            </div>
+            <div class="ob-option">
+              <div class="ob-radio"></div>
+              <div><div class="ob-option-title">No lo sé aún</div><div class="ob-option-desc">Quadra te ayuda a determinarlo</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="ob-footer"><button class="btn btn-primary btn-full">Continuar</button></div>
+      </div>
+    </div>
+
+    <!-- Paso 2 -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:var(--s3);flex-shrink:0;">
+      <div class="ds-phone-label">Paso 2 · Retención</div>
+      <div class="ds-phone">
+        <div class="ds-ph-status"><span class="ds-ph-time">9:41</span></div>
+        <div class="q-header" style="background:var(--bg);">
+          <div class="q-hdr-back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div>
+          <div style="font-size:var(--t-xs);font-weight:700;color:var(--txt-m);">2 de 3</div>
+          <div style="width:36px;"></div>
+        </div>
+        <div style="padding:0 var(--s5) var(--s2);">
+          <div class="progress-bar"><div class="progress-fill" style="width:66%;"></div></div>
+        </div>
+        <div class="ob-screen ob-screen-main" style="padding:var(--s4) var(--s5);flex:1;overflow:hidden;">
+          <div class="ob-question">¿Qué porcentaje de retención te aplican?</div>
+          <div class="ob-context">Lo encuentras en tus contratos o cuenta de cobro.</div>
+          <div class="ob-options">
+            <div class="ob-option">
+              <div class="ob-radio"></div>
+              <div><div class="ob-option-title">3.5%</div><div class="ob-option-desc">Servicios de bajo valor</div></div>
+            </div>
+            <div class="ob-option selected">
+              <div class="ob-radio"><div class="ob-radio-dot"></div></div>
+              <div><div class="ob-option-title">11%</div><div class="ob-option-desc">Honorarios profesionales</div></div>
+            </div>
+            <div class="ob-option">
+              <div class="ob-radio"></div>
+              <div><div class="ob-option-title">Otro porcentaje</div><div class="ob-option-desc">Ingresar manualmente</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="ob-footer"><button class="btn btn-primary btn-full">Continuar</button></div>
+      </div>
+    </div>
+
+    <!-- Paso 3: PILA -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:var(--s3);flex-shrink:0;">
+      <div class="ds-phone-label">Paso 3 · PILA</div>
+      <div class="ds-phone">
+        <div class="ds-ph-status"><span class="ds-ph-time">9:41</span></div>
+        <div class="q-header" style="background:var(--bg);">
+          <div class="q-hdr-back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div>
+          <div style="font-size:var(--t-xs);font-weight:700;color:var(--txt-m);">3 de 3</div>
+          <div style="width:36px;"></div>
+        </div>
+        <div style="padding:0 var(--s5) var(--s2);">
+          <div class="progress-bar"><div class="progress-fill" style="width:100%;"></div></div>
+        </div>
+        <div class="ob-screen ob-screen-main" style="padding:var(--s4) var(--s5);flex:1;overflow:hidden;">
+          <div class="ob-question">¿Cotizas salud y pensión como independiente?</div>
+          <div class="ob-context">Quadra puede reservar el 12.5% automáticamente.</div>
+          <div class="ob-options">
+            <div class="ob-option selected">
+              <div class="ob-radio"><div class="ob-radio-dot"></div></div>
+              <div><div class="ob-option-title">Sí, cotizo independiente</div><div class="ob-option-desc">Reservar 12.5% automático</div></div>
+            </div>
+            <div class="ob-option">
+              <div class="ob-radio"></div>
+              <div><div class="ob-option-title">Sí, lo calculo yo</div><div class="ob-option-desc">Ingresar manualmente</div></div>
+            </div>
+            <div class="ob-option">
+              <div class="ob-radio"></div>
+              <div><div class="ob-option-title">No cotizo aún</div><div class="ob-option-desc">Recordarme cuando empezar</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="ob-footer"><button class="btn btn-primary btn-full">Empezar con Quadra →</button></div>
+      </div>
+    </div>
+
+    <!-- Resultado -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:var(--s3);flex-shrink:0;">
+      <div class="ds-phone-label">Resultado · Listo</div>
+      <div class="ds-phone">
+        <div class="ds-ph-status"><span class="ds-ph-time">9:41</span></div>
+        <div class="ob-result">
+          <div class="ob-result-icon">
+            <svg width="32" height="32" viewBox="68 67 164 196" fill="none">
+              <path d="M78 161C78 157.686 80.686 155 84 155H139C142.314 155 145 157.686 145 161V217C145 220.314 142.314 223 139 223H120C96.804 223 78 204.196 78 181V161Z" fill="currentColor"/>
+              <path d="M155 83C155 79.686 157.686 77 161 77H180C203.196 77 222 95.804 222 119V139C222 142.314 219.314 145 216 145H161C157.686 145 155 142.314 155 139V83Z" fill="currentColor"/>
+              <path d="M155 197C155 173.804 173.804 155 197 155L216 155C219.314 155 222 157.686 222 161L222 247C222 250.314 219.314 253 216 253L161 253C157.686 253 155 250.314 155 247L155 197Z" fill="#BDF300"/>
+              <path d="M78 119C78 95.804 96.804 77 120 77H139C142.314 77 145 79.686 145 83V139C145 142.314 142.314 145 139 145H84C80.686 145 78 142.314 78 139V119Z" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="ob-result-title">Todo listo,<br>Valentina</div>
+          <div class="ob-result-desc">Quadra ya sabe cómo calcular tu disponible real.</div>
+          <div class="ob-result-card" style="width:100%;">
+            <div class="ob-result-card-lbl">Tu perfil Quadra</div>
+            <div style="display:flex;flex-direction:column;gap:var(--s2);margin-top:var(--s3);">
+              <div style="display:flex;justify-content:space-between;font-size:var(--t-xs);"><span style="color:var(--txt-m);">Régimen</span><span style="font-weight:700;">Ordinario</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:var(--t-xs);"><span style="color:var(--txt-m);">Retención</span><span style="font-weight:700;">11%</span></div>
+              <div style="display:flex;justify-content:space-between;font-size:var(--t-xs);"><span style="color:var(--txt-m);">PILA</span><span style="font-weight:700;">Auto 12.5%</span></div>
+            </div>
+          </div>
+          <button class="btn btn-primary btn-full" style="margin-top:auto;">Registrar mi primer pago →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <table class="spec-table mb6" style="margin-top:var(--s8);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;">
+    <thead><tr><th>Clase</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td class="cls">.ob-screen</td><td>Contenedor de pantalla de onboarding</td></tr>
+      <tr><td class="cls">.ob-question / .ob-context</td><td>Pregunta principal y contexto educativo</td></tr>
+      <tr><td class="cls">.ob-options / .ob-option</td><td>Lista de opciones de selección</td></tr>
+      <tr><td class="cls">.ob-option.selected</td><td>Opción seleccionada — borde volt</td></tr>
+      <tr><td class="cls">.ob-radio / .ob-radio-dot</td><td>Radio button visual</td></tr>
+      <tr><td class="cls">.ob-footer</td><td>Área de CTA al fondo de la pantalla</td></tr>
+      <tr><td class="cls">.ob-result</td><td>Pantalla de resultado/celebración</td></tr>
+      <tr><td class="cls">.ob-result-icon / .ob-result-title / .ob-result-desc</td><td>Partes de la pantalla de resultado</td></tr>
+      <tr><td class="cls">.ob-result-card</td><td>Card de resumen del perfil configurado</td></tr>
+      <tr><td class="cls">.progress-bar / .progress-fill</td><td>Barra de progreso del onboarding</td></tr>
+    </tbody>
+  </table>
+</section>
+
+
+<!-- ================================================================
+     13 — REGISTRO DE PAGO
+     ================================================================ -->
+<section class="sec" id="s13">
+  <p class="sec-eye">13 · Flujos</p>
+  <h2 class="sec-h">Registro de pago</h2>
+  <p class="sec-p">Flujo principal de la app: monto hero + campos de formulario + preview en tiempo real del disponible estimado. El confirm button desencadena el cálculo.</p>
+
+  <div class="ds-phone-row">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:var(--s3);flex-shrink:0;">
+      <div class="ds-phone-label">Formulario de pago</div>
+      <div class="ds-phone" style="min-height:680px;">
+        <div class="ds-ph-status"><span class="ds-ph-time">9:41</span></div>
+        <div class="q-header" style="background:var(--bg);">
+          <div class="q-hdr-back"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 5l-7 7 7 7"/></svg></div>
+          <div class="q-hdr-title-center">Nuevo pago</div>
+          <div style="width:36px;"></div>
+        </div>
+        <div class="ds-ph-body" style="padding:0 var(--s5) var(--s4);gap:var(--s3);display:flex;flex-direction:column;overflow:hidden;">
+          <button class="amount-currency-pill" style="align-self:flex-start;margin-top:var(--s3);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg>
+            COP
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6,9 12,15 18,9"/></svg>
+          </button>
+          <div class="amount-input-wrap">
+            <span class="amount-prefix" style="font-size:var(--t-xl);color:var(--fin-available);">$</span>
+            <div style="font-size:clamp(2rem,7vw,2.8rem);font-weight:900;letter-spacing:-0.05em;font-variant-numeric:tabular-nums;color:var(--fin-available);flex:1;text-align:right;line-height:1;">2.000.000</div>
+          </div>
+          <div style="height:2px;background:var(--fin-available);border-radius:2px;opacity:.4;"></div>
+          <div class="field">
+            <label class="field-label" style="font-size:var(--t-xs);">Cliente</label>
+            <input class="q-input" style="height:40px;margin-top:3px;font-size:var(--t-sm);" value="Agencia Creativa SAS">
+          </div>
+          <div class="field">
+            <label class="field-label" style="font-size:var(--t-xs);">Fecha</label>
+            <button class="date-btn" style="height:40px;margin-top:3px;font-size:var(--t-sm);">
+              <span>Hoy — Sab 19 Abr</span>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>
+            </button>
+          </div>
+          <div class="preview" style="padding:var(--s3);">
+            <div class="preview-eye" style="font-size:var(--t-xs);">Disponible estimado</div>
+            <div class="preview-amount" style="font-size:var(--t-xl);">$1.240.000</div>
+            <div class="preview-breakdown" style="margin-top:var(--s2);">
+              <div><div class="preview-item-lbl">S+P</div><div class="preview-item-val" style="color:var(--fin-reserve);font-size:var(--t-xs);">-$250k</div></div>
+              <div><div class="preview-item-lbl">Ret</div><div class="preview-item-val" style="color:var(--fin-deduct);font-size:var(--t-xs);">-$200k</div></div>
+              <div><div class="preview-item-lbl">Ago</div><div class="preview-item-val" style="color:var(--fin-reserve);font-size:var(--t-xs);">-$310k</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="padding:var(--s3) var(--s5) var(--s5);border-top:1px solid var(--border);">
+          <button class="btn btn-primary btn-full" style="font-size:var(--t-sm);">Confirmar y calcular</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:var(--s5);">
+      <div class="spec" style="max-width:340px;">
+        <div class="spec-title">Preview card</div>
+        <div class="spec-items">
+          <div class="spec-item"><strong>.preview</strong> — Contenedor del preview de resultado</div>
+          <div class="spec-item"><strong>.preview-eye</strong> — Eyebrow label del preview</div>
+          <div class="spec-item"><strong>.preview-amount</strong> — Número estimado de disponible</div>
+          <div class="spec-item"><strong>.preview-breakdown</strong> — Fila de items del desglose</div>
+          <div class="spec-item"><strong>.preview-item-lbl / .preview-item-val</strong> — Label y valor del item</div>
+        </div>
+      </div>
+      <div class="spec" style="max-width:340px;">
+        <div class="spec-title">Date button</div>
+        <div class="spec-items">
+          <div class="spec-item"><strong>.date-btn</strong> — Botón que abre el date picker</div>
+          <div class="spec-item"><strong>.date-filter-strip</strong> — Tira de selección rápida de fechas</div>
+          <div class="spec-item"><strong>.date-chip</strong> — Chip individual de fecha (Hoy, Ayer…)</div>
+          <div class="spec-item"><strong>.date-chip.active</strong> — Fecha seleccionada</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ================================================================
+     14 — RESULTADO
+     ================================================================ -->
+<section class="sec" id="s14">
+  <p class="sec-eye">14 · Flujos</p>
+  <h2 class="sec-h">Resultado y pantalla de éxito</h2>
+  <p class="sec-p">El momento de mayor impacto en Quadra: el usuario ve cuánto es realmente suyo. Count-up animado del monto disponible, desglose y badge de confirmación. También incluye q-success-screen para confirmaciones simples.</p>
+
+  <div class="ds-phone-row">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:var(--s3);flex-shrink:0;">
+      <div class="ds-phone-label">Resultado — disponible real</div>
+      <div class="ds-phone" style="min-height:680px;">
+        <div class="ds-ph-status"><span class="ds-ph-time">9:41</span></div>
+        <div class="ds-ph-body" style="display:flex;flex-direction:column;">
+          <div style="padding:var(--s5) var(--s5) var(--s4);">
+            <div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:var(--txt-m);margin-bottom:var(--s2);">Lo que realmente es tuyo</div>
+            <div class="twotone" style="font-size:clamp(2.4rem,7vw,3rem);color:var(--fin-available);">
+              <span class="twotone-main" style="font-weight:900;letter-spacing:-0.05em;">$1.240</span><span class="twotone-dec" style="font-weight:900;letter-spacing:-0.05em;opacity:.22;">.000</span>
+            </div>
+            <div style="font-size:var(--t-xs);color:var(--txt-m);margin-top:var(--s1);">De $2.000.000 · Agencia Creativa</div>
+            <span class="trend-badge trend-up" style="margin-top:var(--s3);font-size:var(--t-xs);">
+              <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 15l-6-6-6 6"/></svg>
+              Pago guardado correctamente
+            </span>
+          </div>
+          <div style="height:1px;background:var(--border);margin:0 var(--s5);"></div>
+          <div style="padding:var(--s4) var(--s5);">
+            <div style="font-size:var(--t-xs);font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--txt-m);margin-bottom:var(--s3);">Desglose</div>
+            <div class="desglose">
+              <div class="drow">
+                <div class="drow-l"><div class="drow-dot" style="background:var(--fin-deduct);"></div>Retención en la fuente</div>
+                <div class="drow-v" style="color:var(--fin-deduct);">-$200.000</div>
+              </div>
+              <div class="drow">
+                <div class="drow-l"><div class="drow-dot" style="background:var(--fin-reserve);"></div>Salud y pensión</div>
+                <div class="drow-v" style="color:var(--fin-reserve);">-$250.000</div>
+              </div>
+              <div class="drow">
+                <div class="drow-l"><div class="drow-dot" style="background:var(--fin-reserve);"></div>Reserva agosto</div>
+                <div class="drow-v" style="color:var(--fin-reserve);">-$310.000</div>
+              </div>
+              <div class="dtotal">
+                <div class="dtotal-l">Disponible real</div>
+                <div class="dtotal-v" style="color:var(--fin-available);">$1.240.000</div>
+              </div>
+            </div>
+          </div>
+          <div style="padding:var(--s3) var(--s5) var(--s5);display:flex;flex-direction:column;gap:var(--s3);margin-top:auto;">
+            <button class="btn btn-secondary btn-full" style="font-size:var(--t-sm);">Ver detalle completo</button>
+            <button class="btn btn-ghost btn-full" style="font-size:var(--t-sm);">+ Registrar otro pago</button>
+          </div>
+          <div class="bottom-nav" style="padding:6px var(--s3) 16px;">
+            <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg><span>Resumen</span></div>
+            <div class="nav-item on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="2" x2="12" y2="22"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg><span>Ingresos</span></div>
+            <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg><span>Calendario</span></div>
+            <div class="nav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Perfil</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;align-items:center;gap:var(--s3);flex-shrink:0;">
+      <div class="ds-phone-label">Success screen</div>
+      <div class="ds-phone">
+        <div class="ds-ph-status"><span class="ds-ph-time">9:41</span></div>
+        <div class="q-success-screen">
+          <div class="q-success-burst"></div>
+          <div style="font-size:var(--t-xs);font-weight:700;text-transform:uppercase;letter-spacing:.10em;color:var(--txt-m);margin-bottom:var(--s3);">Pago registrado</div>
+          <div class="q-success-amount">$1.240.000</div>
+          <div class="q-success-label">Disponible real calculado</div>
+          <span class="badge badge-ok" style="margin-top:var(--s4);">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20,6 9,17 4,12"/></svg>
+            Guardado
+          </span>
+          <button class="btn btn-secondary" style="margin-top:var(--s6);font-size:var(--t-sm);">Volver al inicio</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <table class="spec-table mb6" style="margin-top:var(--s8);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;">
+    <thead><tr><th>Clase</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td class="cls">.q-success-screen</td><td>Pantalla de éxito — centrada, celebración</td></tr>
+      <tr><td class="cls">.q-success-amount</td><td>Monto grande en la success screen</td></tr>
+      <tr><td class="cls">.q-success-label</td><td>Descripción del monto exitoso</td></tr>
+      <tr><td class="cls">.q-success-burst</td><td>Animación de burst/confetti en éxito</td></tr>
+      <tr><td class="cls">.twotone / .twotone-main / .twotone-dec</td><td>Número con dos tonos — entero al 100%, decimales al 22%</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- END s11-s14 -->
+
+<!-- ═══════════════════════════════════════════════════════════
+     S15 — INCOME & FILTROS
+     ═══════════════════════════════════════════════════════════ -->
+<section id="s15">
+  <div class="sec-eye">Dominios financieros · 15</div>
+  <h2 class="sec-h">Income &amp; Filtros</h2>
+  <p class="sec-p">Vista de ingresos recurrentes — summary card, filtros de periodo, desglose y lista de rows con swipe actions.</p>
+
+  <div class="ds-g2">
+    <!-- Income summary card -->
+    <div>
+      <p class="ds-label">income-summary-card</p>
+      <div class="ds-phone">
+        <div style="padding:16px;display:flex;flex-direction:column;gap:12px;background:var(--bg-subtle);">
+          <div class="income-summary-card">
+            <div class="income-summary-top">
+              <div>
+                <div class="income-summary-eyebrow">Ingreso anual estimado</div>
+                <div class="income-summary-amount twotone"><span class="twotone-main">$48,000</span><span class="twotone-dec">.00</span></div>
+                <div class="income-summary-sub">Última actualización: hoy</div>
+              </div>
+              <div class="income-summary-side">
+                <a class="income-summary-link btn btn-ghost btn-sm">Ver detalle</a>
+              </div>
+            </div>
+            <div class="income-summary-stats">
+              <div class="income-summary-stat">
+                <div class="income-summary-stat-label">Mensual</div>
+                <div class="income-summary-stat-value">$4,000</div>
+              </div>
+              <div class="income-summary-stat">
+                <div class="income-summary-stat-label">Fuentes</div>
+                <div class="income-summary-stat-value income-summary-stat-value--volt">3</div>
+              </div>
+              <div class="income-summary-stat">
+                <div class="income-summary-stat-label">Próximo</div>
+                <div class="income-summary-stat-value">15 may</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- income-filter-period -->
+          <div class="income-filter-period" style="display:flex;gap:8px;align-items:center;">
+            <div class="seg-ctrl" style="flex:1;">
+              <button class="seg-btn is-active">Mensual</button>
+              <button class="seg-btn">Anual</button>
+              <button class="seg-btn">Todo</button>
+            </div>
+          </div>
+
+          <!-- income-list -->
+          <div class="income-list">
+            <div class="income-list-summary">
+              <span class="income-list-summary-label">3 fuentes</span>
+              <span class="income-list-summary-value">$4,000 / mes</span>
+              <span class="income-list-summary-meta">+12% vs. mes anterior</span>
+            </div>
+            <!-- income-row -->
+            <div class="income-row">
+              <div class="income-row-icon" style="background:var(--fin-income-dim);color:var(--fin-income);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+              </div>
+              <div style="flex:1;min-width:0;">
+                <div class="income-row-name">Salario empresa</div>
+                <div class="income-row-sub">Mensual · día 1</div>
+              </div>
+              <div class="income-row-amount">
+                <div class="income-row-amount-main">$3,500</div>
+                <div class="income-row-amount-meta">/ mes</div>
+              </div>
+            </div>
+            <div class="income-row">
+              <div class="income-row-icon" style="background:var(--fin-reserve-dim);color:var(--fin-reserve);">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
+              </div>
+              <div style="flex:1;min-width:0;">
+                <div class="income-row-name">Renta departamento</div>
+                <div class="income-row-sub">Mensual · día 5</div>
+              </div>
+              <div class="income-row-amount">
+                <div class="income-row-amount-main">$350</div>
+                <div class="income-row-amount-meta">/ mes</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- income-swipe-actions -->
+          <div class="income-swipe-wrap" style="border-radius:var(--r-lg);overflow:hidden;">
+            <div class="income-swipe-actions">
+              <button class="income-swipe-btn income-swipe-detail">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+                Ver
+              </button>
+              <button class="income-swipe-btn income-swipe-delete">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+                Eliminar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Spec table -->
+    <div>
+      <p class="ds-label">Especificaciones</p>
+      <table class="ds-spec-table">
+        <thead><tr><th>Clase</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td class="cls">.income-summary-card</td><td>Card resumen con stat strip inferior</td></tr>
+          <tr><td class="cls">.income-summary-amount</td><td>Monto principal two-tone</td></tr>
+          <tr><td class="cls">.income-summary-stats</td><td>Fila de 3 stats: mensual, fuentes, próximo</td></tr>
+          <tr><td class="cls">.income-summary-stat-value--volt</td><td>Valor numérico en color brand</td></tr>
+          <tr><td class="cls">.income-filter-period</td><td>Fila con seg-ctrl + btn buscar</td></tr>
+          <tr><td class="cls">.income-filter-secondary</td><td>Fila de filtros secundarios (aria-hidden toggle)</td></tr>
+          <tr><td class="cls">.income-breakdown-section</td><td>Sección con barra de desglose + leyenda</td></tr>
+          <tr><td class="cls">.income-list</td><td>Contenedor overflow hidden de rows</td></tr>
+          <tr><td class="cls">.income-list-summary</td><td>Header con cuenta, total y meta</td></tr>
+          <tr><td class="cls">.income-row</td><td>Fila de fuente de ingreso (icon + name + amount)</td></tr>
+          <tr><td class="cls">.income-row-amount-main / -meta</td><td>Monto principal / periodo secundario</td></tr>
+          <tr><td class="cls">.income-swipe-wrap</td><td>Contenedor de swipe actions</td></tr>
+          <tr><td class="cls">.income-swipe-actions</td><td>Fila de botones acción (detail + delete)</td></tr>
+          <tr><td class="cls">.income-swipe-detail / .income-swipe-delete</td><td>Botones de acción con color semántico</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     S16 — CALENDARIO
+     ═══════════════════════════════════════════════════════════ -->
+<section id="s16">
+  <div class="sec-eye">Dominios financieros · 16</div>
+  <h2 class="sec-h">Calendario</h2>
+  <p class="sec-p">Vista mensual de pagos programados — grid, dots por tipo, leyenda interactiva, cards de resumen y stats.</p>
+
+  <div class="ds-g2">
+    <div>
+      <p class="ds-label">calendar-shell · grid · legend</p>
+      <div class="ds-phone">
+        <div style="padding:12px;background:var(--bg-subtle);display:flex;flex-direction:column;gap:10px;">
+          <div class="calendar-shell">
+            <div class="calendar-shell-head">
+              <button class="calendar-nav-btn">&#8592;</button>
+              <div class="calendar-shell-title-wrap">
+                <div class="calendar-shell-kicker">2026</div>
+                <div class="calendar-shell-title">Mayo</div>
+              </div>
+              <button class="calendar-nav-btn">&#8594;</button>
+            </div>
+          </div>
+
+          <!-- legend -->
+          <div class="calendar-legend">
+            <button class="calendar-legend-chip is-active" style="background:var(--fin-income-dim);color:var(--fin-income);border-color:var(--fin-income-border);">
+              <span style="width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block;"></span> Ingresos
+            </button>
+            <button class="calendar-legend-chip" style="background:var(--fin-reserve-dim);color:var(--fin-reserve);border-color:var(--fin-reserve-border);">
+              <span style="width:6px;height:6px;border-radius:50%;background:currentColor;display:inline-block;"></span> PILA
+            </button>
+            <button class="calendar-legend-chip is-inactive" style="opacity:.45;">
+              <span style="width:6px;height:6px;border-radius:50%;background:var(--fin-deduct);display:inline-block;"></span> Renta
+            </button>
+          </div>
+
+          <!-- grid head -->
+          <div class="calendar-grid-head">
+            <div class="calendar-grid-head-cell">L</div>
+            <div class="calendar-grid-head-cell">M</div>
+            <div class="calendar-grid-head-cell">M</div>
+            <div class="calendar-grid-head-cell">J</div>
+            <div class="calendar-grid-head-cell">V</div>
+            <div class="calendar-grid-head-cell">S</div>
+            <div class="calendar-grid-head-cell">D</div>
+          </div>
+
+          <!-- grid -->
+          <div class="calendar-grid">
+            <!-- row 1 -->
+            <div class="calendar-day-slot muted"><div class="calendar-day"><div class="calendar-day-number">28</div></div></div>
+            <div class="calendar-day-slot muted"><div class="calendar-day"><div class="calendar-day-number">29</div></div></div>
+            <div class="calendar-day-slot muted"><div class="calendar-day"><div class="calendar-day-number">30</div></div></div>
+            <div class="calendar-day-slot"><div class="calendar-day is-income"><div class="calendar-day-number">1</div><div class="calendar-day-markers"><span class="calendar-day-dot payment"></span></div></div></div>
+            <div class="calendar-day-slot"><div class="calendar-day"><div class="calendar-day-number">2</div></div></div>
+            <div class="calendar-day-slot"><div class="calendar-day"><div class="calendar-day-number">3</div></div></div>
+            <div class="calendar-day-slot"><div class="calendar-day"><div class="calendar-day-number">4</div></div></div>
+            <!-- row 2 -->
+            <div class="calendar-day-slot"><div class="calendar-day"><div class="calendar-day-number">5</div><div class="calendar-day-markers"><span class="calendar-day-dot pila"></span></div></div></div>
+            <div class="calendar-day-slot"><div class="calendar-day"><div class="calendar-day-number">6</div></div></div>
+            <div class="calendar-day-slot"><div class="calendar-day"><div class="calendar-day-number">7</div></div></div>
+            <div class="calendar-day-slot"><div class="calendar-day"><div class="calendar-day-number">8</div></div></div>
+            <div class="calendar-day-slot"><div class="calendar-day"><div class="calendar-day-number">9</div></div></div>
+            <div class="calendar-day-slot"><div class="calendar-day"><div class="calendar-day-number">10</div></div></div>
+            <div class="calendar-day-slot"><div class="calendar-day today"><div class="calendar-day-number">11</div></div></div>
+            <!-- row 3 -->
+            <div class="calendar-day-slot"><div class="calendar-day"><div class="calendar-day-number">12</div></div></div>
+            <div class="calendar-day-slot"><div class="calendar-day selected"><div class="calendar-day-number">13</div></div></div>
+            <div class="calendar-day-slot"><div class="calendar-day"><div class="calendar-day-number">14</div></div></div>
+            <div class="calendar-day-slot"><div class="calendar-day is-renta"><div class="calendar-day-number">15</div><div class="calendar-day-markers"><span class="calendar-day-dot renta"></span></div></div></div>
+            <div class="calendar-day-slot"><div class="calendar-day"><div class="calendar-day-number">16</div></div></div>
+            <div class="calendar-day-slot"><div class="calendar-day"><div class="calendar-day-number">17</div></div></div>
+            <div class="calendar-day-slot"><div class="calendar-day"><div class="calendar-day-number">18</div></div></div>
+          </div>
+
+          <!-- summary card -->
+          <div class="calendar-summary-card">
+            <div class="calendar-summary-head">
+              <span style="font-size:var(--t-sm);font-weight:700;color:var(--txt);">13 de mayo</span>
+              <span class="calendar-summary-badge badge badge-ok">Pagado</span>
+            </div>
+            <div class="calendar-summary-stats">
+              <div class="calendar-stat-card">
+                <div class="calendar-stat-label">Monto</div>
+                <div class="calendar-stat-value">$3,500</div>
+              </div>
+              <div class="calendar-stat-card">
+                <div class="calendar-stat-label">Tipo</div>
+                <div class="calendar-stat-value">Ingreso</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="ds-label">Especificaciones</p>
+      <table class="ds-spec-table">
+        <thead><tr><th>Clase</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td class="cls">.calendar-shell</td><td>Contenedor principal con header de navegación</td></tr>
+          <tr><td class="cls">.calendar-shell-head</td><td>Fila con botones nav y título mes/año</td></tr>
+          <tr><td class="cls">.calendar-nav-btn</td><td>Botón circular prev/next mes</td></tr>
+          <tr><td class="cls">.calendar-grid-head</td><td>Fila de encabezados L-D</td></tr>
+          <tr><td class="cls">.calendar-grid</td><td>Grid 7 columnas de días</td></tr>
+          <tr><td class="cls">.calendar-day-slot</td><td>Celda del grid; .muted para días fuera del mes</td></tr>
+          <tr><td class="cls">.calendar-day</td><td>Tarjeta de día; .today .selected</td></tr>
+          <tr><td class="cls">.calendar-day.is-income / .is-pila / .is-renta</td><td>Fondo semántico por tipo de evento</td></tr>
+          <tr><td class="cls">.calendar-day-markers</td><td>Fila de dots bajo el número</td></tr>
+          <tr><td class="cls">.calendar-day-dot.payment / .pila / .renta / .vencimiento</td><td>Dot de 4px con color semántico</td></tr>
+          <tr><td class="cls">.calendar-day-more</td><td>Label "+N" cuando hay más de 3 dots</td></tr>
+          <tr><td class="cls">.calendar-legend</td><td>Fila de chips filtrables</td></tr>
+          <tr><td class="cls">.calendar-legend-chip.is-active / .is-inactive</td><td>Estado activo (visible) / inactivo (atenuado)</td></tr>
+          <tr><td class="cls">.calendar-summary-card</td><td>Card de resumen del día seleccionado</td></tr>
+          <tr><td class="cls">.calendar-summary-badge</td><td>Badge de estado (badge-ok / badge-err)</td></tr>
+          <tr><td class="cls">.calendar-stat-card / -label / -value</td><td>Stat pequeño dentro del summary</td></tr>
+          <tr><td class="cls">.calendar-meta-row</td><td>Fila de pills de meta (today + stats)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     S17 — CHARTS & PROYECCIONES
+     ═══════════════════════════════════════════════════════════ -->
+<section id="s17">
+  <div class="sec-eye">Dominios financieros · 17</div>
+  <h2 class="sec-h">Charts &amp; Proyecciones</h2>
+  <p class="sec-p">Bar chart de ingresos mensuales, year-chart-card con chips, pila-month-grid con dots y year-projection-cta.</p>
+
+  <div class="ds-g2">
+    <div>
+      <p class="ds-label">bar-chart · year-chart-card · year-projection-cta</p>
+      <div class="ds-phone">
+        <div style="padding:16px;display:flex;flex-direction:column;gap:12px;background:var(--bg-subtle);">
+
+          <!-- bar-chart -->
+          <div class="year-chart-card card">
+            <div class="year-chart-head">
+              <div style="font-size:var(--t-sm);font-weight:700;color:var(--txt);">Ingresos 2026</div>
+              <div class="year-chart-sub">Último año · por mes</div>
+            </div>
+            <div class="bar-chart">
+              <div class="bar-col" style="--h:40%">
+                <div class="bar-track"><div class="bar-fill"></div></div>
+                <div class="bar-lbl">E</div>
+                <div class="bar-value" style="font-size:9px;color:var(--txt-m);">3.2k</div>
+              </div>
+              <div class="bar-col" style="--h:55%">
+                <div class="bar-track"><div class="bar-fill"></div></div>
+                <div class="bar-lbl">F</div>
+                <div class="bar-value" style="font-size:9px;color:var(--txt-m);">4.4k</div>
+              </div>
+              <div class="bar-col" style="--h:70%">
+                <div class="bar-track"><div class="bar-fill"></div></div>
+                <div class="bar-lbl">M</div>
+                <div class="bar-value" style="font-size:9px;color:var(--txt-m);">5.6k</div>
+              </div>
+              <div class="bar-col is-active" style="--h:90%">
+                <div class="bar-track"><div class="bar-fill"></div></div>
+                <div class="bar-lbl">A</div>
+                <div class="bar-value" style="font-size:9px;">7.2k</div>
+              </div>
+              <div class="bar-col is-projected" style="--h:65%">
+                <div class="bar-track"><div class="bar-fill"></div></div>
+                <div class="bar-lbl">M</div>
+                <div class="bar-value" style="font-size:9px;color:transparent;">5k</div>
+              </div>
+              <div class="bar-col is-projected" style="--h:60%">
+                <div class="bar-track"><div class="bar-fill"></div></div>
+                <div class="bar-lbl">J</div>
+                <div class="bar-value" style="font-size:9px;color:transparent;">4.8k</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- pila-month-grid simulado -->
+          <div class="card" style="padding:12px;">
+            <div style="font-size:var(--t-xs);font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--txt-m);margin-bottom:8px;">PILA · 2026</div>
+            <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:4px;">
+              <div style="text-align:center;font-size:10px;color:var(--txt-m);">E</div>
+              <div style="text-align:center;font-size:10px;color:var(--txt-m);">F</div>
+              <div style="text-align:center;font-size:10px;color:var(--txt-m);">M</div>
+              <div style="text-align:center;font-size:10px;color:var(--txt-m);">A</div>
+              <div style="text-align:center;font-size:10px;color:var(--txt-m);">M</div>
+              <div style="text-align:center;font-size:10px;color:var(--txt-m);">J</div>
+              <div style="display:flex;justify-content:center;"><span style="width:8px;height:8px;border-radius:50%;background:var(--fin-income);display:inline-block;"></span></div>
+              <div style="display:flex;justify-content:center;"><span style="width:8px;height:8px;border-radius:50%;background:var(--fin-income);display:inline-block;"></span></div>
+              <div style="display:flex;justify-content:center;"><span style="width:8px;height:8px;border-radius:50%;background:var(--fin-income);display:inline-block;"></span></div>
+              <div style="display:flex;justify-content:center;"><span style="width:8px;height:8px;border-radius:50%;background:var(--fin-income);display:inline-block;"></span></div>
+              <div style="display:flex;justify-content:center;"><span style="width:8px;height:8px;border-radius:50%;border:1.5px solid var(--border-m);display:inline-block;"></span></div>
+              <div style="display:flex;justify-content:center;"><span style="width:8px;height:8px;border-radius:50%;border:1.5px solid var(--border-m);display:inline-block;"></span></div>
+            </div>
+          </div>
+
+          <!-- year-projection-cta -->
+          <div class="year-projection-cta">
+            <div class="year-projection-cta-copy">
+              <div class="year-projection-cta-title">Proyección anual</div>
+              <div class="year-projection-cta-sub">Con tus patrones actuales llegarías a $52,000</div>
+            </div>
+            <div class="year-projection-cta-action">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <p class="ds-label">Especificaciones</p>
+      <table class="ds-spec-table">
+        <thead><tr><th>Clase</th><th>Descripción</th></tr></thead>
+        <tbody>
+          <tr><td class="cls">.bar-chart</td><td>Contenedor flex del gráfico de barras</td></tr>
+          <tr><td class="cls">.bar-col</td><td>Columna individual; CSS var --h define altura %</td></tr>
+          <tr><td class="cls">.bar-track / .bar-fill</td><td>Track gris + fill animado (volt-text o brand)</td></tr>
+          <tr><td class="cls">.bar-lbl / .bar-value</td><td>Etiqueta mes y valor numérico</td></tr>
+          <tr><td class="cls">.bar-col.is-active</td><td>Columna seleccionada — fill volt-text, label bold</td></tr>
+          <tr><td class="cls">.bar-col.is-projected</td><td>Columna proyectada — track con patrón dashed</td></tr>
+          <tr><td class="cls">.year-chart-card</td><td>Card contenedora del bar-chart con header</td></tr>
+          <tr><td class="cls">.year-chart-head / .year-chart-sub</td><td>Título y subtítulo del chart</td></tr>
+          <tr><td class="cls">.pila-month-grid</td><td>Grid 12 meses con dots paid/pending</td></tr>
+          <tr><td class="cls">.year-projection-cta</td><td>Banner CTA de proyección — fondo volt con arrow</td></tr>
+          <tr><td class="cls">.year-projection-cta-title / -sub / -action</td><td>Título, descripción y botón flecha</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     S18 — MOTION
+     ═══════════════════════════════════════════════════════════ -->
+<section id="s18">
+  <div class="sec-eye">Sistema · 18</div>
+  <h2 class="sec-h">Motion</h2>
+  <p class="sec-p">Tokens de duración y easing semántico. Timeline del flujo de registro de pago.</p>
+
+  <!-- Duration tokens -->
+  <p class="ds-label" style="margin-bottom:12px;">Duraciones</p>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:32px;">
+    <div style="display:flex;align-items:center;gap:16px;">
+      <code style="width:160px;font-size:11px;color:var(--txt-m);">--motion-tap · 80ms</code>
+      <div style="flex:1;height:4px;background:var(--surf-2);border-radius:2px;position:relative;"><div style="position:absolute;left:0;top:0;height:4px;border-radius:2px;background:var(--volt-text);width:calc(80/600*100%)"></div></div>
+      <span style="font-size:11px;color:var(--txt-m);width:48px;">Tap / toggle</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <code style="width:160px;font-size:11px;color:var(--txt-m);">--motion-dismiss · 180ms</code>
+      <div style="flex:1;height:4px;background:var(--surf-2);border-radius:2px;position:relative;"><div style="position:absolute;left:0;top:0;height:4px;border-radius:2px;background:var(--volt-text);width:calc(180/600*100%)"></div></div>
+      <span style="font-size:11px;color:var(--txt-m);width:48px;">Salida</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <code style="width:160px;font-size:11px;color:var(--txt-m);">--motion-appear · 200ms</code>
+      <div style="flex:1;height:4px;background:var(--surf-2);border-radius:2px;position:relative;"><div style="position:absolute;left:0;top:0;height:4px;border-radius:2px;background:var(--volt-text);width:calc(200/600*100%)"></div></div>
+      <span style="font-size:11px;color:var(--txt-m);width:48px;">Entrada</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <code style="width:160px;font-size:11px;color:var(--txt-m);">--motion-shift · 260ms</code>
+      <div style="flex:1;height:4px;background:var(--surf-2);border-radius:2px;position:relative;"><div style="position:absolute;left:0;top:0;height:4px;border-radius:2px;background:var(--volt-text);width:calc(260/600*100%)"></div></div>
+      <span style="font-size:11px;color:var(--txt-m);width:48px;">Layout</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <code style="width:160px;font-size:11px;color:var(--txt-m);">--motion-reveal · 400ms</code>
+      <div style="flex:1;height:4px;background:var(--surf-2);border-radius:2px;position:relative;"><div style="position:absolute;left:0;top:0;height:4px;border-radius:2px;background:var(--volt-text);width:calc(400/600*100%)"></div></div>
+      <span style="font-size:11px;color:var(--txt-m);width:48px;">Pantalla</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:16px;">
+      <code style="width:160px;font-size:11px;color:var(--txt-m);">--motion-settle · 600ms</code>
+      <div style="flex:1;height:4px;background:var(--surf-2);border-radius:2px;position:relative;"><div style="position:absolute;left:0;top:0;height:4px;border-radius:2px;background:var(--volt-text);width:calc(600/600*100%)"></div></div>
+      <span style="font-size:11px;color:var(--txt-m);width:48px;">Spring</span>
+    </div>
+  </div>
+
+  <!-- Easing -->
+  <p class="ds-label" style="margin-bottom:12px;">Easing semántico</p>
+  <table class="ds-spec-table" style="margin-bottom:32px;">
+    <thead><tr><th>Token</th><th>Curva</th><th>Cuándo usar</th></tr></thead>
+    <tbody>
+      <tr><td class="cls">--ease-decel</td><td>cubic-bezier(0,0,0.2,1)</td><td>Elementos entrando al viewport</td></tr>
+      <tr><td class="cls">--ease-accel</td><td>cubic-bezier(0.4,0,1,1)</td><td>Elementos saliendo — siempre más corto</td></tr>
+      <tr><td class="cls">--ease-standard</td><td>cubic-bezier(0.4,0,0.2,1)</td><td>Cambios de layout y reordenamiento</td></tr>
+      <tr><td class="cls">--ease-spring-gentle</td><td>cubic-bezier(0.22,1,0.36,1)</td><td>Sheets, cards — spring sin overshoot</td></tr>
+      <tr><td class="cls">--ease-spring-snappy</td><td>cubic-bezier(0.34,1.56,0.64,1)</td><td>FAB, success burst — rebote pronunciado</td></tr>
+      <tr><td class="cls">--ease-out</td><td>cubic-bezier(0.16,1,0.3,1)</td><td>Uso general — salida suave</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Timeline flujo de pago -->
+  <p class="ds-label" style="margin-bottom:16px;">Timeline — flujo registro de pago</p>
+  <div style="display:flex;flex-direction:column;gap:0;max-width:560px;">
+    <div style="display:flex;gap:16px;align-items:flex-start;">
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--volt);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--volt-on);flex-shrink:0;">1</div>
+        <div style="width:2px;height:32px;background:var(--border-m);margin-top:4px;"></div>
+      </div>
+      <div style="padding-top:4px;">
+        <div style="font-size:var(--t-sm);font-weight:700;color:var(--txt);">FAB press</div>
+        <div style="font-size:var(--t-xs);color:var(--txt-m);">scale 0.92 · 80ms ease-spring-snappy</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start;">
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--surf-2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--txt);flex-shrink:0;">2</div>
+        <div style="width:2px;height:32px;background:var(--border-m);margin-top:4px;"></div>
+      </div>
+      <div style="padding-top:4px;">
+        <div style="font-size:var(--t-sm);font-weight:700;color:var(--txt);">fab-sheet open</div>
+        <div style="font-size:var(--t-xs);color:var(--txt-m);">translateY(100%→0) · 400ms ease-spring-gentle</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start;">
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--surf-2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--txt);flex-shrink:0;">3</div>
+        <div style="width:2px;height:32px;background:var(--border-m);margin-top:4px;"></div>
+      </div>
+      <div style="padding-top:4px;">
+        <div style="font-size:var(--t-sm);font-weight:700;color:var(--txt);">q-sheet slide-in</div>
+        <div style="font-size:var(--t-xs);color:var(--txt-m);">translateY(100%→0) · 260ms ease-decel</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start;">
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--surf-2);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--txt);flex-shrink:0;">4</div>
+        <div style="width:2px;height:32px;background:var(--border-m);margin-top:4px;"></div>
+      </div>
+      <div style="padding-top:4px;">
+        <div style="font-size:var(--t-sm);font-weight:700;color:var(--txt);">btn-confirm → loading</div>
+        <div style="font-size:var(--t-xs);color:var(--txt-m);">opacity label fade · 160ms ease-out</div>
+      </div>
+    </div>
+    <div style="display:flex;gap:16px;align-items:flex-start;">
+      <div style="display:flex;flex-direction:column;align-items:center;">
+        <div style="width:28px;height:28px;border-radius:50%;background:var(--volt);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--volt-on);flex-shrink:0;">5</div>
+      </div>
+      <div style="padding-top:4px;">
+        <div style="font-size:var(--t-sm);font-weight:700;color:var(--txt);">q-success-screen</div>
+        <div style="font-size:var(--t-xs);color:var(--txt-m);">scale(0.9→1) + fadeIn · 400ms ease-spring-gentle · burst 600ms</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     S19 — ICONOGRAFÍA
+     ═══════════════════════════════════════════════════════════ -->
+<section id="s19">
+  <div class="sec-eye">Sistema · 19</div>
+  <h2 class="sec-h">Iconografía</h2>
+  <p class="sec-p">Galería de los 40+ iconos de Icons.jsx. Stroke-2px, tamaño base 20px, touch target mínimo 44×44px.</p>
+
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px;margin-bottom:32px;">
+    <!-- QuadraLogo -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 32 32" fill="none"><rect width="32" height="32" rx="8" fill="#BDF300"/><path d="M8 24V8h16v16H8z" fill="#1A2400"/><path d="M13 13h6v6h-6z" fill="#BDF300"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;line-height:1.3;">QuadraLogo</span>
+    </div>
+    <!-- ArrowLeft -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5M12 5l-7 7 7 7"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">ArrowLeft</span>
+    </div>
+    <!-- ArrowRight -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">ArrowRight</span>
+    </div>
+    <!-- ChevronDown -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">ChevronDown</span>
+    </div>
+    <!-- ChevronRight -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 18l6-6-6-6"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">ChevronRight</span>
+    </div>
+    <!-- Check -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Check</span>
+    </div>
+    <!-- X -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">X</span>
+    </div>
+    <!-- Delete -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 4H8l-7 8 7 8h13a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2z"/><line x1="18" y1="9" x2="12" y2="15"/><line x1="12" y1="9" x2="18" y2="15"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Delete</span>
+    </div>
+    <!-- Plus -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Plus</span>
+    </div>
+    <!-- ArrowUp -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">ArrowUp</span>
+    </div>
+    <!-- ArrowDown -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">ArrowDown</span>
+    </div>
+    <!-- Info -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Info</span>
+    </div>
+    <!-- Wallet -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12V7H5a2 2 0 0 1 0-4h11v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4z"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Wallet</span>
+    </div>
+    <!-- Dollar -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Dollar</span>
+    </div>
+    <!-- Calendar -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Calendar</span>
+    </div>
+    <!-- User -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">User</span>
+    </div>
+    <!-- BarChart -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">BarChart</span>
+    </div>
+    <!-- Shield -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Shield</span>
+    </div>
+    <!-- Heart -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Heart</span>
+    </div>
+    <!-- Link -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Link</span>
+    </div>
+    <!-- Bell -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Bell</span>
+    </div>
+    <!-- Download -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Download</span>
+    </div>
+    <!-- Settings -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Settings</span>
+    </div>
+    <!-- Moon -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Moon</span>
+    </div>
+    <!-- Sun -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Sun</span>
+    </div>
+    <!-- Trash -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Trash</span>
+    </div>
+    <!-- HelpCircle -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">HelpCircle</span>
+    </div>
+    <!-- Globe -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Globe</span>
+    </div>
+    <!-- TrendingUp -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">TrendingUp</span>
+    </div>
+    <!-- FileText -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">FileText</span>
+    </div>
+    <!-- Clock -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Clock</span>
+    </div>
+    <!-- Zap -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Zap</span>
+    </div>
+    <!-- AlertTriangle -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">AlertTriangle</span>
+    </div>
+    <!-- Target -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Target</span>
+    </div>
+    <!-- Home -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Home</span>
+    </div>
+    <!-- BuildingBank -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="21" x2="21" y2="21"/><line x1="3" y1="10" x2="21" y2="10"/><polyline points="5 10 5 21"/><polyline points="19 10 19 21"/><polyline points="9 10 9 21"/><polyline points="15 10 15 21"/><path d="M12 3L2 10h20L12 3z"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">BuildingBank</span>
+    </div>
+    <!-- CreditCard -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">CreditCard</span>
+    </div>
+    <!-- Smartphone -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Smartphone</span>
+    </div>
+    <!-- Send -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Send</span>
+    </div>
+    <!-- Receipt -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Receipt</span>
+    </div>
+    <!-- Briefcase -->
+    <div style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 8px;background:var(--surf-1);border-radius:var(--r-md);">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+      <span style="font-size:9px;color:var(--txt-m);text-align:center;">Briefcase</span>
+    </div>
+  </div>
+
+  <table class="ds-spec-table">
+    <thead><tr><th>Regla</th><th>Valor</th></tr></thead>
+    <tbody>
+      <tr><td>Stroke width</td><td>2px — nunca filled salvo excepciones (QuadraLogo)</td></tr>
+      <tr><td>Tamaño base</td><td>20×20px en nav e interfaces; 16px en botones inline</td></tr>
+      <tr><td>Touch target</td><td>Mínimo 44×44px — usar padding o wrapper</td></tr>
+      <tr><td>Color</td><td>Heredado de <code>currentColor</code> — no hardcoded</td></tr>
+      <tr><td>Import</td><td><code>import &#123; IconName &#125; from '@/components/ui/Icons'</code></td></tr>
+      <tr><td>Prop size</td><td>Pasar <code>size=&#123;16&#125;</code> (default 20) para variantes pequeñas</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════
+     S20 — ESTADOS DEL SISTEMA
+     ═══════════════════════════════════════════════════════════ -->
+<section id="s20">
+  <div class="sec-eye">Sistema · 20</div>
+  <h2 class="sec-h">Estados del sistema</h2>
+  <p class="sec-p">Dialog, empty states, banners, offline bar, pull-to-refresh, swipe-actions, settings rows y notification drawer.</p>
+
+  <!-- Dialog -->
+  <p class="ds-label" style="margin-bottom:12px;">dialog</p>
+  <div style="max-width:360px;margin-bottom:32px;">
+    <div style="position:relative;background:var(--surf-1);border-radius:var(--r-2xl);padding:16px;overflow:hidden;">
+      <div class="dialog" style="position:relative;animation:none;max-width:100%;">
+        <div class="dialog-body">
+          <div class="dialog-icon-wrap" style="background:var(--fin-deduct-dim);color:var(--fin-deduct);">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          </div>
+          <div class="dialog-title">¿Eliminar ingreso?</div>
+          <div class="dialog-desc">Esta acción no se puede deshacer. El ingreso será eliminado permanentemente.</div>
+        </div>
+        <div class="dialog-actions">
+          <button class="btn btn-primary btn-full" style="background:var(--fin-deduct);color:#fff;">Eliminar</button>
+          <button class="btn btn-ghost btn-full">Cancelar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- q-empty + q-empty-sm -->
+  <p class="ds-label" style="margin-bottom:12px;">q-empty · q-empty-sm</p>
+  <div class="ds-g2" style="margin-bottom:32px;">
+    <div style="background:var(--surf-1);border-radius:var(--r-xl);padding:24px 16px;">
+      <div class="q-empty">
+        <div class="q-empty-visual">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" color="var(--txt-m)"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        </div>
+        <div class="q-empty-headline">Sin movimientos</div>
+        <div class="q-empty-desc">Registra tu primer pago para ver el historial aquí.</div>
+        <button class="q-empty-cta">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Registrar pago
+        </button>
+      </div>
+    </div>
+    <div style="background:var(--surf-1);border-radius:var(--r-xl);padding:12px 16px;">
+      <div class="q-empty q-empty-sm">
+        <div class="q-empty-visual">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" color="var(--txt-m)"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        </div>
+        <div class="q-empty-headline">Sin notificaciones</div>
+        <div class="q-empty-desc">Todo al día por ahora.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- banner + install-banner -->
+  <p class="ds-label" style="margin-bottom:12px;">banner · install-banner</p>
+  <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:32px;max-width:380px;">
+    <!-- banner-info -->
+    <div class="banner banner-info">
+      <div class="banner-icon" style="background:rgba(189,243,0,0.12);">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      </div>
+      <div class="banner-content">
+        <div class="banner-title">Consejo financiero</div>
+        <div class="banner-desc">Llevas 3 meses con saldo positivo. ¡Sigue así!</div>
+      </div>
+    </div>
+
+    <!-- install-banner -->
+    <div class="install-banner" style="border-radius:var(--r-xl);">
+      <div class="install-banner-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </div>
+      <div class="install-banner-text">
+        <div class="install-banner-title">Instala Quadra</div>
+        <div class="install-banner-sub">Accede más rápido desde tu pantalla de inicio</div>
+      </div>
+      <button class="install-banner-cta">Instalar</button>
+      <button class="install-banner-close">✕</button>
+    </div>
+  </div>
+
+  <!-- q-offline-bar -->
+  <p class="ds-label" style="margin-bottom:12px;">q-offline-bar</p>
+  <div style="max-width:380px;margin-bottom:32px;position:relative;overflow:hidden;border-radius:var(--r-lg);">
+    <div class="q-offline-bar visible" style="position:relative;transform:none;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 6s4-4 11-4 11 4 11 4"/><path d="M5 10s2-2 7-2 7 2 7 2"/><path d="M9 14s1-1 3-1 3 1 3 1"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+      <span class="q-offline-bar-text">Sin conexión · Datos guardados localmente</span>
+      <button class="q-offline-bar-reconnect" style="display:inline;">Reintentar</button>
+    </div>
+  </div>
+
+  <!-- ptr-wrap simulado -->
+  <p class="ds-label" style="margin-bottom:12px;">ptr-wrap — pull to refresh</p>
+  <div style="max-width:380px;margin-bottom:32px;background:var(--surf-1);border-radius:var(--r-xl);overflow:hidden;">
+    <div class="ptr-wrap">
+      <div class="ptr-indicator loading" style="position:relative;transform:translateY(0);">
+        <div class="ptr-spin" style="display:flex;"></div>
+        <span class="ptr-label">Actualizando…</span>
+      </div>
+      <div style="padding:16px;display:flex;flex-direction:column;gap:8px;">
+        <div class="skel" style="height:16px;border-radius:8px;"></div>
+        <div class="skel" style="height:16px;border-radius:8px;width:80%;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- swipe-actions -->
+  <p class="ds-label" style="margin-bottom:12px;">swipe-actions</p>
+  <div style="max-width:380px;margin-bottom:32px;border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--border);">
+    <div class="swipe-actions" style="position:relative;overflow:visible;">
+      <div style="display:flex;gap:8px;justify-content:flex-end;background:var(--surf-2);padding:12px 16px;">
+        <button style="display:flex;align-items:center;gap:6px;padding:8px 14px;border:none;border-radius:var(--r-md);background:var(--fin-deduct-dim);color:var(--fin-deduct);font-size:var(--t-sm);font-weight:600;cursor:pointer;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+          Eliminar
+        </button>
+        <button style="display:flex;align-items:center;gap:6px;padding:8px 14px;border:none;border-radius:var(--r-md);background:var(--surf-3);color:var(--txt);font-size:var(--t-sm);font-weight:600;cursor:pointer;">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+          Editar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- settings-link-row -->
+  <p class="ds-label" style="margin-bottom:12px;">settings-link-row</p>
+  <div style="max-width:380px;margin-bottom:32px;display:flex;flex-direction:column;gap:0;border-radius:var(--r-xl);overflow:hidden;border:1px solid var(--border);">
+    <div class="settings-link-row">
+      <div class="settings-link-copy">
+        <div style="font-size:var(--t-sm);font-weight:600;color:var(--txt);">Perfil</div>
+        <div class="card-sub">Nombre, correo y moneda</div>
+      </div>
+      <svg class="settings-link-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+    <div class="settings-link-row">
+      <div class="settings-link-copy">
+        <div style="font-size:var(--t-sm);font-weight:600;color:var(--txt);">Notificaciones</div>
+        <div class="card-sub">Recordatorios de pago</div>
+      </div>
+      <svg class="settings-link-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+    <div class="settings-link-row">
+      <div class="settings-link-copy">
+        <div style="font-size:var(--t-sm);font-weight:600;color:var(--txt);">Apariencia</div>
+        <div class="card-sub">Modo claro / oscuro</div>
+      </div>
+      <svg class="settings-link-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+    </div>
+  </div>
+
+  <!-- Spec table -->
+  <table class="ds-spec-table">
+    <thead><tr><th>Clase</th><th>Descripción</th></tr></thead>
+    <tbody>
+      <tr><td class="cls">.dialog-overlay</td><td>Overlay con backdrop-filter blur</td></tr>
+      <tr><td class="cls">.dialog</td><td>Modal card con shadow-xl y slideUp animation</td></tr>
+      <tr><td class="cls">.dialog-body / .dialog-actions</td><td>Padding 24px body; columna de botones</td></tr>
+      <tr><td class="cls">.dialog-icon-wrap</td><td>Icono 48×48 con bg semántico</td></tr>
+      <tr><td class="cls">.q-empty</td><td>Pantalla vacía centrada: visual + headline + desc + cta</td></tr>
+      <tr><td class="cls">.q-empty-sm</td><td>Versión compacta — visual 64px, font base</td></tr>
+      <tr><td class="cls">.q-empty-cta</td><td>Botón volt full-radius con hover translateY</td></tr>
+      <tr><td class="cls">.banner / .banner-info</td><td>Banner inline con border semántico</td></tr>
+      <tr><td class="cls">.install-banner</td><td>Banner de instalación PWA con fondo claro/dark adaptable</td></tr>
+      <tr><td class="cls">.q-offline-bar</td><td>Barra fija inferior; .visible para mostrar, .reconnecting para animación</td></tr>
+      <tr><td class="cls">.ptr-wrap / .ptr-indicator</td><td>Contenedor pull-to-refresh; states: pulling · loading · success</td></tr>
+      <tr><td class="cls">.ptr-spin / .ptr-arrow / .ptr-checkmark</td><td>Elementos visuales del indicador PTR</td></tr>
+      <tr><td class="cls">.swipe-actions</td><td>Contenedor de botones de acción por swipe</td></tr>
+      <tr><td class="cls">.settings-link-row</td><td>Fila de ajuste con label, sub y chevron</td></tr>
+      <tr><td class="cls">.settings-link-chevron</td><td>Icono flecha derecha, color txt-m</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- END s15-s20 -->
 </main>
 
 <script>

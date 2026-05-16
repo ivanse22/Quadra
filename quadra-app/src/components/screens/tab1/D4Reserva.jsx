@@ -62,17 +62,28 @@ export default function D4Reserva() {
       {/* E2.3 — Alerta si reserva baja */}
       {progressPercent < 50 && ytd > 0 && (
         <div style={{
-          display: 'flex', alignItems: 'flex-start', gap: 'var(--s3)',
+          display: 'flex', flexDirection: 'column', gap: 'var(--s3)',
           padding: 'var(--s3) var(--s4)', marginBottom: 'var(--s4)',
           background: 'var(--fin-reserve-dim)', border: '1px solid var(--fin-reserve-border)',
           borderRadius: 'var(--r-lg)',
         }}>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--fin-reserve)" strokeWidth="2.2" style={{ flexShrink: 0, marginTop: 2 }}>
-            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
-          </svg>
-          <p style={{ fontSize: 'var(--t-xs)', color: 'var(--fin-reserve)', fontFamily: 'var(--font-body)', lineHeight: 1.5, margin: 0 }}>
-            Estás por debajo del 50% de tu meta. Considera reservar un poco más cada mes para llegar a agosto tranquila.
-          </p>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--s3)' }}>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--fin-reserve)" strokeWidth="2.2" style={{ flexShrink: 0, marginTop: 2 }}>
+              <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/>
+            </svg>
+            <div>
+              <div style={{ fontSize: 'var(--t-sm)', fontWeight: 800, color: 'var(--fin-reserve)', fontFamily: 'var(--font-display)', marginBottom: 2 }}>
+                Reserva por debajo de la meta
+              </div>
+              <p style={{ fontSize: 'var(--t-xs)', color: 'var(--fin-reserve)', fontFamily: 'var(--font-body)', lineHeight: 1.5, margin: 0 }}>
+                Estás por debajo del 50%. Ajusta tu proyección o revisa cuánto necesitas reservar para llegar a agosto tranquila.
+              </p>
+            </div>
+          </div>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--s2)' }}>
+            <button className="btn btn-secondary btn-full" onClick={() => navigate('A5')}>Proyectar reserva</button>
+            <button className="btn btn-ghost btn-full" onClick={() => navigate('A1')}>Ver mi año</button>
+          </div>
         </div>
       )}
 

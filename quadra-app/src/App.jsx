@@ -127,6 +127,7 @@ function StatusBar() {
 
 // Show/hide header logic
 const NO_HEADER = ['O1', 'I2R', 'C4C']
+const AUTH_SCREENS = ['O1', 'O1C', 'O2', 'O3', 'O4', 'O5', 'B1', 'B2']
 const showHeader = (screen) => !NO_HEADER.includes(screen)
 
 const SCREENS = {
@@ -238,8 +239,11 @@ export default function App() {
   // Reset scroll position and close quick menu on every screen change
   useEffect(() => {
     if (bodyRef.current) bodyRef.current.scrollTop = 0
-    if (currentScreen !== 'D1') setShowQuickMenu(false)
-    requestAnimationFrame(() => bodyRef.current?.focus({ preventScroll: true }))
+    const frameId = requestAnimationFrame(() => {
+      if (currentScreen !== 'D1') setShowQuickMenu(false)
+      bodyRef.current?.focus({ preventScroll: true })
+    })
+    return () => cancelAnimationFrame(frameId)
   }, [currentScreen])
 
   useEffect(() => {
@@ -281,7 +285,6 @@ export default function App() {
   }, [wireframeMode])
 
   // Cargar / limpiar datos según sesión (solo tras el primer getSession, para no vaciar el store antes)
-  const AUTH_SCREENS = ['O1', 'O1C', 'O2', 'O3', 'O4', 'O5', 'B1', 'B2']
   useEffect(() => {
     if (!authReady) return
     if (session && !session.mock && session.user?.id) {
@@ -302,7 +305,7 @@ export default function App() {
     // Demo / screenshot mode: if a mock session was rehydrated from localStorage,
     // skip Supabase auth entirely so the app stays on the injected screen.
     if (session?.mock) {
-      setAuthReady(true)
+      queueMicrotask(() => setAuthReady(true))
       return
     }
 
@@ -398,26 +401,11 @@ export default function App() {
             onPointerDown={onFabDown}
             onPointerUp={onFabUp}
             onPointerLeave={onFabUp}
-            className={showQuickMenu ? 'fab-open' : 'fab-pulse'}
+            className={`q-quick-fab ${showQuickMenu ? 'fab-open' : 'fab-pulse'}`}
             style={{
-              position: 'absolute',
-              bottom: 'calc(72px + var(--s6) + env(safe-area-inset-bottom, 0px))',
-              right: 'var(--s5)',
-              width: 56,
-              height: 56,
-              borderRadius: 'var(--r-full)',
               background: showQuickMenu ? 'var(--surf-3)' : 'var(--volt)',
               color: showQuickMenu ? 'var(--txt)' : 'var(--volt-on)',
-              border: 'none',
-              cursor: 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontSize: 28,
-              fontWeight: 300,
-              lineHeight: 1,
               boxShadow: showQuickMenu ? 'none' : '0 6px 24px rgba(189,243,0,0.35)',
-              zIndex: 30,
             }}
             aria-label={showQuickMenu ? 'Cerrar menú' : 'Acciones rápidas'}
           >

@@ -26,6 +26,7 @@ function useCountUp(target, duration = 900) {
 export default function I2Resultado() {
   const { navigate, payments, switchTab, setSelectedPayment } = useAppStore()
   const [step, setStep] = useState(0) // 0=hero, 1=desglose, 2=full
+  const [pilaDetailOpen, setPilaDetailOpen] = useState(false)
 
   const latest     = payments[0]
   const gross      = latest?.gross      ?? 0
@@ -170,44 +171,70 @@ export default function I2Resultado() {
             <div className="stagger-item" style={{ animationDelay: '240ms' }}>
               {pilaD ? (
                 <div className="card pila-mes-blk" style={{ marginTop: 'var(--s2)', padding: 'var(--s4)', border: '1px solid var(--border)', borderRadius: 'var(--r-lg)', background: 'var(--bg-subtle)' }}>
-                  <div style={{ fontSize: 11, fontWeight: 800, fontFamily: 'var(--font-display)', color: 'var(--txt)', marginBottom: 'var(--s2)' }}>PILA — aportes (sobre IBC del mes)</div>
-                  <p className="i2-legal-hint" style={{ marginBottom: 'var(--s3)' }}>
-                    La PILA es mensual sobre el total de tus ingresos del mes. IBC = 40% del total, con piso 1 SMMLV y tope 25 SMMLV.
-                  </p>
-                  {[
-                    { l: 'IBC del mes (base)', v: fmt(pilaD.ibc) },
-                    { l: 'Salud 12,5% del IBC', v: `−${fmt(pilaD.salud)}`, c: 'var(--fin-reserve)' },
-                    { l: 'Pensión 16% del IBC', v: `−${fmt(pilaD.pension)}`, c: 'var(--fin-reserve)' },
-                    { l: 'ARL (riesgo I)', v: `−${fmt(pilaD.arl)}`, c: 'var(--fin-reserve)' },
-                    { l: 'Obligación total del mes', v: `−${fmt(pilaD.obligacionMensual)}`, bold: true },
-                    ...(pilaD.yaReservadoMes > 0
-                      ? [{ l: 'Ya reservado este mes', v: `−${fmt(pilaD.yaReservadoMes)}`, c: 'var(--txt-m)' }]
-                      : []),
-                  ].map(({ l, v, c, bold }) => (
-                    <div key={l} className="tx-drow" style={{ border: 'none', padding: '4px 0' }}>
-                      <span className="tx-drow-l" style={bold ? { fontWeight: 800 } : {}}>{l}</span>
-                      <span className="tx-drow-v" style={{ ...(c ? { color: c } : {}), ...(bold ? { fontWeight: 800 } : {}) }}>{v}</span>
+                  <button
+                    className="i2-pila-toggle"
+                    onClick={() => setPilaDetailOpen((open) => !open)}
+                    aria-expanded={pilaDetailOpen}
+                  >
+                    <div className="tx-drow-l" style={{ color: 'var(--txt-2)', fontSize: 'var(--t-sm)', flex: 1, textAlign: 'left' }}>
+                      <div className="drow-dot" style={{ background: 'var(--fin-reserve)' }} />
+                      PILA del mes
                     </div>
-                  ))}
-                  <div className="tx-drow" style={{ border: 'none', padding: '6px 0 0', marginTop: 4, borderTop: '1px solid var(--border)' }}>
-                    {pila > 0 ? (
-                      <>
-                        <span className="tx-drow-l" style={{ fontWeight: 800 }}>Reservado en este pago</span>
-                        <span className="tx-drow-v" style={{ color: 'var(--fin-reserve)', fontWeight: 800 }}>−{fmt(pila)}</span>
-                      </>
-                    ) : (
-                      <>
-                        <span className="tx-drow-l" style={{ fontWeight: 700, color: 'var(--fin-income)', display: 'flex', alignItems: 'center', gap: 4 }}>
-                          <IconCheck /> Seguridad social del mes ya cubierta
-                        </span>
-                        <span className="tx-drow-v" style={{ color: 'var(--fin-income)', fontWeight: 700 }}>$0</span>
-                      </>
-                    )}
-                  </div>
-                  {pila > 0 && pilaPctoBruto != null && (
-                    <p className="i2-legal-hint" style={{ marginTop: 'var(--s2)', marginBottom: 0 }}>
-                      Equivale a ~{String(pilaPctoBruto).replace(/\.0$/, '')}% del bruto de <em>este</em> pago (distinto al 12,5% de salud sobre IBC).
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                      <span style={{ color: pila > 0 ? 'var(--fin-reserve)' : 'var(--fin-income)', fontSize: 'var(--t-sm)', fontWeight: 800, fontFamily: 'var(--font-display)', fontVariantNumeric: 'tabular-nums' }}>
+                        {pila > 0 ? `−${fmt(pila)}` : '$0'}
+                      </span>
+                      <span style={{ fontSize: 11, color: 'var(--txt-m)', fontWeight: 700, fontFamily: 'var(--font-body)' }}>
+                        {pilaDetailOpen ? 'Ocultar' : 'Ver cálculo'}
+                      </span>
+                    </div>
+                  </button>
+                  {pila > 0 && pilaPctoBruto != null && !pilaDetailOpen && (
+                    <p className="i2-legal-hint" style={{ marginTop: 'var(--s1)', marginBottom: 0 }}>
+                      Reservado para seguridad social. Toca “Ver cálculo” si quieres revisar IBC, salud, pensión y ARL.
                     </p>
+                  )}
+                  {pilaDetailOpen && (
+                    <div style={{ borderTop: '1px solid var(--border)', marginTop: 'var(--s2)', paddingTop: 'var(--s3)' }}>
+                      <p className="i2-legal-hint" style={{ marginBottom: 'var(--s3)' }}>
+                        La PILA es mensual sobre el total de tus ingresos del mes. IBC = 40% del total, con piso 1 SMMLV y tope 25 SMMLV.
+                      </p>
+                      {[
+                        { l: 'IBC del mes (base)', v: fmt(pilaD.ibc) },
+                        { l: 'Salud 12,5% del IBC', v: `−${fmt(pilaD.salud)}`, c: 'var(--fin-reserve)' },
+                        { l: 'Pensión 16% del IBC', v: `−${fmt(pilaD.pension)}`, c: 'var(--fin-reserve)' },
+                        { l: 'ARL (riesgo I)', v: `−${fmt(pilaD.arl)}`, c: 'var(--fin-reserve)' },
+                        { l: 'Obligación total del mes', v: `−${fmt(pilaD.obligacionMensual)}`, bold: true },
+                        ...(pilaD.yaReservadoMes > 0
+                          ? [{ l: 'Ya reservado este mes', v: `−${fmt(pilaD.yaReservadoMes)}`, c: 'var(--txt-m)' }]
+                          : []),
+                      ].map(({ l, v, c, bold }) => (
+                        <div key={l} className="tx-drow" style={{ border: 'none', padding: '4px 0' }}>
+                          <span className="tx-drow-l" style={bold ? { fontWeight: 800 } : {}}>{l}</span>
+                          <span className="tx-drow-v" style={{ ...(c ? { color: c } : {}), ...(bold ? { fontWeight: 800 } : {}) }}>{v}</span>
+                        </div>
+                      ))}
+                      <div className="tx-drow" style={{ border: 'none', padding: '6px 0 0', marginTop: 4, borderTop: '1px solid var(--border)' }}>
+                        {pila > 0 ? (
+                          <>
+                            <span className="tx-drow-l" style={{ fontWeight: 800 }}>Reservado en este pago</span>
+                            <span className="tx-drow-v" style={{ color: 'var(--fin-reserve)', fontWeight: 800 }}>−{fmt(pila)}</span>
+                          </>
+                        ) : (
+                          <>
+                            <span className="tx-drow-l" style={{ fontWeight: 700, color: 'var(--fin-income)', display: 'flex', alignItems: 'center', gap: 4 }}>
+                              <IconCheck /> Seguridad social del mes ya cubierta
+                            </span>
+                            <span className="tx-drow-v" style={{ color: 'var(--fin-income)', fontWeight: 700 }}>$0</span>
+                          </>
+                        )}
+                      </div>
+                      {pila > 0 && pilaPctoBruto != null && (
+                        <p className="i2-legal-hint" style={{ marginTop: 'var(--s2)', marginBottom: 0 }}>
+                          Equivale a ~{String(pilaPctoBruto).replace(/\.0$/, '')}% del bruto de <em>este</em> pago (distinto al 12,5% de salud sobre IBC).
+                        </p>
+                      )}
+                    </div>
                   )}
                 </div>
               ) : (

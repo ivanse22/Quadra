@@ -48,6 +48,8 @@ const formatMoney = (value) => {
   return `$${amount.toLocaleString('es-CO')}`
 }
 
+const formatCountLabel = (count, singular, plural) => `${count} ${count === 1 ? singular : plural}`
+
 const formatFullDate = (date) => {
   if (!(date instanceof Date) || Number.isNaN(date.getTime())) return 'Sin fecha'
   return `${date.getDate()} ${MONTHS_SHORT[date.getMonth()]} ${date.getFullYear()}`
@@ -137,7 +139,8 @@ export default function A8Calendario() {
   useEffect(() => {
     const selectedDate = toSafeDate(selectedDateKey)
     if (selectedDate && isSameMonth(selectedDate, visibleMonth)) return
-    setSelectedDateKey(getDayKey(visibleMonth))
+    const frameId = requestAnimationFrame(() => setSelectedDateKey(getDayKey(visibleMonth)))
+    return () => cancelAnimationFrame(frameId)
   }, [selectedDateKey, visibleMonth])
 
   useEffect(() => {
@@ -318,14 +321,14 @@ export default function A8Calendario() {
             <div className="card-title">Vista rápida</div>
             <div className="card-sub">
               {monthStats.total > 0
-                ? `${monthStats.total} eventos visibles este mes`
+                ? `${formatCountLabel(monthStats.total, 'evento visible', 'eventos visibles')} este mes`
                 : monthStats.totalAvailable > 0
                   ? 'No hay eventos visibles con los filtros actuales'
                   : 'Aún no tienes eventos visibles este mes'}
             </div>
           </div>
           <span className="calendar-summary-badge">
-            {monthStats.pagos} pagos
+            {formatCountLabel(monthStats.pagos, 'pago', 'pagos')}
           </span>
         </div>
 

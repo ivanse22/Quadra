@@ -3,6 +3,11 @@ import { useAppStore } from '../../../store/useAppStore'
 import { IconCalendar, IconCheck } from '../../ui/Icons'
 
 const MONTHS = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre']
+const PLATFORM_OPTIONS = [
+  { label: 'Mi Planilla', url: 'https://www.miplanilla.com/' },
+  { label: 'PILA Digital', url: 'https://www.piladigital.com/' },
+  { label: 'Aportes en Línea', url: 'https://www.aportesenlinea.com/' },
+]
 
 const toMonthInputValue = (date) => {
   const year = date.getFullYear()
@@ -20,17 +25,26 @@ export default function D3PagarPILA() {
   const { navigate, showToast, payPila, kpis } = useAppStore()
   const [paid, setPaid] = useState(false)
   const [periodValue, setPeriodValue] = useState(() => toMonthInputValue(new Date()))
+  const [selectedPlatform, setSelectedPlatform] = useState(PLATFORM_OPTIONS[0].label)
+  const [showConfirmDialog, setShowConfirmDialog] = useState(false)
   const monthInputRef = useRef(null)
   const isAllClear = (kpis?.reservadoPila || 0) <= 0
 
-  const handlePay = () => {
+  const selectedPlatformData = PLATFORM_OPTIONS.find((platform) => platform.label === selectedPlatform) || PLATFORM_OPTIONS[0]
+
+  const openPaymentPlatform = () => {
+    window.open(selectedPlatformData.url, '_blank', 'noopener,noreferrer')
+  }
+
+  const registerManualPayment = () => {
     const periodLabel = formatContributionPeriod(periodValue)
     // Only pay if there is a debt
     if ((kpis?.reservadoPila || 0) > 0) {
       payPila(kpis.reservadoPila, periodLabel)
     }
+    setShowConfirmDialog(false)
     setPaid(true)
-    showToast({ type: 'success', message: 'Pago PILA registrado correctamente' })
+    showToast({ type: 'success', message: 'Registro manual de PILA guardado' })
   }
 
   const openMonthPicker = () => {
@@ -80,6 +94,30 @@ export default function D3PagarPILA() {
 
   return (
     <div className="q-body-inner">
+      {showConfirmDialog && (
+        <div className="dialog-overlay">
+          <div className="dialog">
+            <div className="dialog-body">
+              <div className="dialog-icon-wrap" style={{ background: 'var(--fin-reserve-dim)', border: '1px solid var(--fin-reserve-border)' }}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--fin-reserve)" strokeWidth="2">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                  <line x1="12" y1="9" x2="12" y2="13" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>
+              </div>
+              <div className="dialog-title">¿Ya pagaste en {selectedPlatform}?</div>
+              <div className="dialog-desc">
+                Quadra solo guardará el registro manual de {fmt(deuda)} para {formatContributionPeriod(periodValue)}. No hará transferencias ni procesará el pago por ti.
+              </div>
+            </div>
+            <div className="dialog-actions">
+              <button className="dbtn dbtn-primary" onClick={registerManualPayment}>Sí, registrar en Quadra</button>
+              <button className="dbtn dbtn-ghost" onClick={() => setShowConfirmDialog(false)}>Cancelar</button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="banner banner-info" style={{ marginBottom: 'var(--s6)' }}>
         <div className="banner-icon" style={{ background: 'rgba(189,243,0,0.12)', border: '1px solid rgba(189,243,0,0.22)' }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--volt-text)" strokeWidth="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
@@ -111,10 +149,15 @@ export default function D3PagarPILA() {
 
       <div className="field mb4">
         <label className="field-label">Plataforma de pago</label>
-        <select className="q-input" style={{ height: 52, paddingRight: 'var(--s4)' }} defaultValue="Mi Planilla">
-          <option>Mi Planilla</option>
-          <option>PILA Digital</option>
-          <option>Aportes en Línea</option>
+        <select
+          className="q-input"
+          style={{ height: 52, paddingRight: 'var(--s4)' }}
+          value={selectedPlatform}
+          onChange={(event) => setSelectedPlatform(event.target.value)}
+        >
+          {PLATFORM_OPTIONS.map((platform) => (
+            <option key={platform.label}>{platform.label}</option>
+          ))}
         </select>
       </div>
 
@@ -148,10 +191,24 @@ export default function D3PagarPILA() {
         </div>
       </div>
 
-      <p style={{ fontSize: 'var(--t-xs)', color: 'var(--txt-f)', marginBottom: 'var(--s4)', fontFamily: 'var(--font-body)', lineHeight: 1.5 }}>
-        Este es un registro manual. Cuadra no procesa el pago directamente — debes hacerlo en la plataforma seleccionada.
-      </p>
-      <button className="btn btn-primary btn-full" onClick={handlePay}>Registrar pago PILA</button>
+      <div className="banner banner-warn" style={{ marginBottom: 'var(--s4)' }}>
+        <div className="banner-icon" style={{ background: 'var(--fin-reserve-dim)', border: '1px solid var(--fin-reserve-border)' }}>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--fin-reserve)" strokeWidth="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+        </div>
+        <div className="banner-content">
+          <div className="banner-title">Primero paga fuera de Quadra</div>
+          <div className="banner-desc">Quadra no procesa pagos ni mueve dinero. Después de pagar en {selectedPlatform}, vuelve y registra el pago manualmente.</div>
+        </div>
+      </div>
+
+      <button className="btn btn-primary btn-full" onClick={openPaymentPlatform}>Ir a {selectedPlatform}</button>
+      <button className="btn btn-secondary btn-full" style={{ marginTop: 'var(--s2)' }} onClick={() => setShowConfirmDialog(true)}>
+        Ya pagué, registrar en Quadra
+      </button>
     </div>
   )
 }

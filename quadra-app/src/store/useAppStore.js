@@ -1,5 +1,5 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
 import { supabase } from '../lib/supabase'
 import { formatDateLabel, normalizePaymentDates } from '../lib/dateUtils'
 
@@ -61,6 +61,30 @@ const createMazeScenarioPayments = () => [
     day: 22,
   }),
 ]
+
+const safeLocalStorage = {
+  getItem: (name) => {
+    try {
+      return window.localStorage.getItem(name)
+    } catch {
+      return null
+    }
+  },
+  setItem: (name, value) => {
+    try {
+      window.localStorage.setItem(name, value)
+    } catch {
+      // Safari private mode and some in-app browsers can reject storage writes.
+    }
+  },
+  removeItem: (name) => {
+    try {
+      window.localStorage.removeItem(name)
+    } catch {
+      // Ignore storage cleanup failures in restricted browser contexts.
+    }
+  },
+}
 
 // ── Derived computations ──────────────────────────────────────────────────────
 
@@ -508,6 +532,7 @@ export const useAppStore = create(
     }),
     {
       name: 'quadra-storage',
+      storage: createJSONStorage(() => safeLocalStorage),
       partialize: (state) => ({
         payments:      state.payments,
         kpis:          state.kpis,

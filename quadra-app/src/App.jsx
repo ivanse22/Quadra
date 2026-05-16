@@ -151,12 +151,17 @@ const MAZE_TASK_ALIASES = {
 
 const getMazeTaskFromUrl = () => {
   if (typeof window === 'undefined') return null
-  const params = new URLSearchParams(window.location.search)
-  const taskParam = params.get('mazeTask') || params.get('maze')
-  const pathTask = window.location.pathname.match(/^\/maze\/([^/]+)/)?.[1]
-  const homePath = window.location.pathname === '/home' ? 'home' : null
-  const rawTask = taskParam || pathTask || homePath
-  return MAZE_TASK_ALIASES[rawTask] || null
+  try {
+    const params = new URLSearchParams(window.location.search)
+    const taskParam = params.get('mazeTask') || params.get('maze')
+    const pathMatch = window.location.pathname.match(/^\/maze\/([^/]+)/)
+    const pathTask = pathMatch ? pathMatch[1] : null
+    const homePath = window.location.pathname === '/home' ? 'home' : null
+    const rawTask = taskParam || pathTask || homePath
+    return MAZE_TASK_ALIASES[rawTask] || null
+  } catch {
+    return null
+  }
 }
 
 export default function App() {
@@ -175,7 +180,11 @@ export default function App() {
   useEffect(() => {
     const mazeTask = mazeTaskRef.current
     if (!mazeTask) return
-    localStorage.setItem('pwa-install-dismissed', '1')
+    try {
+      localStorage.setItem('pwa-install-dismissed', '1')
+    } catch {
+      // Storage can be unavailable in private/in-app mobile browsers.
+    }
     applyMazeScenario(mazeTask)
     setSession({ mock: true, user: { id: `maze-${mazeTask}`, email: 'maze@quadra.local' } })
     setAuthReady(true)
@@ -224,7 +233,11 @@ export default function App() {
   // Intercept the native A2HS prompt so we can trigger it on demand
   useEffect(() => {
     if (mazeTaskRef.current) return
-    if (localStorage.getItem('pwa-install-dismissed')) return
+    try {
+      if (localStorage.getItem('pwa-install-dismissed')) return
+    } catch {
+      // Continue without persisted install preference when storage is blocked.
+    }
 
     const handleInstallPrompt = (e) => {
       e.preventDefault()
@@ -252,13 +265,21 @@ export default function App() {
     deferredPrompt.current = null
     setShowInstallBanner(false)
     if (outcome === 'dismissed') {
-      localStorage.setItem('pwa-install-dismissed', '1')
+      try {
+        localStorage.setItem('pwa-install-dismissed', '1')
+      } catch {
+        // Ignore storage failures in restricted browser contexts.
+      }
     }
   }
 
   const handleDismissBanner = () => {
     setShowInstallBanner(false)
-    localStorage.setItem('pwa-install-dismissed', '1')
+    try {
+      localStorage.setItem('pwa-install-dismissed', '1')
+    } catch {
+      // Ignore storage failures in restricted browser contexts.
+    }
   }
 
   // M3.3 — Sync in-app notifications whenever payments or kpis change

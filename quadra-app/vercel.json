@@ -11,13 +11,19 @@
       ]
     },
     {
+      "source": "/maze-start.html",
+      "headers": [
+        { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
+      ]
+    },
+    {
       "source": "/home",
       "headers": [
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
       ]
     },
     {
-      "source": "/maze/(.*)",
+      "source": "/maze/:path*",
       "headers": [
         { "key": "Cache-Control", "value": "no-cache, no-store, must-revalidate" }
       ]

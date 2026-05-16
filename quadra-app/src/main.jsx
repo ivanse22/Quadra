@@ -3,12 +3,19 @@ import { createRoot } from 'react-dom/client'
 import { registerSW } from 'virtual:pwa-register'
 import App from './App.jsx'
 
-const isMazeUrl = typeof window !== 'undefined' && (
-  window.location.pathname === '/home' ||
-  window.location.pathname.startsWith('/maze/') ||
-  new URLSearchParams(window.location.search).has('mazeTask') ||
-  new URLSearchParams(window.location.search).has('maze')
-)
+const hasQueryParam = (search, key) => new RegExp(`[?&]${key}(=|&|$)`).test(search)
+
+const isMazeUrl = (() => {
+  if (typeof window === 'undefined') return false
+  try {
+    return window.location.pathname === '/home' ||
+      window.location.pathname.startsWith('/maze/') ||
+      hasQueryParam(window.location.search, 'mazeTask') ||
+      hasQueryParam(window.location.search, 'maze')
+  } catch {
+    return false
+  }
+})()
 
 // Registrar Service Worker silenciosamente para modo Offline y cache
 if (import.meta.env.PROD && !isMazeUrl) {

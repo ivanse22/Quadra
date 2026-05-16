@@ -22,7 +22,7 @@ const formatContributionPeriod = (value) => {
 }
 
 export default function D3PagarPILA() {
-  const { navigate, showToast, payPila, kpis } = useAppStore()
+  const { navigate, showToast, payPila, kpis, setMazePilaPaid } = useAppStore()
   const [paid, setPaid] = useState(false)
   const [periodValue, setPeriodValue] = useState(() => toMonthInputValue(new Date()))
   const [selectedPlatform, setSelectedPlatform] = useState(PLATFORM_OPTIONS[0].label)
@@ -45,6 +45,8 @@ export default function D3PagarPILA() {
     setShowConfirmDialog(false)
     setPaid(true)
     showToast({ type: 'success', message: 'Registro manual de PILA guardado' })
+    const isMaze = window.location.pathname.includes('/maze/') || window.location.search.includes('mazeTask=')
+    if (isMaze) setMazePilaPaid(true)
   }
 
   const openMonthPicker = () => {

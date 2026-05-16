@@ -165,7 +165,7 @@ const getMazeTaskFromUrl = () => {
 }
 
 export default function App() {
-  const { currentScreen, theme, wireframeMode, session, setSession, navigate, navigateRoot, switchTab, payments, loadUserData, clearUserData, selectedAnnualMonth, kpis, profile, alerts, syncNotifications, notifDrawerOpen, applyMazeScenario } = useAppStore()
+  const { currentScreen, theme, wireframeMode, session, setSession, navigate, navigateRoot, switchTab, payments, loadUserData, clearUserData, selectedAnnualMonth, kpis, profile, alerts, syncNotifications, notifDrawerOpen, applyMazeScenario, mazePilaPaid } = useAppStore()
   const deferredPrompt = useRef(null)
   const mazeTaskRef = useRef(getMazeTaskFromUrl())
   const [showInstallBanner, setShowInstallBanner] = useState(false)
@@ -189,6 +189,22 @@ export default function App() {
     setSession({ mock: true, user: { id: `maze-${mazeTask}`, email: 'maze@quadra.local' } })
     setAuthReady(true)
   }, [applyMazeScenario, setSession])
+
+  // Maze success redirect: when the user reaches the completion screen for their task,
+  // navigate to the static success page so Maze can detect it as the Success URL.
+  useEffect(() => {
+    const mazeTask = mazeTaskRef.current
+    if (!mazeTask) return
+    const successMap = {
+      ingreso: () => currentScreen === 'I2R',
+      pila:    () => mazePilaPaid === true,
+      renta:   () => currentScreen === 'D4',
+    }
+    const isSuccess = successMap[mazeTask]?.()
+    if (isSuccess) {
+      window.location.replace(`/maze-ok-${mazeTask}.html`)
+    }
+  }, [currentScreen, mazePilaPaid])
 
   const onSheetPointerDown = (e) => {
     sheetDragRef.current = { startY: e.clientY, startTime: Date.now() }

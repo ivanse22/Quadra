@@ -462,6 +462,7 @@ export const useAppStore = create(
           notifDrawerOpen: false,
           notifications: [],
           toasts: [],
+          mazePilaPaid: false,
         })
       },
 
@@ -515,6 +516,10 @@ export const useAppStore = create(
       })),
       clearNotifications: () => set({ notifications: [] }),
       setNotifDrawerOpen: (v) => set({ notifDrawerOpen: v }),
+
+      // ── Maze flags ───────────────────────────────────────────────
+      mazePilaPaid: false,
+      setMazePilaPaid: (v) => set({ mazePilaPaid: v }),
 
       // ── Dev ───────────────────────────────────────────────────────
       resetStore: () => {

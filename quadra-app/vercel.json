@@ -1,4 +1,8 @@
 {
+  "rewrites": [
+    { "source": "/home", "destination": "/index.html" },
+    { "source": "/maze/:path*", "destination": "/index.html" }
+  ],
   "headers": [
     {
       "source": "/sw.js",

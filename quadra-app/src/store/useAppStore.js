@@ -6,6 +6,62 @@ import { formatDateLabel, normalizePaymentDates } from '../lib/dateUtils'
 const TABS = ['D1', 'I1', 'A1', 'C1']
 const MONTH_LABELS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
 
+const formatDateKey = (date) => date.toISOString().split('T')[0]
+
+const createMazePayment = ({ id, client, gross, retencion, pila, reserva, disponible, monthOffset = 0, day = 10 }) => {
+  const now = new Date()
+  const date = new Date(now.getFullYear(), now.getMonth() + monthOffset, day, 12)
+  return normalizePaymentDates({
+    id,
+    client,
+    method: 'Transferencia',
+    currency: 'COP',
+    gross,
+    retencion,
+    pila,
+    reserva,
+    disponible,
+    date: formatDateKey(date),
+    dateLabel: formatDateLabel(formatDateKey(date)),
+    type: 'income',
+  })
+}
+
+const createMazeScenarioPayments = () => [
+  createMazePayment({
+    id: 'maze-actual-brandlab',
+    client: 'Brandlab',
+    gross: 12000000,
+    retencion: 1200000,
+    pila: 1393056,
+    reserva: 900000,
+    disponible: 8506944,
+    day: 6,
+  }),
+  createMazePayment({
+    id: 'maze-prev-nova',
+    client: 'Nova Studio',
+    gross: 8000000,
+    retencion: 800000,
+    pila: 928704,
+    reserva: 500000,
+    disponible: 5771296,
+    monthOffset: -1,
+    day: 16,
+  }),
+  createMazePayment({
+    id: 'maze-prev-orbita',
+    client: 'Órbita Consultores',
+    gross: 6500000,
+    retencion: 650000,
+    pila: 754572,
+    reserva: 420000,
+    disponible: 4675428,
+    monthOffset: -2,
+    day: 22,
+  }),
+]
+
 // ── Derived computations ──────────────────────────────────────────────────────
 
 const computeKpis = (payments) => {
@@ -342,6 +398,46 @@ export const useAppStore = create(
           kpis:        computeKpis(empty),
           monthlyData: computeMonthlyData(empty),
           selectedAnnualMonth: null,
+        })
+      },
+
+      applyMazeScenario: (task = 'ingreso') => {
+        const payments = createMazeScenarioPayments()
+        const screenByTask = {
+          ingreso: 'D1',
+          pila: 'D1',
+          renta: 'D1',
+          home: 'D1',
+        }
+        set({
+          currentScreen: screenByTask[task] || 'D1',
+          screenHistory: [],
+          activeTab: 0,
+          selectedAnnualMonth: null,
+          selectedPaymentId: null,
+          payments,
+          kpis: computeKpis(payments),
+          monthlyData: computeMonthlyData(payments),
+          profile: {
+            name: 'Valentina Gómez',
+            regimen: 'ordinario',
+            tipo_ingreso: 'honorarios',
+            es_declarante: true,
+            retencion: 10,
+            pila: 'auto',
+            is_pila_exempt: false,
+          },
+          alerts: {
+            pila: true,
+            renta: true,
+            nuevoPago: false,
+            resumenSemanal: true,
+            vencimientos: true,
+          },
+          bannerI1Dismissed: true,
+          notifDrawerOpen: false,
+          notifications: [],
+          toasts: [],
         })
       },
 

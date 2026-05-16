@@ -139,9 +139,30 @@ const SCREENS = {
   C1: C1DatosPersonales, C2: C2Alertas, C3: C3CuentasConectadas, C4: C4AgregarCuenta, C4C: C4Conectando,
 }
 
+const MAZE_TASK_ALIASES = {
+  ingreso: 'ingreso',
+  'registro-pago': 'ingreso',
+  pila: 'pila',
+  'pagar-pila': 'pila',
+  renta: 'renta',
+  'reserva-renta': 'renta',
+  home: 'home',
+}
+
+const getMazeTaskFromUrl = () => {
+  if (typeof window === 'undefined') return null
+  const params = new URLSearchParams(window.location.search)
+  const taskParam = params.get('mazeTask') || params.get('maze')
+  const pathTask = window.location.pathname.match(/^\/maze\/([^/]+)/)?.[1]
+  const homePath = window.location.pathname === '/home' ? 'home' : null
+  const rawTask = taskParam || pathTask || homePath
+  return MAZE_TASK_ALIASES[rawTask] || null
+}
+
 export default function App() {
-  const { currentScreen, theme, wireframeMode, session, setSession, navigate, navigateRoot, switchTab, payments, loadUserData, clearUserData, selectedAnnualMonth, kpis, profile, alerts, syncNotifications, notifDrawerOpen } = useAppStore()
+  const { currentScreen, theme, wireframeMode, session, setSession, navigate, navigateRoot, switchTab, payments, loadUserData, clearUserData, selectedAnnualMonth, kpis, profile, alerts, syncNotifications, notifDrawerOpen, applyMazeScenario } = useAppStore()
   const deferredPrompt = useRef(null)
+  const mazeTaskRef = useRef(getMazeTaskFromUrl())
   const [showInstallBanner, setShowInstallBanner] = useState(false)
   const [showQuickMenu, setShowQuickMenu] = useState(false)
   /** Evita tratar `session: null` inicial como cierre de sesión antes de getSession() */
@@ -150,6 +171,15 @@ export default function App() {
   const fabRef = useRef(null)
   const sheetRef = useRef(null)
   const sheetDragRef = useRef({ startY: null, startTime: null })
+
+  useEffect(() => {
+    const mazeTask = mazeTaskRef.current
+    if (!mazeTask) return
+    localStorage.setItem('pwa-install-dismissed', '1')
+    applyMazeScenario(mazeTask)
+    setSession({ mock: true, user: { id: `maze-${mazeTask}`, email: 'maze@quadra.local' } })
+    setAuthReady(true)
+  }, [applyMazeScenario, setSession])
 
   const onSheetPointerDown = (e) => {
     sheetDragRef.current = { startY: e.clientY, startTime: Date.now() }
@@ -193,6 +223,7 @@ export default function App() {
 
   // Intercept the native A2HS prompt so we can trigger it on demand
   useEffect(() => {
+    if (mazeTaskRef.current) return
     if (localStorage.getItem('pwa-install-dismissed')) return
 
     const handleInstallPrompt = (e) => {
@@ -286,6 +317,7 @@ export default function App() {
 
   // Cargar / limpiar datos según sesión (solo tras el primer getSession, para no vaciar el store antes)
   useEffect(() => {
+    if (mazeTaskRef.current) return
     if (!authReady) return
     if (session && !session.mock && session.user?.id) {
       loadUserData(session.user.id)
@@ -295,6 +327,7 @@ export default function App() {
   }, [authReady, session, loadUserData, clearUserData])
 
   useEffect(() => {
+    if (mazeTaskRef.current) return
     if (!authReady || session) return
     if (!AUTH_SCREENS.includes(currentScreen)) {
       navigateRoot('B1')
@@ -302,6 +335,7 @@ export default function App() {
   }, [authReady, session, currentScreen, navigateRoot])
 
   useEffect(() => {
+    if (mazeTaskRef.current) return
     // Demo / screenshot mode: if a mock session was rehydrated from localStorage,
     // skip Supabase auth entirely so the app stays on the injected screen.
     if (session?.mock) {

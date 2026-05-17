@@ -164,6 +164,8 @@ const getMazeTaskFromUrl = () => {
   }
 }
 
+const buildMazeScreenUrl = (task, screen) => `/maze/${task}/${screen}`
+
 export default function App() {
   const { currentScreen, theme, wireframeMode, session, setSession, navigate, navigateRoot, switchTab, payments, loadUserData, clearUserData, selectedAnnualMonth, kpis, profile, alerts, syncNotifications, notifDrawerOpen, applyMazeScenario, mazePilaPaid } = useAppStore()
   const deferredPrompt = useRef(null)
@@ -189,6 +191,17 @@ export default function App() {
     setSession({ mock: true, user: { id: `maze-${mazeTask}`, email: 'maze@quadra.local' } })
     setAuthReady(true)
   }, [applyMazeScenario, setSession])
+
+  // In Maze mode, expose each internal React screen as a URL so Maze can build
+  // expected paths step by step even though Quadra is a single-page app.
+  useEffect(() => {
+    const mazeTask = mazeTaskRef.current
+    if (!mazeTask || mazeTask === 'home') return
+    const nextUrl = buildMazeScreenUrl(mazeTask, currentScreen)
+    if (window.location.pathname !== nextUrl) {
+      window.history.replaceState(null, '', nextUrl)
+    }
+  }, [currentScreen])
 
   // Maze success redirect: when the user reaches the completion screen for their task,
   // navigate to the static success page so Maze can detect it as the Success URL.

@@ -49,6 +49,18 @@
         font-size: 15px;
         line-height: 1.45;
       }
+      button {
+        width: 100%;
+        margin-top: 24px;
+        border: 0;
+        border-radius: 16px;
+        background: #111111;
+        color: #ffffff;
+        cursor: pointer;
+        font: inherit;
+        font-weight: 700;
+        padding: 15px 18px;
+      }
     </style>
   </head>
   <body>
@@ -60,6 +72,15 @@
       </div>
       <h1>¡Tarea completada!</h1>
       <p>Registraste el pago y conociste tu disponible real. Puedes cerrar esta ventana y continuar con la prueba.</p>
+      <button type="button" id="close-task">Cerrar esta ventana</button>
     </main>
+    <script>
+      document.getElementById('close-task').addEventListener('click', function () {
+        window.close()
+        setTimeout(function () {
+          document.body.innerHTML = '<main><h1>Ya puedes volver a Maze</h1><p>La tarea quedó completada. Si esta ventana no se cerró automáticamente, vuelve a la pantalla anterior de la prueba.</p></main>'
+        }, 250)
+      })
+    </script>
   </body>
 </html>

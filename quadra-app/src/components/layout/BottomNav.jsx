@@ -46,8 +46,8 @@ const TABS = [
 
 const HIDDEN_ON = ['O1','O1C','O2','O3','O4','O5','B1','B2','I2','I2R','C4C']
 
-// 5 columns at 390px: each ~78px wide, centers at 39, 117, 195, 273, 351
-const COL = [39, 117, 195, 273, 351]
+// 5 columns with 16px padding each side: centers at 51, 122, 195, 268, 339
+const COL = [51, 122, 195, 268, 339]
 
 export default function BottomNav({ onFabPress, fabOpen }) {
   const { currentScreen, activeTab, switchTab, payments } = useAppStore()

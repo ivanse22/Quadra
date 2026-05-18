@@ -97,15 +97,18 @@ textarea:focus-visible,
 }
 [data-theme="dark"] .q-header{background:var(--surf-1);}
 .q-hdr-back{
-  width:36px;height:36px;
-  background:var(--surf-2);border:1px solid var(--border);
-  border-radius:var(--r-md);
+  width:44px;height:44px;
+  background:none;border:none;
+  border-radius:var(--r-full);
   display:flex;align-items:center;justify-content:center;
-  color:var(--txt-m);cursor:pointer;flex-shrink:0;
-  transition:all var(--motion-fast) var(--ease-out);
+  color:var(--volt-text);cursor:pointer;flex-shrink:0;
+  -webkit-tap-highlight-color:transparent;
+  transition:opacity var(--motion-fast) var(--ease-out),transform var(--motion-tap) var(--ease-spring),background var(--motion-fast) var(--ease-out);
 }
-.q-hdr-back:hover{background:var(--surf-3);color:var(--txt);}
-.q-hdr-back svg{width:16px;height:16px;}
+[data-theme="dark"] .q-hdr-back{color:var(--volt);}
+.q-hdr-back:hover{background:var(--surf-1);}
+.q-hdr-back:active{opacity:0.55;transform:translateX(-3px);}
+.q-hdr-back svg{width:20px;height:20px;stroke-width:2.5;}
 .q-hdr-btn{
   width:36px;height:36px;
   display:flex;align-items:center;justify-content:center;
@@ -172,15 +175,16 @@ textarea:focus-visible,
   display:flex;flex-direction:column;align-items:center;gap:3px;
   padding:6px 14px;border-radius:var(--r-xl);
   min-width:44px;min-height:44px;justify-content:center;
-  cursor:pointer;transition:background var(--motion-fast) var(--ease-out),transform var(--motion-instant) var(--ease-out);
+  cursor:pointer;transition:background var(--motion-fast) var(--ease-out),transform var(--motion-fast) var(--ease-spring);
   background:none;border:none;position:relative;
 }
 .nav-item:hover{background:var(--surf-1);}
-.nav-item:active{transform:scale(0.93);}
-.nav-item svg{width:22px;height:22px;color:var(--txt-f);transition:color var(--motion-fast) var(--ease-out);}
+.nav-item:active{transform:scale(0.90);}
+.nav-item svg{width:22px;height:22px;color:var(--txt-f);transition:color var(--motion-fast) var(--ease-out),stroke-width var(--motion-fast) var(--ease-out);}
 .nav-item span{font-size:10px;font-weight:500;color:var(--txt-f);font-family:var(--font-body);transition:all var(--motion-fast) var(--ease-out);letter-spacing:.01em;}
-.nav-item.on{background:var(--volt-dim);}
-.nav-item.on svg{color:var(--volt-text);}
+.nav-item.on{background:var(--volt-dim);transform:scale(1.06);}
+.nav-item.on:active{transform:scale(0.99);}
+.nav-item.on svg{color:var(--volt-text);stroke-width:2.5;}
 [data-theme="dark"] .nav-item.on{background:rgba(189,243,0,0.10);}
 [data-theme="dark"] .nav-item.on svg{color:var(--volt);}
 .nav-item.on span{color:var(--volt-text);font-weight:700;}
@@ -199,19 +203,21 @@ textarea:focus-visible,
   height:52px;padding:0 var(--s6);
   background:var(--volt);color:var(--volt-on);
 }
-.btn-primary:hover{background:#CEFF1A;transform:translateY(-1px);box-shadow:0 6px 24px rgba(189,243,0,0.25);}
-.btn-primary:active{transform:none;background:#AAD800;}
+.btn-primary:hover{background:#CEFF1A;transform:translateY(-1px);box-shadow:0 6px 24px rgba(189,243,0,0.25),0 0 0 3px color-mix(in srgb,var(--volt) 22%,transparent);}
+.btn-primary:active{transform:scale(0.96);background:#AAD800;}
 .btn-secondary{
   height:52px;padding:0 var(--s6);
   background:transparent;color:var(--txt);
   border:1.5px solid var(--border-m);
 }
 .btn-secondary:hover{border-color:var(--txt);background:var(--surf-1);}
+.btn-secondary:active{transform:scale(0.96);}
 .btn-ghost{
   height:44px;padding:0 var(--s4);
   background:transparent;color:var(--txt-m);
 }
 .btn-ghost:hover{background:var(--surf-1);color:var(--txt);}
+.btn-ghost:active{transform:scale(0.96);}
 .btn-sm{height:36px;padding:0 var(--s4);font-size:var(--t-sm);}
 .btn-full{width:100%;}
 .btn:disabled{opacity:.38;cursor:not-allowed;transform:none!important;box-shadow:none!important;}
@@ -891,7 +897,8 @@ textarea:focus-visible,
 
 /* Segmented control */
 .seg-ctrl{display:flex;padding:3px;background:var(--surf-2);border-radius:var(--r-full);gap:2px;}
-.seg-btn{flex:1;height:36px;border-radius:var(--r-full);font-family:var(--font-display);font-size:var(--t-sm);font-weight:600;color:var(--txt-m);cursor:pointer;transition:all var(--motion-fast) var(--ease-out);}
+.seg-btn{flex:1;height:36px;border-radius:var(--r-full);font-family:var(--font-display);font-size:var(--t-sm);font-weight:600;color:var(--txt-m);cursor:pointer;transition:background var(--motion-fast) var(--ease-out),color var(--motion-fast) var(--ease-out),transform var(--motion-tap) var(--ease-spring),box-shadow var(--motion-fast) var(--ease-out);}
+.seg-btn:active{transform:scale(0.93);}
 .seg-btn.active{background:var(--bg);color:var(--txt);font-weight:700;box-shadow:var(--shadow-xs);}
 
 /* ── Forms ── */
@@ -991,9 +998,9 @@ textarea:focus-visible,
 .amount-number::placeholder{color:var(--txt-f);}
 .amount-number.has-val{color:var(--volt-text);}
 [data-theme="dark"] .amount-number.has-val{color:var(--volt);}
-.amount-divider{height:2px;background:var(--border-m);border-radius:2px;margin-top:var(--s2);}
-.amount-divider.focused{background:var(--volt-text);}
-[data-theme="dark"] .amount-divider.focused{background:var(--volt);}
+.amount-divider{height:2px;background:var(--border-m);border-radius:2px;margin-top:var(--s2);transition:background var(--motion-fast) var(--ease-out),box-shadow var(--motion-fast) var(--ease-out);}
+.amount-divider.focused{background:var(--volt-text);box-shadow:0 0 8px color-mix(in srgb,var(--volt) 35%,transparent);}
+[data-theme="dark"] .amount-divider.focused{background:var(--volt);box-shadow:0 0 8px color-mix(in srgb,var(--volt) 45%,transparent);}
 .twotone{display:inline-flex;align-items:baseline;}
 .twotone-main{font-weight:900;letter-spacing:-0.05em;font-variant-numeric:tabular-nums;font-family:var(--font-display);}
 .twotone-dec{font-weight:900;letter-spacing:-0.05em;font-variant-numeric:tabular-nums;color:rgba(15,20,16,0.22);font-family:var(--font-display);}
@@ -1374,26 +1381,37 @@ textarea:focus-visible,
   60%{box-shadow:0 6px 24px rgba(189,243,0,0.35),0 0 0 14px rgba(189,243,0,0);}
   100%{box-shadow:0 6px 24px rgba(189,243,0,0.35),0 0 0 0 rgba(189,243,0,0);}
 }
-.q-quick-fab{
+/* FAB wrapper — owns centering so button's own transform never shifts it */
+.q-fab-wrap{
   position:absolute;
   left:50%;
   transform:translateX(-50%);
-  bottom:calc(52px + env(safe-area-inset-bottom, 0px));
-  width:64px;
-  height:64px;
+  bottom:calc(46px + env(safe-area-inset-bottom, 0px));
+  z-index:30;
+  pointer-events:none;
+}
+.q-quick-fab{
+  pointer-events:auto;
+  position:relative;
+  min-width:88px;
+  height:52px;
+  padding:0 var(--s4);
   border:none;
-  border-radius:var(--r-full);
+  border-radius:var(--r-2xl);
   cursor:pointer;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:28px;
-  font-weight:300;
+  font-family:var(--font-display);
+  font-weight:900;
+  font-size:var(--t-sm);
+  letter-spacing:-0.01em;
+  white-space:nowrap;
   line-height:1;
-  z-index:30;
-  box-shadow:0 -2px 0 2px var(--bg);
+  outline:3px solid var(--bg);
+  outline-offset:-1px;
 }
-[data-theme="dark"] .q-quick-fab{box-shadow:0 -2px 0 2px var(--surf-1);}
+[data-theme="dark"] .q-quick-fab{outline-color:var(--surf-1);}
 .fab-pulse{animation:fab-pulse-ring 1.8s var(--ease-out) 0.6s 3;}
 
 /* ── FAB Quick-action sheet ── */
@@ -2450,16 +2468,15 @@ textarea:focus-visible,
 }
 [data-theme="dark"] .i2r-actions-footer{background:var(--surf-1);}
 
-/* ── Phase 9: SkeletonLine component class (extends existing .skel) ── */
+/* ── DS v2 additions ── */
+
+/* SkeletonLine — extiende .skel existente */
 .skeleton-line{display:block;}
 
-/* ── Center nav spacer for FAB bump ── */
-.nav-center-spacer{width:72px;flex-shrink:0;pointer-events:none;}
+/* Center nav spacer — espacio para el FAB bump */
+.nav-center-spacer{width:80px;flex-shrink:0;pointer-events:none;}
 
-/* ── Phase 10: Bottom nav active state — scale + pill indicator ── */
-.nav-item{transition:transform var(--motion-fast) var(--ease-spring),background var(--motion-fast) var(--ease-out)!important;}
-.nav-item.on{transform:scale(1.06);}
-.nav-item:not(.on):active{transform:scale(0.92)!important;}
+/* Bottom nav: pill indicador de tab activo */
 .nav-tab-indicator{
   position:absolute;bottom:2px;
   width:18px;height:3px;
@@ -2470,71 +2487,38 @@ textarea:focus-visible,
 [data-theme="dark"] .nav-tab-indicator{background:var(--volt);}
 @keyframes tabIndicatorIn{from{transform:scaleX(0);opacity:0;}to{transform:scaleX(1);opacity:1;}}
 
-/* ── Phase 11: Button system — active scale + primary hover glow ── */
-.btn:not(:disabled):active{transform:scale(0.96);}
-.btn-primary:not(:disabled):active{transform:scale(0.96)!important;background:#AAD800;}
-.btn-secondary:not(:disabled):active{transform:scale(0.96);}
-.btn-primary:not(:disabled):hover{
-  box-shadow:var(--shadow-md), 0 0 0 3px color-mix(in srgb,var(--volt) 22%,transparent);
-}
-
-/* ── Phase 13: Confetti celebration for I2Resultado ── */
+/* Confetti — celebración al guardar pago */
 .i2r-confetti{position:absolute;top:38%;left:50%;pointer-events:none;z-index:10;}
 .confetti-particle{
   position:absolute;
-  width:6px;height:6px;
+  width:7px;height:7px;
   background:var(--p-color,var(--volt));
-  border-radius:2px;
-  animation:confettiFly 0.72s var(--p-delay,0ms) var(--ease-out) forwards;
+  border-radius:var(--r-xs);
+  animation:confettiFly var(--motion-settle) var(--p-delay,0ms) var(--ease-accel) forwards;
 }
 @keyframes confettiFly{
   0%  {transform:translate(0,0) rotate(0deg) scale(1);opacity:1;}
   100%{transform:translate(var(--p-x,0),var(--p-y,-80px)) rotate(360deg) scale(0.2);opacity:0;}
 }
-.i2r-amount-glow{animation:amountGlow 0.65s var(--ease-spring) both;}
+.i2r-amount-glow{animation:amountGlow var(--motion-settle) var(--ease-spring) both;}
 @keyframes amountGlow{
   0%  {text-shadow:none;}
   45% {text-shadow:0 0 28px color-mix(in srgb,var(--volt) 65%,transparent),0 0 8px color-mix(in srgb,var(--volt) 35%,transparent);}
   100%{text-shadow:none;}
 }
 
-/* ── Phase 14: Back button — native mobile style ── */
-.q-hdr-back{
-  width:44px!important;height:44px!important;
-  background:none!important;border:none!important;
-  border-radius:var(--r-full)!important;
-  color:var(--volt-text)!important;
-  display:flex!important;align-items:center!important;justify-content:center!important;
-  cursor:pointer!important;flex-shrink:0!important;
-  transition:opacity var(--motion-fast) var(--ease-out),transform 80ms var(--ease-spring)!important;
-  -webkit-tap-highlight-color:transparent!important;
-}
-[data-theme="dark"] .q-hdr-back{color:var(--volt)!important;}
-.q-hdr-back:hover{background:var(--surf-1)!important;color:var(--txt)!important;}
-.q-hdr-back:active{opacity:0.55;transform:translateX(-2px)!important;}
-.q-hdr-back svg{width:20px!important;height:20px!important;stroke-width:2.5!important;}
-
-/* ── Phase 15: AmountField — focused divider glow ── */
-.amount-divider{transition:height var(--motion-fast) var(--ease-spring),background var(--motion-fast) var(--ease-out),box-shadow var(--motion-fast) var(--ease-out)!important;}
-.amount-divider.focused{height:2px!important;box-shadow:0 0 10px color-mix(in srgb,var(--volt) 38%,transparent)!important;}
-
-/* Seg-btn enhanced tap feedback */
-.seg-btn{transition:transform 80ms var(--ease-spring),background var(--motion-fast) var(--ease-out),color var(--motion-fast) var(--ease-out)!important;}
-.seg-btn:active{transform:scale(0.93)!important;}
-
-/* Swipe hint animation for first payment row */
+/* Swipe hint — primer row de pagos, única vez */
 @keyframes txSwipeHint{
   0%  {transform:translateX(0);}
-  25% {transform:translateX(-16px);}
-  60% {transform:translateX(3px);}
+  25% {transform:translateX(-18px);}
+  65% {transform:translateX(3px);}
   100%{transform:translateX(0);}
 }
-.tx-row--swipe-hint{animation:txSwipeHint 0.65s 0.9s var(--ease-spring) both;}
+.tx-row--swipe-hint{animation:txSwipeHint var(--motion-settle) var(--motion-appear) var(--ease-spring) both;}
 
-/* ── Phase 16: Data viz — faster bar animation ── */
-.i4-bar-fill{transition:height .35s var(--ease-spring)!important;}
-.progress-bar-fill{transition:width 0.4s var(--ease-spring);}
+/* Progress bar transition */
+.progress-bar-fill{transition:width var(--motion-slow) var(--ease-spring);}
 
-/* ── Phase 17: Empty state for I1Pagos — SVG illustration ── */
+/* Empty state illustration wrapper */
 .q-empty-illus{display:flex;align-items:center;justify-content:center;width:88px;height:88px;margin:0 auto var(--s5);}
 

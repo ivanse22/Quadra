@@ -480,29 +480,29 @@ export default function App() {
               </div>
             </div>
           )}
-          <button
-            ref={fabRef}
-            onClick={() => setShowQuickMenu(v => !v)}
-            onPointerDown={onFabDown}
-            onPointerUp={onFabUp}
-            onPointerLeave={onFabUp}
-            className={`q-quick-fab ${showQuickMenu ? 'fab-open' : 'fab-pulse'}`}
-            style={{
-              background: showQuickMenu ? 'var(--surf-3)' : 'var(--volt)',
-              color: showQuickMenu ? 'var(--txt)' : 'var(--volt-on)',
-              boxShadow: showQuickMenu ? 'none' : '0 6px 24px rgba(189,243,0,0.35)',
-            }}
-            aria-label={showQuickMenu ? 'Cerrar menú' : 'Acciones rápidas'}
-          >
-            {showQuickMenu ? (
-              <span style={{ fontSize: 22, lineHeight: 1, fontWeight: 300 }}>×</span>
-            ) : (
-              <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.05 }}>
-                <span style={{ fontSize: 11, fontWeight: 900, fontFamily: 'var(--font-display)', letterSpacing: '-0.01em' }}>Me</span>
-                <span style={{ fontSize: 11, fontWeight: 900, fontFamily: 'var(--font-display)', letterSpacing: '-0.01em' }}>Quadra</span>
-              </span>
-            )}
-          </button>
+          {/* Wrapper owns the centering — FAB's own transform (press scale) never shifts position */}
+          <div className="q-fab-wrap">
+            <button
+              ref={fabRef}
+              onClick={() => setShowQuickMenu(v => !v)}
+              onPointerDown={onFabDown}
+              onPointerUp={onFabUp}
+              onPointerLeave={onFabUp}
+              className={`q-quick-fab ${showQuickMenu ? 'fab-open' : 'fab-pulse'}`}
+              style={{
+                background: showQuickMenu ? 'var(--surf-3)' : 'var(--volt)',
+                color: showQuickMenu ? 'var(--txt)' : 'var(--volt-on)',
+                boxShadow: showQuickMenu ? 'none' : '0 8px 28px rgba(189,243,0,0.38)',
+              }}
+              aria-label={showQuickMenu ? 'Cerrar menú' : 'Acciones rápidas'}
+            >
+              {showQuickMenu ? (
+                <span style={{ fontSize: 22, lineHeight: 1, fontWeight: 300 }}>×</span>
+              ) : (
+                <span style={{ whiteSpace: 'nowrap', letterSpacing: '-0.02em' }}>Me Quadra</span>
+              )}
+            </button>
+          </div>
         </>
       )}
 

@@ -161,15 +161,17 @@ textarea:focus-visible,
 
 /* ── Bottom nav (Area E — 72px) ── */
 .bottom-nav{
-  background:var(--bg);border-top:1px solid var(--border);
+  background:var(--bg);
+  border-top:none;
+  border-radius:var(--r-2xl) var(--r-2xl) 0 0;
   padding:8px var(--s4) 20px;
   display:flex;justify-content:space-around;
-  box-shadow:0 -4px 16px rgba(0,0,0,0.04);
+  box-shadow:0 -8px 32px rgba(0,0,0,0.08),0 -1px 0 var(--border);
   flex-shrink:0;
 }
 [data-theme="dark"] .bottom-nav{
   background:var(--surf-1);
-  border-color:rgba(189,243,0,0.08);
+  box-shadow:0 -8px 32px rgba(0,0,0,0.45),0 0 0 1px rgba(189,243,0,0.06);
 }
 .nav-item{
   display:flex;flex-direction:column;align-items:center;gap:3px;
@@ -1376,11 +1378,6 @@ textarea:focus-visible,
 @keyframes countBadge{0%{transform:scale(0) translateY(4px);opacity:0;}60%{transform:scale(1.1) translateY(-1px);}100%{transform:scale(1) translateY(0);opacity:1;}}
 
 /* ── FAB pulse ring ── */
-@keyframes fab-pulse-ring{
-  0%{box-shadow:0 6px 24px rgba(189,243,0,0.35),0 0 0 0 rgba(189,243,0,0.55);}
-  60%{box-shadow:0 6px 24px rgba(189,243,0,0.35),0 0 0 14px rgba(189,243,0,0);}
-  100%{box-shadow:0 6px 24px rgba(189,243,0,0.35),0 0 0 0 rgba(189,243,0,0);}
-}
 /* FAB wrapper — owns centering so button's own transform never shifts it */
 .q-fab-wrap{
   position:absolute;
@@ -1390,12 +1387,46 @@ textarea:focus-visible,
   z-index:30;
   pointer-events:none;
 }
+/* Bloom glow blob — blurred radial gradient extending beyond the pill */
+.q-fab-wrap::before{
+  content:'';
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  width:180%;
+  height:240%;
+  background:radial-gradient(ellipse at 50% 60%,
+    rgba(189,243,0,0.82) 0%,
+    rgba(189,243,0,0.46) 30%,
+    rgba(189,243,0,0.14) 58%,
+    transparent 72%
+  );
+  filter:blur(11px);
+  border-radius:50%;
+  z-index:-1;
+  pointer-events:none;
+  animation:fabGlowBreath 3s ease-in-out infinite;
+}
+.q-fab-wrap.fab-wrap--open::before{opacity:0;transition:opacity 0.2s;}
+[data-theme="dark"] .q-fab-wrap::before{
+  background:radial-gradient(ellipse at 50% 60%,
+    rgba(189,243,0,0.65) 0%,
+    rgba(189,243,0,0.30) 35%,
+    rgba(189,243,0,0.08) 60%,
+    transparent 75%
+  );
+}
+@keyframes fabGlowBreath{
+  0%,100%{opacity:0.85;transform:translate(-50%,-50%) scale(1);}
+  50%{opacity:1;transform:translate(-50%,-50%) scale(1.14);}
+}
 .q-quick-fab{
   pointer-events:auto;
   position:relative;
-  min-width:88px;
-  height:52px;
-  padding:0 var(--s4);
+  min-width:100px;
+  height:54px;
+  padding:0 var(--s5);
   border:none;
   border-radius:var(--r-2xl);
   cursor:pointer;
@@ -1404,15 +1435,31 @@ textarea:focus-visible,
   justify-content:center;
   font-family:var(--font-display);
   font-weight:900;
-  font-size:var(--t-sm);
-  letter-spacing:-0.01em;
+  font-size:var(--t-base);
+  letter-spacing:-0.025em;
   white-space:nowrap;
   line-height:1;
   outline:3px solid var(--bg);
   outline-offset:-1px;
+  transition:transform var(--motion-tap) var(--ease-spring),
+             box-shadow var(--motion-fast) var(--ease-out);
+}
+/* Gradient fill when closed */
+.q-quick-fab.fab-closed{
+  background:radial-gradient(ellipse at 50% 18%,
+    #EAFF80 0%,
+    #C4F200 40%,
+    #A8D800 100%
+  );
+}
+/* Neutral surface when open (sheet visible) */
+.q-quick-fab.fab-open{
+  background:var(--surf-3);
 }
 [data-theme="dark"] .q-quick-fab{outline-color:var(--surf-1);}
-.fab-pulse{animation:fab-pulse-ring 1.8s var(--ease-out) 0.6s 3;}
+/* fab-pulse is now a no-op — bloom glow ::before provides the breathing life */
+.fab-pulse{}
+@keyframes fab-pulse-ring{}
 
 /* ── FAB Quick-action sheet ── */
 @keyframes fab-sheet-in{

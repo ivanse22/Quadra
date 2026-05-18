@@ -481,18 +481,17 @@ export default function App() {
             </div>
           )}
           {/* Wrapper owns the centering — FAB's own transform (press scale) never shifts position */}
-          <div className="q-fab-wrap">
+          <div className={`q-fab-wrap${showQuickMenu ? ' fab-wrap--open' : ''}`}>
             <button
               ref={fabRef}
               onClick={() => setShowQuickMenu(v => !v)}
               onPointerDown={onFabDown}
               onPointerUp={onFabUp}
               onPointerLeave={onFabUp}
-              className={`q-quick-fab ${showQuickMenu ? 'fab-open' : 'fab-pulse'}`}
+              className={`q-quick-fab ${showQuickMenu ? 'fab-open' : 'fab-closed'}`}
               style={{
-                background: showQuickMenu ? 'var(--surf-3)' : 'var(--volt)',
                 color: showQuickMenu ? 'var(--txt)' : 'var(--volt-on)',
-                boxShadow: showQuickMenu ? 'none' : '0 8px 28px rgba(189,243,0,0.38)',
+                boxShadow: showQuickMenu ? 'none' : '0 6px 20px rgba(189,243,0,0.30)',
               }}
               aria-label={showQuickMenu ? 'Cerrar menú' : 'Acciones rápidas'}
             >

@@ -5,52 +5,53 @@ const TABS = [
     id: 'D1',
     label: 'Mi Dinero',
     icon: (
-      <g viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <rect x="2" y="5" width="20" height="14" rx="2" />
-        <path d="M2 10h20" />
-      </g>
+      <>
+        <rect x="2" y="5" width="20" height="14" rx="2" fill="none" stroke="currentColor" strokeWidth="2"/>
+        <path d="M2 10h20" fill="none" stroke="currentColor" strokeWidth="2"/>
+      </>
     ),
   },
   {
     id: 'I1',
     label: 'Mis Ingresos',
     icon: (
-      <g viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <line x1="12" y1="2" x2="12" y2="22" />
-        <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
-      </g>
+      <>
+        <line x1="12" y1="2" x2="12" y2="22" stroke="currentColor" strokeWidth="2"/>
+        <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" fill="none" stroke="currentColor" strokeWidth="2"/>
+      </>
     ),
   },
   {
     id: 'A1',
     label: 'Mi Año',
     icon: (
-      <g viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <rect x="3" y="12" width="4" height="9" />
-        <rect x="10" y="7" width="4" height="14" />
-        <rect x="17" y="2" width="4" height="19" />
-      </g>
+      <>
+        <rect x="3" y="12" width="4" height="9" fill="none" stroke="currentColor" strokeWidth="2"/>
+        <rect x="10" y="7" width="4" height="14" fill="none" stroke="currentColor" strokeWidth="2"/>
+        <rect x="17" y="2" width="4" height="19" fill="none" stroke="currentColor" strokeWidth="2"/>
+      </>
     ),
   },
   {
     id: 'C1',
     label: 'Mi Cuenta',
     icon: (
-      <g viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" />
-        <circle cx="12" cy="7" r="4" />
-      </g>
+      <>
+        <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2" fill="none" stroke="currentColor" strokeWidth="2"/>
+        <circle cx="12" cy="7" r="4" fill="none" stroke="currentColor" strokeWidth="2"/>
+      </>
     ),
   },
 ]
 
-// Screens that HIDE the bottom nav
-const HIDDEN_ON = ['O1', 'O1C', 'O2', 'O3', 'O4', 'O5', 'B1', 'B2', 'I2', 'I2R', 'C4C']
+const HIDDEN_ON = ['O1','O1C','O2','O3','O4','O5','B1','B2','I2','I2R','C4C']
 
-export default function BottomNav() {
+// 5 columns at 390px: each ~78px wide, centers at 39, 117, 195, 273, 351
+const COL = [39, 117, 195, 273, 351]
+
+export default function BottomNav({ onFabPress, fabOpen }) {
   const { currentScreen, activeTab, switchTab, payments } = useAppStore()
 
-  // Badge on Mis Ingresos tab if a payment was added today
   const today = new Date().toISOString().slice(0, 10)
   const newPaymentsToday = payments.filter(p => p.type !== 'pila' && p.date === today).length
 
@@ -59,91 +60,82 @@ export default function BottomNav() {
   return (
     <nav className="bottom-nav" role="navigation" aria-label="Navegación principal">
       <svg
-        viewBox="0 0 390 90"
+        viewBox="0 0 390 72"
         className="bottom-nav-svg"
         xmlns="http://www.w3.org/2000/svg"
-        preserveAspectRatio="none"
       >
-        <defs>
-          <style>{`
-            .nav-svg-bg { fill: var(--bg); }
-            .nav-svg-icon { opacity: 0.5; transition: opacity 0.16s var(--ease-spring), transform 0.16s var(--ease-spring); }
-            .nav-svg-icon.active { opacity: 1; transform: scale(1.08); }
-            .nav-svg-label { font-family: var(--font-body); font-size: 11px; transition: fill 0.16s var(--ease-out), font-weight 0.16s var(--ease-out); }
-            .nav-svg-label.active { fill: var(--volt); font-weight: 700; }
-            .nav-svg-label:not(.active) { fill: var(--txt-f); font-weight: 400; }
-            .nav-svg-btn { cursor: pointer; }
-            .nav-svg-btn:hover rect { fill: var(--surf-1); opacity: 0.3; }
-          `}</style>
-        </defs>
-
-        {/* Background */}
-        <rect width="390" height="90" className="nav-svg-bg" />
-
-        {/* Tabs */}
+        {/* Nav items */}
         {TABS.map((tab, i) => {
           const isActive = activeTab === i
-          const xOffset = i < 2 ? 30 + i * 85 : 195 + (i - 2) * 85
+          const cx = COL[i]
+          const color = isActive ? 'var(--volt-text)' : 'var(--txt-f)'
+          const strokeColor = isActive ? 'var(--volt-text)' : 'var(--txt-f)'
+          const sw = isActive ? 2.5 : 2
 
           return (
             <g
               key={tab.id}
-              className="nav-svg-btn"
               onClick={() => switchTab(i)}
-              role="button"
-              tabIndex={0}
-              aria-label={tab.label}
-              aria-current={isActive ? 'page' : undefined}
               style={{ cursor: 'pointer' }}
+              aria-label={tab.label}
+              role="button"
             >
-              {/* Clickable area */}
-              <rect
-                x={xOffset - 35}
-                y="15"
-                width="70"
-                height="60"
-                fill="none"
-                pointerEvents="auto"
-              />
+              {/* Hit area */}
+              <rect x={cx - 36} y="0" width="72" height="72" fill="transparent"/>
+
+              {/* Active pill background */}
+              {isActive && (
+                <rect
+                  x={cx - 30}
+                  y="10"
+                  width="60"
+                  height="52"
+                  rx="14"
+                  fill="var(--volt-dim)"
+                />
+              )}
 
               {/* Icon */}
-              <g
-                className={`nav-svg-icon ${isActive ? 'active' : ''}`}
-                transform={`translate(${xOffset}, 28)`}
+              <svg
+                x={cx - 11}
+                y="16"
                 width="22"
                 height="22"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke={strokeColor}
+                strokeWidth={sw}
+                strokeLinecap="round"
+                strokeLinejoin="round"
               >
                 {tab.icon}
-              </g>
+              </svg>
 
               {/* Label */}
               <text
-                x={xOffset}
-                y="68"
+                x={cx}
+                y="57"
                 textAnchor="middle"
-                className={`nav-svg-label ${isActive ? 'active' : ''}`}
+                fontSize="9.5"
+                fontWeight={isActive ? '700' : '500'}
+                fill={color}
+                fontFamily="var(--font-body)"
+                letterSpacing="0.01em"
               >
                 {tab.label}
               </text>
 
               {/* Badge */}
               {i === 1 && newPaymentsToday > 0 && !isActive && (
-                <g transform={`translate(${xOffset + 18}, 20)`}>
-                  <circle
-                    cx="0"
-                    cy="0"
-                    r="8"
-                    fill="var(--volt)"
-                    stroke="var(--bg)"
-                    strokeWidth="1.5"
-                  />
+                <g transform={`translate(${cx + 12}, 14)`}>
+                  <circle r="7" fill="var(--volt)" stroke="var(--bg)" strokeWidth="1.5"/>
                   <text
-                    x="0"
-                    y="3"
                     textAnchor="middle"
+                    y="2.5"
                     fontSize="7"
                     fontWeight="700"
                     fill="var(--volt-on)"
+                    fontFamily="var(--font-body)"
                   >
                     {newPaymentsToday}
                   </text>
@@ -152,6 +144,39 @@ export default function BottomNav() {
             </g>
           )
         })}
+
+        {/* + Button — rightmost, volt green */}
+        <g
+          onClick={onFabPress}
+          style={{ cursor: 'pointer' }}
+          aria-label={fabOpen ? 'Cerrar menú' : 'Acciones rápidas'}
+          role="button"
+        >
+          {/* Hit area */}
+          <rect x={COL[4] - 36} y="0" width="72" height="72" fill="transparent"/>
+
+          {/* Green circle */}
+          <circle
+            cx={COL[4]}
+            cy="36"
+            r="24"
+            fill="var(--volt)"
+          />
+
+          {/* + or × */}
+          <text
+            x={COL[4]}
+            y={fabOpen ? "43" : "44"}
+            textAnchor="middle"
+            fontSize={fabOpen ? "22" : "26"}
+            fontWeight="300"
+            fill="var(--volt-on)"
+            fontFamily="var(--font-display)"
+            style={{ userSelect: 'none' }}
+          >
+            {fabOpen ? '×' : '+'}
+          </text>
+        </g>
       </svg>
     </nav>
   )

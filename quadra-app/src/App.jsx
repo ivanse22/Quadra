@@ -429,9 +429,9 @@ export default function App() {
       >
         <Screen />
       </div>
-      <BottomNav />
+      <BottomNav onFabPress={() => setShowQuickMenu(v => !v)} fabOpen={showQuickMenu} />
 
-      {/* ── FAB + Quick-action sheet (direct child of q-phone to avoid overflow clipping) ── */}
+      {/* ── Quick-action sheet ── */}
       {showFab && (
         <>
           {showQuickMenu && (
@@ -480,26 +480,6 @@ export default function App() {
               </div>
             </div>
           )}
-          {/* Wrapper owns the centering — FAB's own transform (press scale) never shifts position */}
-          <div className={`q-fab-wrap${showQuickMenu ? ' fab-wrap--open' : ''}`}>
-            <button
-              ref={fabRef}
-              onClick={() => setShowQuickMenu(v => !v)}
-              onPointerDown={onFabDown}
-              onPointerUp={onFabUp}
-              onPointerLeave={onFabUp}
-              className={`q-quick-fab ${showQuickMenu ? 'fab-open' : 'fab-closed'}`}
-              style={{
-                color: showQuickMenu ? 'var(--txt)' : 'var(--volt-on)',
-                boxShadow: showQuickMenu ? 'none' : '0 6px 20px rgba(189,243,0,0.30)',
-              }}
-              aria-label={showQuickMenu ? 'Cerrar menú' : 'Acciones rápidas'}
-            >
-              <span style={{ fontSize: showQuickMenu ? 22 : 28, lineHeight: 1, fontWeight: showQuickMenu ? 300 : 900 }}>
-                {showQuickMenu ? '×' : '+'}
-              </span>
-            </button>
-          </div>
         </>
       )}
 

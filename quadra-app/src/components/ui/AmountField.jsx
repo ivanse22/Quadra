@@ -7,7 +7,8 @@ export default function AmountField({ onChange, showCalculatingHint = false }) {
 
   const numVal = Number(raw) || 0
   const formatted = raw ? numVal.toLocaleString('es-CO') : ''
-  const hasVal = numVal >= 10000
+  const hasVal = numVal >= 1000
+  const isLowAmount = numVal > 0 && numVal < 1000
 
   // Dynamic font size calculator
   const getFontSize = (len) => {
@@ -110,6 +111,14 @@ export default function AmountField({ onChange, showCalculatingHint = false }) {
           fontWeight: 600, marginTop: 'var(--s2)', fontFamily: 'var(--font-body)',
         }}>
           Calculando tu disponible…
+        </p>
+      )}
+      {isLowAmount && (
+        <p style={{
+          fontSize: 'var(--t-xs)', color: 'var(--txt-m)',
+          marginTop: 'var(--s2)', fontFamily: 'var(--font-body)',
+        }}>
+          ¿Es este el monto completo? Los valores típicos suelen ser mayores a $1.000.
         </p>
       )}
 

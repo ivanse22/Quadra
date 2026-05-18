@@ -1,5 +1,6 @@
 import { useAppStore } from '../../../store/useAppStore'
 import { IconBriefcase, IconHome, IconReceipt, IconTrendingUp } from '../../ui/Icons'
+import ContextualHelp from '../../ui/ContextualHelp'
 
 export default function D4Reserva() {
   const { navigate, kpis } = useAppStore()
@@ -18,20 +19,25 @@ export default function D4Reserva() {
 
   return (
     <div className="q-body-inner">
-      <div className="banner banner-info" style={{ marginBottom: 'var(--s6)' }}>
+      <div className="banner banner-info" style={{ marginBottom: 'var(--s4)' }}>
         <div className="banner-icon" style={{ background: 'rgba(189,243,0,0.12)', border: '1px solid rgba(189,243,0,0.22)' }}>
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--volt-text)" strokeWidth="2">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline>
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
           </svg>
         </div>
         <div className="banner-content">
-          <div className="banner-title">Declaración de Renta</div>
-          <div className="banner-desc">Aquí monitoreamos tu reserva para el pago de tu impuesto anual (Agosto 2026).</div>
+          <div className="banner-title">Dinero reservado para tu declaración de renta</div>
+          <div className="banner-desc">Este dinero ya está separado de lo que puedes gastar. Quadra lo calcula automáticamente para que llegues tranquila a tu declaración en agosto.</div>
         </div>
       </div>
 
-      <div className="hero-card mb6">
-        <div className="hero-eye">Reservado hasta hoy</div>
+      <ContextualHelp
+        term="¿Qué es la declaración de renta?"
+        explanation="Es una obligación anual en Colombia donde reportas tus ingresos al gobierno y calculas si debes pagar impuesto adicional o si te devuelven dinero. Aplica a personas con ingresos superiores a ~1.400 UVT al año. Al reservar mensualmente, evitas un pago grande de golpe en agosto."
+      />
+
+      <div className="hero-card mb6" style={{ marginTop: 'var(--s4)' }}>
+        <div className="hero-eye">Reservado hasta hoy para tu renta</div>
         <div className="hero-amount hero-amount--neutral">
           {fmt(reservaActual)}
         </div>
@@ -110,6 +116,8 @@ export default function D4Reserva() {
 
       <button className="btn btn-secondary btn-full" onClick={() => navigate('A1')}>Ver resumen anual</button>
       <button className="btn btn-ghost btn-full" style={{ marginTop: 'var(--s2)' }} onClick={() => navigate('D1')}>Volver al inicio</button>
+
+      {/* TODO: future — captura automática de datos desde facturas electrónicas y validación automática de pagos PILA desde comprobantes */}
     </div>
   )
 }

@@ -3,6 +3,7 @@ import { useAppStore } from '../../../store/useAppStore'
 import { calcularPago } from '../../../lib/calculadoraFinanciera'
 import { formatDateButtonLabel, formatDateLabel, toDateInputValue } from '../../../lib/dateUtils'
 import AmountField from '../../ui/AmountField'
+import ContextualHelp from '../../ui/ContextualHelp'
 import { IconAlertTriangle, IconCalendar, IconCheck } from '../../ui/Icons'
 
 const METHODS = ['Transferencia', 'PSE', 'Wise', 'Efectivo']
@@ -122,6 +123,9 @@ export default function I2Registro() {
       {/* ── Formulario ── */}
       <div style={{ flex: 1, padding: 'var(--screen-pt) var(--screen-px) 0' }}>
         <AmountField onChange={setAmount} showCalculatingHint={btnState === 'loading'} />
+        <p style={{ fontSize: 'var(--t-xs)', color: 'var(--txt-f)', fontFamily: 'var(--font-body)', marginTop: 4 }}>
+          Ingresa el valor bruto de tu factura o pago recibido.
+        </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s5)', marginTop: 'var(--s6)' }}>
 
@@ -289,11 +293,17 @@ export default function I2Registro() {
 
                 {/* Retención */}
                 {calc.retencion > 0 && (
-                  <div className="tx-drow" style={{ padding: 'var(--s2) 0', borderBottom: '1px solid var(--border)' }}>
-                    <div className="tx-drow-l" style={{ color: 'var(--txt-2)', fontSize: 'var(--t-sm)' }}>Retención en la fuente</div>
-                    <div className="tx-drow-v" style={{ color: 'var(--fin-deduct)', fontSize: 'var(--t-sm)' }}>
-                      −${calc.retencion.toLocaleString('es-CO')}
+                  <div style={{ padding: 'var(--s2) 0', borderBottom: '1px solid var(--border)' }}>
+                    <div className="tx-drow" style={{ border: 'none', padding: 0 }}>
+                      <div className="tx-drow-l" style={{ color: 'var(--txt-2)', fontSize: 'var(--t-sm)' }}>Retención en la fuente</div>
+                      <div className="tx-drow-v" style={{ color: 'var(--fin-deduct)', fontSize: 'var(--t-sm)' }}>
+                        −${calc.retencion.toLocaleString('es-CO')}
+                      </div>
                     </div>
+                    <ContextualHelp
+                      term="¿Qué es la retención?"
+                      explanation="Tu cliente descuenta este porcentaje directamente al pagarte. Es un anticipo del impuesto de renta — no es un gasto extra. Al declarar, el gobierno lo reconoce como pago adelantado."
+                    />
                   </div>
                 )}
 
@@ -341,11 +351,17 @@ export default function I2Registro() {
 
                 {/* Reserva renta */}
                 {calc.reserva > 0 && (
-                  <div className="tx-drow" style={{ padding: 'var(--s2) 0', borderBottom: '1px solid var(--border)' }}>
-                    <div className="tx-drow-l" style={{ color: 'var(--txt-2)', fontSize: 'var(--t-sm)' }}>Reserva declaración renta</div>
-                    <div className="tx-drow-v" style={{ color: 'var(--fin-reserve)', fontSize: 'var(--t-sm)' }}>
-                      −${calc.reserva.toLocaleString('es-CO')}
+                  <div style={{ padding: 'var(--s2) 0', borderBottom: '1px solid var(--border)' }}>
+                    <div className="tx-drow" style={{ border: 'none', padding: 0 }}>
+                      <div className="tx-drow-l" style={{ color: 'var(--txt-2)', fontSize: 'var(--t-sm)' }}>Reserva para declaración de renta</div>
+                      <div className="tx-drow-v" style={{ color: 'var(--fin-reserve)', fontSize: 'var(--t-sm)' }}>
+                        −${calc.reserva.toLocaleString('es-CO')}
+                      </div>
                     </div>
+                    <ContextualHelp
+                      term="¿Por qué se reserva esto?"
+                      explanation="Quadra separa automáticamente una parte de cada pago para que tengas dinero disponible cuando llegue tu declaración de renta en agosto. No lo pierdes — es tuyo, solo está separado."
+                    />
                   </div>
                 )}
 

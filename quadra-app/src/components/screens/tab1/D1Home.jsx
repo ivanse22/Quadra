@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useAppStore } from '../../../store/useAppStore'
 import { getPaymentDateLabel } from '../../../lib/dateUtils'
-import { IconBarChart, IconShield, IconTarget } from '../../ui/Icons'
+import { IconBarChart, IconShield, IconTarget, IconArrowUp, IconPlus } from '../../ui/Icons'
 
 // ── Skeleton (DS §16 & §18 skeleton del Home) ────────────────────────────────
 function HomeSkeleton() {
@@ -197,13 +197,21 @@ export default function D1Home() {
         <div className="q-body-inner" style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
 
           {/* ── Hero zone ── */}
-          <div style={{ paddingBottom: 'var(--s8)', borderBottom: '1px solid var(--border)', marginBottom: 'var(--s6)' }}>
-            {/* Eyebrow */}
-            <div className="hero-eye hero-eye--sm">
-              Lo que es tuyo hoy
+          <div style={{ paddingBottom: 'var(--s6)', borderBottom: '1px solid var(--border)', marginBottom: 'var(--s4)' }}>
+            {/* Eyebrow + help icon */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 'var(--s1)' }}>
+              <span className="hero-eye hero-eye--sm" style={{ margin: 0 }}>Lo que es tuyo hoy</span>
+              <button
+                type="button"
+                onClick={() => navigate('D2')}
+                style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', padding: '2px 4px', cursor: 'pointer', color: 'var(--txt-f)', borderRadius: 'var(--r-sm)' }}
+                aria-label="¿Cómo se calcula este número?"
+              >
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              </button>
             </div>
 
-            {/* Hero number — E1.6: tocable → desglose último pago */}
+            {/* Hero number — tocable → desglose último pago */}
             <button
               type="button"
               onClick={() => { if (latestPayment) { setSelectedPayment(latestPayment.id); navigate('I3') } }}
@@ -213,32 +221,29 @@ export default function D1Home() {
               {fmt(kpis?.disponibleHoy || 0)}
             </button>
 
-            {/* E2.2 — contexto vs YTD */}
-            <div style={{ marginBottom: 'var(--s3)' }}>
-              <button
-                type="button"
-                onClick={() => navigate('D2')}
-                style={{
-                  background: 'none', border: 'none', padding: 0, cursor: 'pointer',
-                  fontSize: 'var(--t-xs)', color: 'var(--txt-m)', fontFamily: 'var(--font-body)',
-                  textDecoration: 'underline', textDecorationColor: 'var(--border-m)',
-                  textUnderlineOffset: 3,
-                }}
-              >
-                ¿Cómo se calcula este número? →
-              </button>
-            </div>
-
             {/* Meta row: source + badge */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 'var(--s2)' }}>
-              <div style={{
-                fontFamily: 'var(--font-body)', fontSize: 'var(--t-sm)',
-                color: 'var(--txt-m)',
-              }}>
-                Último movimiento · {latestPayment ? getPaymentDateLabel(latestPayment) : 'Sin fecha'}
+              <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--t-sm)', color: 'var(--txt-m)' }}>
+                {latestPayment ? getPaymentDateLabel(latestPayment) : 'Sin fecha'}
               </div>
               <span className="badge badge-neu">Disponible actualizado</span>
             </div>
+          </div>
+
+          {/* ── Quick Actions Strip ── */}
+          <div className="home-qa-strip">
+            <button className="home-qa-btn" onClick={() => navigate('I2')}>
+              <IconPlus />
+              Registrar pago
+            </button>
+            <button className="home-qa-btn" onClick={() => navigate('D3')}>
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+              Pagar PILA
+            </button>
+            <button className="home-qa-btn" onClick={() => navigate('D4')}>
+              <IconShield />
+              Reserva renta
+            </button>
           </div>
 
           {/* ── E5.1 Insight card ── */}
@@ -276,7 +281,10 @@ export default function D1Home() {
           <div style={{ display: 'flex', gap: 'var(--s2)', marginBottom: 'var(--s6)' }}>
             {/* M2.1 + M2.2 — YTD con trend y progress */}
             <button type="button" className="home-kpi-card" onClick={() => navigate('I4')}>
-              <div className="kpi-lbl">Ingresado YTD</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 'var(--s2)' }}>
+                <IconArrowUp />
+                <div className="kpi-lbl" style={{ margin: 0 }}>Ingresado YTD</div>
+              </div>
               <div className="kpi-val">{fmt(kpis?.ytd || 0)}</div>
               {monthTrend !== null && (
                 <div className={`kpi-trend ${monthTrend >= 0 ? 'kpi-trend-up' : 'kpi-trend-down'}`}>
@@ -293,12 +301,14 @@ export default function D1Home() {
               )}
             </button>
 
-            {/* M2.3 — Reservado con desglose */}
+            {/* M2.3 — Para tu renta (reserva total) */}
             <button type="button" className="home-kpi-card" onClick={() => navigate('D4')}>
-              <div className="kpi-lbl">Reservado</div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 'var(--s2)' }}>
+                <IconShield />
+                <div className="kpi-lbl" style={{ margin: 0 }}>Para tu renta</div>
+              </div>
               <div className="kpi-val" style={{ color: 'var(--fin-reserve)' }}>{fmt((kpis?.reservadoRenta || 0) + (kpis?.reservadoPila || 0))}</div>
-              <div className="kpi-sub">Renta {fmt(kpis?.reservadoRenta || 0)}</div>
-              <div className="kpi-sub">PILA {fmt(kpis?.reservadoPila || 0)}</div>
+              <div className="kpi-sub">Renta + PILA separados</div>
             </button>
           </div>
 
@@ -387,14 +397,14 @@ export default function D1Home() {
                 <button type="button" className="home-task-card" onClick={() => navigate('D4')} style={{ marginTop: 'var(--s4)' }}>
                   <div style={{ width: 44, height: 44, borderRadius: 'var(--r-md)', background: 'var(--fin-reserve-dim)', border: '1.5px solid var(--fin-reserve-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--fin-reserve)" strokeWidth="2">
-                      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                     </svg>
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--t-sm)', fontWeight: 700, color: 'var(--txt)', lineHeight: 1.3, marginBottom: 2 }}>Reserva para renta</div>
-                    <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--t-xs)', color: 'var(--txt-m)' }}>Tu reserva está al {progressReserva}% de la meta</div>
+                    <div style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--t-sm)', fontWeight: 700, color: 'var(--txt)', lineHeight: 1.3, marginBottom: 2 }}>Reserva para declaración de renta</div>
+                    <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--t-xs)', color: 'var(--txt-m)' }}>Llevas el {progressReserva}% — revisa cuánto te falta</div>
                   </div>
-                  <span className="home-task-chip">Ver →</span>
+                  <span className="home-task-chip">Ver reserva →</span>
                 </button>
               )
             }

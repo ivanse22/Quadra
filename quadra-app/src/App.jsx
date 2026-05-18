@@ -23,22 +23,6 @@ const QUICK_ACTIONS = [
     action: (navigate) => navigate('I2'),
   },
   {
-    id: 'movimientos',
-    label: 'Movimientos',
-    desc: 'Ver todos los ingresos',
-    color: 'var(--txt)',
-    bg: 'var(--surf-1)',
-    border: 'var(--border)',
-    icon: (
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-        <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
-        <line x1="8" y1="18" x2="21" y2="18"/>
-        <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
-      </svg>
-    ),
-    action: (navigate) => navigate('I1'),
-  },
-  {
     id: 'pagar-pila',
     label: 'Pagar PILA',
     desc: 'Salud y pensión',
@@ -53,19 +37,35 @@ const QUICK_ACTIONS = [
     action: (navigate) => navigate('D3'),
   },
   {
-    id: 'reservado',
-    label: 'Reservado',
-    desc: 'Fondo para declaración',
+    id: 'reserva-renta',
+    label: 'Reserva renta',
+    desc: 'Dinero para tu declaración',
     color: 'var(--fin-income)',
     bg: 'var(--fin-income-dim)',
     border: 'var(--fin-income-border)',
     icon: (
       <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-        <rect x="3" y="3" width="18" height="18" rx="2"/>
-        <path d="M8 12h.01M12 8v4l2.5 2.5"/>
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+        <path d="M9 12l2 2 4-4"/>
       </svg>
     ),
     action: (navigate) => navigate('D4'),
+  },
+  {
+    id: 'movimientos',
+    label: 'Movimientos',
+    desc: 'Ver todos los ingresos',
+    color: 'var(--txt)',
+    bg: 'var(--surf-1)',
+    border: 'var(--border)',
+    icon: (
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+        <line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/>
+        <line x1="8" y1="18" x2="21" y2="18"/>
+        <line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/>
+      </svg>
+    ),
+    action: (navigate) => navigate('I1'),
   },
 ]
 
@@ -493,7 +493,14 @@ export default function App() {
             }}
             aria-label={showQuickMenu ? 'Cerrar menú' : 'Acciones rápidas'}
           >
-            {showQuickMenu ? '×' : '+'}
+            {showQuickMenu ? (
+              <span style={{ fontSize: 24, lineHeight: 1 }}>×</span>
+            ) : (
+              <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, lineHeight: 1 }}>
+                <span style={{ fontSize: 20, fontWeight: 300 }}>+</span>
+                <span style={{ fontSize: 8, fontWeight: 800, fontFamily: 'var(--font-body)', letterSpacing: '0.08em' }}>NUEVO</span>
+              </span>
+            )}
           </button>
         </>
       )}

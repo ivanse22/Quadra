@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useAppStore } from '../../../store/useAppStore'
 import { CONSTANTES } from '../../../lib/calculadoraFinanciera'
 import { IconCheck } from '../../ui/Icons'
+import ContextualHelp from '../../ui/ContextualHelp'
 
 const UMBRAL_DECLARANTE_COP = CONSTANTES.UMBRAL_DECLARANTE_UVT * CONSTANTES.UVT
 
@@ -74,7 +75,8 @@ export default function I2Resultado() {
   }
 
   return (
-    <div className="q-body-inner" style={{ paddingTop: 'var(--s4)', paddingBottom: 'var(--s10)' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+    <div className="q-body-inner" style={{ paddingTop: 'var(--s4)', paddingBottom: 'var(--s4)', flex: 1 }}>
 
       {/* ── Pill de cierre — top right ── */}
       <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: 'var(--s3)' }}>
@@ -154,17 +156,23 @@ export default function I2Resultado() {
             <div className="tx-drow-v" style={{ color: 'var(--fin-income)' }}>{fmt(gross)}</div>
           </div>
 
-          <div className="tx-drow stagger-item" style={{ animationDelay: '160ms' }}>
-            <div className="tx-drow-l" style={{ color: 'var(--txt-2)', flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <div className="drow-dot" style={{ background: 'var(--fin-deduct)' }} />
-                <span>Retención en la fuente</span>
+          <div className="tx-drow stagger-item" style={{ animationDelay: '160ms', flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+              <div className="tx-drow-l" style={{ color: 'var(--txt-2)', flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                  <div className="drow-dot" style={{ background: 'var(--fin-deduct)' }} />
+                  <span>Retención en la fuente</span>
+                </div>
+                {retPctoBruto != null && (
+                  <span className="i2-legal-hint">~{String(retPctoBruto).replace(/\.0$/, '')}% del bruto de este pago (tu tarifa o 11% si aplica).</span>
+                )}
               </div>
-              {retPctoBruto != null && (
-                <span className="i2-legal-hint">~{String(retPctoBruto).replace(/\.0$/, '')}% del bruto de este pago (tu tarifa o 11% si aplica).</span>
-              )}
+              <div className="tx-drow-v" style={{ color: 'var(--fin-deduct)' }}>−{fmt(retencion)}</div>
             </div>
-            <div className="tx-drow-v" style={{ color: 'var(--fin-deduct)' }}>−{fmt(retencion)}</div>
+            <ContextualHelp
+              term="¿Qué es la retención?"
+              explanation="Es un anticipo del impuesto de renta que tu cliente te descuenta al pagarte. No es un gasto adicional — ya salió del bruto. Al declarar renta, este valor se abona como pago anticipado."
+            />
           </div>
 
           {(pila > 0 || pilaD) && (
@@ -285,16 +293,17 @@ export default function I2Resultado() {
         </div>
       )}
 
-      {/* ── CTAs — simplificados ── */}
+    </div>
+    {/* ── CTAs sticky — visibles sin scroll ── */}
+    <div className="i2r-actions-footer">
       {step >= 2 && (
-        <div className="stagger-item" style={{ animationDelay: '400ms', display: 'flex', flexDirection: 'column', gap: 'var(--s3)' }}>
+        <div className="stagger-item" style={{ animationDelay: '0ms', display: 'flex', flexDirection: 'column', gap: 'var(--s2)' }}>
           <button
             className="btn btn-primary btn-full"
             onClick={() => { setSelectedPayment(latest.id); navigate('I3') }}
           >
             Ver detalle completo
           </button>
-          {/* Acciones secundarias en segmented */}
           <div className="seg-ctrl">
             <button className="seg-btn" style={{ flex: 1 }} onClick={() => navigate('I2')}>
               + Registrar otro
@@ -305,6 +314,7 @@ export default function I2Resultado() {
           </div>
         </div>
       )}
+    </div>
     </div>
   )
 }

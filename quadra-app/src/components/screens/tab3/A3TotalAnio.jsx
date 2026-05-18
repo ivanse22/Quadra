@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
 import { useAppStore } from '../../../store/useAppStore'
 import { getPaymentDateLabel, toSafeDate } from '../../../lib/dateUtils'
+import ContextualHelp from '../../ui/ContextualHelp'
 
 const MONTH_LABELS_SHORT = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
 
@@ -111,13 +112,36 @@ export default function A3TotalAnio() {
           Lo que ingreso, lo que separaste y lo que realmente puedes contar como disponible acumulado.
         </div>
         <div style={{ marginTop: 'var(--s4)' }}>
-          {breakdownRows.map((row) => (
-            <div key={row.label} className="tx-drow">
-              <div className="tx-drow-l" style={{ color: 'var(--txt-2)' }}>{row.label}</div>
-              <div className="tx-drow-v" style={{ color: row.color }}>{row.value}</div>
-            </div>
-          ))}
+          {breakdownRows.map((row) => {
+            if (row.label === 'Reserva renta') {
+              return (
+                <button
+                  key={row.label}
+                  type="button"
+                  className="tx-drow"
+                  onClick={() => navigate('D4')}
+                  style={{ width: '100%', textAlign: 'left', cursor: 'pointer', background: 'none', border: 'none', borderBottom: '1px solid var(--border)' }}
+                >
+                  <div className="tx-drow-l" style={{ color: 'var(--txt-2)', display: 'flex', alignItems: 'center', gap: 6 }}>
+                    {row.label}
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="var(--txt-f)" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                  </div>
+                  <div className="tx-drow-v" style={{ color: row.color }}>{row.value}</div>
+                </button>
+              )
+            }
+            return (
+              <div key={row.label} className="tx-drow">
+                <div className="tx-drow-l" style={{ color: 'var(--txt-2)' }}>{row.label}</div>
+                <div className="tx-drow-v" style={{ color: row.color }}>{row.value}</div>
+              </div>
+            )
+          })}
         </div>
+        <ContextualHelp
+          term="Retención en la fuente"
+          explanation="Es un anticipo del impuesto de renta que tu cliente te descuenta al pagarte. No es un gasto tuyo — es un pago adelantado que el gobierno te reconoce al declarar. Quadra la calcula automáticamente según tu tarifa configurada en perfil."
+        />
         <div className="card-sub" style={{ marginTop: 'var(--s4)' }}>
           Disponible acumulado = ingreso bruto menos retención, PILA y reserva que ya separaste este año.
         </div>

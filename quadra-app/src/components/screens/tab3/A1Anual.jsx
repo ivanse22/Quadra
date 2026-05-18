@@ -1,5 +1,5 @@
 import { useAppStore } from '../../../store/useAppStore'
-import { IconCalendar, IconTrendingUp } from '../../ui/Icons'
+import { IconCalendar, IconTrendingUp, IconShield } from '../../ui/Icons'
 
 const MONTH_LABELS_SHORT = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
 
@@ -61,6 +61,16 @@ export default function A1Anual() {
         </div>
         <span className="year-projection-cta-action" aria-hidden="true">
           <IconTrendingUp />
+        </span>
+      </button>
+
+      <button className="year-projection-cta mb5" onClick={() => navigate('D4')}>
+        <div className="year-projection-cta-copy">
+          <span className="year-projection-cta-title">Ver reserva para renta</span>
+          <span className="year-projection-cta-sub">Revisa cuánto llevas separado para tu declaración de renta en agosto.</span>
+        </div>
+        <span className="year-projection-cta-action" aria-hidden="true">
+          <IconShield />
         </span>
       </button>
 

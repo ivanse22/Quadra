@@ -63,6 +63,7 @@ export default function BottomNav({ onFabPress, fabOpen }) {
         viewBox="0 0 390 72"
         className="bottom-nav-svg"
         xmlns="http://www.w3.org/2000/svg"
+        style={{ WebkitTapHighlightColor: 'transparent', outline: 'none' }}
       >
         {/* Nav items */}
         {TABS.map((tab, i) => {

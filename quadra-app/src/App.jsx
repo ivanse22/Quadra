@@ -495,11 +495,9 @@ export default function App() {
               }}
               aria-label={showQuickMenu ? 'Cerrar menú' : 'Acciones rápidas'}
             >
-              {showQuickMenu ? (
-                <span style={{ fontSize: 22, lineHeight: 1, fontWeight: 300 }}>×</span>
-              ) : (
-                <span style={{ whiteSpace: 'nowrap', letterSpacing: '-0.02em' }}>Me Quadra</span>
-              )}
+              <span style={{ fontSize: showQuickMenu ? 22 : 28, lineHeight: 1, fontWeight: showQuickMenu ? 300 : 900 }}>
+                {showQuickMenu ? '×' : '+'}
+              </span>
             </button>
           </div>
         </>

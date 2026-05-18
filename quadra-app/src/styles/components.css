@@ -1424,11 +1424,11 @@ textarea:focus-visible,
 .q-quick-fab{
   pointer-events:auto;
   position:relative;
-  min-width:100px;
-  height:54px;
-  padding:0 var(--s5);
+  width:56px;
+  height:56px;
+  padding:0;
   border:none;
-  border-radius:var(--r-2xl);
+  border-radius:50%;
   cursor:pointer;
   display:flex;
   align-items:center;

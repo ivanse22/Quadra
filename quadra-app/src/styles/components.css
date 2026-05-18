@@ -1282,7 +1282,7 @@ textarea:focus-visible,
   min-height:0;
   background:var(--fin-income);
   border-radius:10px 10px 0 0;
-  transition:height .55s var(--ease-out);
+  transition:height .35s var(--ease-spring);
 }
 .bar-lbl{
   font-size:var(--t-lg);
@@ -1376,10 +1376,11 @@ textarea:focus-visible,
 }
 .q-quick-fab{
   position:absolute;
-  right:var(--s5);
-  bottom:calc(72px + var(--s6) + env(safe-area-inset-bottom, 0px));
-  width:56px;
-  height:56px;
+  left:50%;
+  transform:translateX(-50%);
+  bottom:calc(52px + env(safe-area-inset-bottom, 0px));
+  width:64px;
+  height:64px;
   border:none;
   border-radius:var(--r-full);
   cursor:pointer;
@@ -1390,7 +1391,9 @@ textarea:focus-visible,
   font-weight:300;
   line-height:1;
   z-index:30;
+  box-shadow:0 -2px 0 2px var(--bg);
 }
+[data-theme="dark"] .q-quick-fab{box-shadow:0 -2px 0 2px var(--surf-1);}
 .fab-pulse{animation:fab-pulse-ring 1.8s var(--ease-out) 0.6s 3;}
 
 /* ── FAB Quick-action sheet ── */
@@ -2446,4 +2449,92 @@ textarea:focus-visible,
   display:flex;flex-direction:column;gap:var(--s2);
 }
 [data-theme="dark"] .i2r-actions-footer{background:var(--surf-1);}
+
+/* ── Phase 9: SkeletonLine component class (extends existing .skel) ── */
+.skeleton-line{display:block;}
+
+/* ── Center nav spacer for FAB bump ── */
+.nav-center-spacer{width:72px;flex-shrink:0;pointer-events:none;}
+
+/* ── Phase 10: Bottom nav active state — scale + pill indicator ── */
+.nav-item{transition:transform var(--motion-fast) var(--ease-spring),background var(--motion-fast) var(--ease-out)!important;}
+.nav-item.on{transform:scale(1.06);}
+.nav-item:not(.on):active{transform:scale(0.92)!important;}
+.nav-tab-indicator{
+  position:absolute;bottom:2px;
+  width:18px;height:3px;
+  background:var(--volt);
+  border-radius:var(--r-full);
+  animation:tabIndicatorIn var(--motion-fast) var(--ease-spring) both;
+}
+[data-theme="dark"] .nav-tab-indicator{background:var(--volt);}
+@keyframes tabIndicatorIn{from{transform:scaleX(0);opacity:0;}to{transform:scaleX(1);opacity:1;}}
+
+/* ── Phase 11: Button system — active scale + primary hover glow ── */
+.btn:not(:disabled):active{transform:scale(0.96);}
+.btn-primary:not(:disabled):active{transform:scale(0.96)!important;background:#AAD800;}
+.btn-secondary:not(:disabled):active{transform:scale(0.96);}
+.btn-primary:not(:disabled):hover{
+  box-shadow:var(--shadow-md), 0 0 0 3px color-mix(in srgb,var(--volt) 22%,transparent);
+}
+
+/* ── Phase 13: Confetti celebration for I2Resultado ── */
+.i2r-confetti{position:absolute;top:38%;left:50%;pointer-events:none;z-index:10;}
+.confetti-particle{
+  position:absolute;
+  width:6px;height:6px;
+  background:var(--p-color,var(--volt));
+  border-radius:2px;
+  animation:confettiFly 0.72s var(--p-delay,0ms) var(--ease-out) forwards;
+}
+@keyframes confettiFly{
+  0%  {transform:translate(0,0) rotate(0deg) scale(1);opacity:1;}
+  100%{transform:translate(var(--p-x,0),var(--p-y,-80px)) rotate(360deg) scale(0.2);opacity:0;}
+}
+.i2r-amount-glow{animation:amountGlow 0.65s var(--ease-spring) both;}
+@keyframes amountGlow{
+  0%  {text-shadow:none;}
+  45% {text-shadow:0 0 28px color-mix(in srgb,var(--volt) 65%,transparent),0 0 8px color-mix(in srgb,var(--volt) 35%,transparent);}
+  100%{text-shadow:none;}
+}
+
+/* ── Phase 14: Back button — native mobile style ── */
+.q-hdr-back{
+  width:44px!important;height:44px!important;
+  background:none!important;border:none!important;
+  border-radius:var(--r-full)!important;
+  color:var(--volt-text)!important;
+  display:flex!important;align-items:center!important;justify-content:center!important;
+  cursor:pointer!important;flex-shrink:0!important;
+  transition:opacity var(--motion-fast) var(--ease-out),transform 80ms var(--ease-spring)!important;
+  -webkit-tap-highlight-color:transparent!important;
+}
+[data-theme="dark"] .q-hdr-back{color:var(--volt)!important;}
+.q-hdr-back:hover{background:var(--surf-1)!important;color:var(--txt)!important;}
+.q-hdr-back:active{opacity:0.55;transform:translateX(-2px)!important;}
+.q-hdr-back svg{width:20px!important;height:20px!important;stroke-width:2.5!important;}
+
+/* ── Phase 15: AmountField — focused divider glow ── */
+.amount-divider{transition:height var(--motion-fast) var(--ease-spring),background var(--motion-fast) var(--ease-out),box-shadow var(--motion-fast) var(--ease-out)!important;}
+.amount-divider.focused{height:2px!important;box-shadow:0 0 10px color-mix(in srgb,var(--volt) 38%,transparent)!important;}
+
+/* Seg-btn enhanced tap feedback */
+.seg-btn{transition:transform 80ms var(--ease-spring),background var(--motion-fast) var(--ease-out),color var(--motion-fast) var(--ease-out)!important;}
+.seg-btn:active{transform:scale(0.93)!important;}
+
+/* Swipe hint animation for first payment row */
+@keyframes txSwipeHint{
+  0%  {transform:translateX(0);}
+  25% {transform:translateX(-16px);}
+  60% {transform:translateX(3px);}
+  100%{transform:translateX(0);}
+}
+.tx-row--swipe-hint{animation:txSwipeHint 0.65s 0.9s var(--ease-spring) both;}
+
+/* ── Phase 16: Data viz — faster bar animation ── */
+.i4-bar-fill{transition:height .35s var(--ease-spring)!important;}
+.progress-bar-fill{transition:width 0.4s var(--ease-spring);}
+
+/* ── Phase 17: Empty state for I1Pagos — SVG illustration ── */
+.q-empty-illus{display:flex;align-items:center;justify-content:center;width:88px;height:88px;margin:0 auto var(--s5);}
 

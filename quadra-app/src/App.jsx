@@ -413,8 +413,9 @@ export default function App() {
 
   const Screen = SCREENS[currentScreen] || D1Home
 
-  // FAB is only shown on Mi Dinero tab and only when there are payments
-  const showFab = currentScreen === 'D1' && payments.length > 0
+  // Center-nav CTA — visible on all screens where the bottom nav is shown
+  const NAV_HIDDEN_ON = ['O1','O1C','O2','O3','O4','O5','B1','B2','I2','I2R','C4C']
+  const showFab = !NAV_HIDDEN_ON.includes(currentScreen)
 
   return (
     <div className="q-phone" data-theme={theme}>
@@ -494,11 +495,11 @@ export default function App() {
             aria-label={showQuickMenu ? 'Cerrar menú' : 'Acciones rápidas'}
           >
             {showQuickMenu ? (
-              <span style={{ fontSize: 24, lineHeight: 1 }}>×</span>
+              <span style={{ fontSize: 22, lineHeight: 1, fontWeight: 300 }}>×</span>
             ) : (
-              <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1, lineHeight: 1 }}>
-                <span style={{ fontSize: 20, fontWeight: 300 }}>+</span>
-                <span style={{ fontSize: 8, fontWeight: 800, fontFamily: 'var(--font-body)', letterSpacing: '0.08em' }}>NUEVO</span>
+              <span style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', lineHeight: 1.05 }}>
+                <span style={{ fontSize: 11, fontWeight: 900, fontFamily: 'var(--font-display)', letterSpacing: '-0.01em' }}>Me</span>
+                <span style={{ fontSize: 11, fontWeight: 900, fontFamily: 'var(--font-display)', letterSpacing: '-0.01em' }}>Quadra</span>
               </span>
             )}
           </button>

@@ -49,7 +49,7 @@ function SkeletonList() {
   )
 }
 
-function SwipeRow({ payment, isOpen, onOpen, onClose, onDetail, onDelete, showDate }) {
+function SwipeRow({ payment, isOpen, onOpen, onClose, onDetail, onDelete, showDate, showSwipeHint }) {
   const startXRef = useRef(null)
   const dragStartedRef = useRef(false)
   const [dragging, setDragging] = useState(false)
@@ -132,7 +132,7 @@ function SwipeRow({ payment, isOpen, onOpen, onClose, onDetail, onDelete, showDa
       </div>
 
       <div
-        className={`tx-row compact-row movement-row income-row ${rowTypeClass}`}
+        className={`tx-row compact-row movement-row income-row ${rowTypeClass}${showSwipeHint ? ' tx-row--swipe-hint' : ''}`}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={(e) => endDrag(e.clientX)}
@@ -217,6 +217,7 @@ export default function I1Pagos() {
   const [deleteId, setDeleteId] = useState(null)
   const [openRowId, setOpenRowId] = useState(null)
   const [footerExpanded, setFooterExpanded] = useState(false)
+  const [swipeHintShown, setSwipeHintShown] = useState(() => !!localStorage.getItem('q_swipeHint'))
   const pageRef = useRef(null)
 
   const now = new Date()
@@ -570,15 +571,24 @@ export default function I1Pagos() {
                 </div>
               </div>
 
-              {groupEntries.map(([label, rows]) => (
+              {groupEntries.map(([label, rows], gIdx) => (
                 <div key={label}>
                   <div className="tx-section-header">{label}</div>
-                  {rows.map((payment) => (
+                  {rows.map((payment, rIdx) => {
+                    const isFirst = gIdx === 0 && rIdx === 0
+                    const showHint = isFirst && !swipeHintShown
+                    return (
                     <SwipeRow
                       key={payment.id}
                       payment={payment}
                       isOpen={openRowId === payment.id}
-                      onOpen={() => setOpenRowId(payment.id)}
+                      onOpen={() => {
+                        if (isFirst && !swipeHintShown) {
+                          localStorage.setItem('q_swipeHint', '1')
+                          setSwipeHintShown(true)
+                        }
+                        setOpenRowId(payment.id)
+                      }}
                       onClose={() => setOpenRowId(null)}
                       onDetail={() => {
                         setOpenRowId(null)
@@ -590,8 +600,10 @@ export default function I1Pagos() {
                         setDeleteId(payment.id)
                       }}
                       showDate={effectiveGroupBy === 'cliente'}
+                      showSwipeHint={showHint}
                     />
-                  ))}
+                    )
+                  })}
                   {effectiveGroupBy === 'cliente' && (() => {
                     const groupIncome = rows.filter(p => p.type !== 'pila')
                     const groupBruto  = groupIncome.reduce((s, p) => s + (p.gross      || 0), 0)
@@ -662,14 +674,18 @@ function I1Vacio() {
   const { navigate } = useAppStore()
   return (
     <div className="q-empty">
-      <div className="q-empty-visual">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="var(--txt-f)" strokeWidth="1.5">
-          <line x1="12" y1="2" x2="12" y2="22" />
-          <path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6" />
+      <div className="q-empty-illus" aria-hidden="true">
+        <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+          <rect width="80" height="80" rx="20" fill="var(--volt-dim)" />
+          <rect x="20" y="22" width="40" height="5" rx="2.5" fill="var(--volt-border)" />
+          <rect x="20" y="33" width="30" height="4" rx="2" fill="var(--border)" />
+          <rect x="20" y="43" width="25" height="4" rx="2" fill="var(--border)" />
+          <circle cx="56" cy="52" r="12" fill="var(--volt)" />
+          <path d="M52 52l3 3 5-5" stroke="var(--volt-on)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
         </svg>
       </div>
-      <h2 className="q-empty-headline">Aún no tienes pagos</h2>
-      <p className="q-empty-desc">Registra tu primer pago y Quadra calcula automáticamente lo que es tuyo.</p>
+      <h2 className="q-empty-headline">Tu primer pago está cerca</h2>
+      <p className="q-empty-desc">Cuando registres un pago, Quadra calcula automáticamente tu disponible, retención y PILA.</p>
       <button className="q-empty-cta" onClick={() => navigate('I2')}>+ Registrar primer pago</button>
       <button className="btn btn-ghost" onClick={() => navigate('D2')} style={{ marginTop: 'var(--s3)' }}>¿Cómo funciona?</button>
     </div>

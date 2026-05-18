@@ -24,10 +24,28 @@ function useCountUp(target, duration = 900) {
   return val
 }
 
+const CONFETTI_COLORS = ['var(--volt)', '#60efff', '#ff6b6b', '#ffd166', '#a78bfa']
+
+function triggerConfetti() {
+  const container = document.querySelector('.i2r-confetti')
+  if (!container) return
+  for (let i = 0; i < 20; i++) {
+    const el = document.createElement('div')
+    el.className = 'confetti-particle'
+    el.style.setProperty('--p-x', `${(Math.random() - 0.5) * 220}px`)
+    el.style.setProperty('--p-y', `${-(Math.random() * 160 + 50)}px`)
+    el.style.setProperty('--p-color', CONFETTI_COLORS[i % CONFETTI_COLORS.length])
+    el.style.setProperty('--p-delay', `${Math.random() * 180}ms`)
+    container.appendChild(el)
+    setTimeout(() => el.remove(), 900)
+  }
+}
+
 export default function I2Resultado() {
   const { navigate, payments, switchTab, setSelectedPayment } = useAppStore()
   const [step, setStep] = useState(0) // 0=hero, 1=desglose, 2=full
   const [pilaDetailOpen, setPilaDetailOpen] = useState(false)
+  const [showGlow, setShowGlow] = useState(false)
 
   const latest     = payments[0]
   const gross      = latest?.gross      ?? 0
@@ -41,7 +59,12 @@ export default function I2Resultado() {
 
   useEffect(() => {
     const t1 = setTimeout(() => setStep(1), 300)
-    const t2 = setTimeout(() => setStep(2), 1400)
+    const t2 = setTimeout(() => {
+      setStep(2)
+      setShowGlow(true)
+      triggerConfetti()
+      setTimeout(() => setShowGlow(false), 700)
+    }, 1400)
     return () => { clearTimeout(t1); clearTimeout(t2) }
   }, [])
 
@@ -93,7 +116,9 @@ export default function I2Resultado() {
       </div>
 
       {/* ── Hero ── */}
-      <div style={{ textAlign: 'center', marginBottom: 'var(--s5)', animation: 'slideInHero 260ms var(--ease-out) both' }}>
+      <div style={{ textAlign: 'center', marginBottom: 'var(--s5)', animation: 'slideInHero 260ms var(--ease-out) both', position: 'relative' }}>
+        {/* Confetti anchor */}
+        <div className="i2r-confetti" aria-hidden="true" />
         <div style={{ marginBottom: 'var(--s4)' }}>
           <span className="badge badge-ok" style={{ animation: 'badgeBounce 440ms var(--ease-spring) 1.3s both' }}>
             <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -103,7 +128,7 @@ export default function I2Resultado() {
           </span>
         </div>
         <div className="hero-eye hero-eye--sm">Disponible real</div>
-        <div className="i2r-hero-amount">${countedDisponible.toLocaleString('es-CO')}</div>
+        <div className={`i2r-hero-amount${showGlow ? ' i2r-amount-glow' : ''}`}>${countedDisponible.toLocaleString('es-CO')}</div>
         <p style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--t-sm)', color: 'var(--txt-m)' }}>
           De {fmt(gross)} brutos · {client}
         </p>

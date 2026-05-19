@@ -164,19 +164,17 @@ export default function BottomNav({ onFabPress, fabOpen }) {
             fill="var(--volt)"
           />
 
-          {/* + or × */}
-          <text
-            x={COL[4]}
-            y={fabOpen ? "43" : "44"}
-            textAnchor="middle"
-            fontSize={fabOpen ? "22" : "26"}
-            fontWeight="300"
-            fill="var(--volt-on)"
-            fontFamily="var(--font-display)"
-            style={{ userSelect: 'none' }}
+          {/* + icon — rotates 45° to become × when open */}
+          <g
+            style={{
+              transformOrigin: `${COL[4]}px 36px`,
+              transform: fabOpen ? 'rotate(45deg)' : 'rotate(0deg)',
+              transition: 'transform 0.22s var(--ease-out)',
+            }}
           >
-            {fabOpen ? '×' : '+'}
-          </text>
+            <line x1={COL[4] - 9} y1="36" x2={COL[4] + 9} y2="36" stroke="var(--volt-on)" strokeWidth="2.5" strokeLinecap="round"/>
+            <line x1={COL[4]} y1="27" x2={COL[4]} y2="45" stroke="var(--volt-on)" strokeWidth="2.5" strokeLinecap="round"/>
+          </g>
         </g>
       </svg>
     </nav>

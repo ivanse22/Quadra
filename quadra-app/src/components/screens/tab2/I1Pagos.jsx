@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useAppStore } from '../../../store/useAppStore'
 import { getPaymentDateLabel, toSafeDate } from '../../../lib/dateUtils'
+import { IconSliders, IconSearch } from '../../ui/Icons'
+import I1FilterSheet from './I1FilterSheet'
 
 const MONTH_LABELS = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
 const SWIPE_ACTION_WIDTH = 168
@@ -214,6 +216,7 @@ export default function I1Pagos() {
   const [typeFilter, setTypeFilter] = useState('todos')
   const [search, setSearch] = useState('')
   const [showSearch, setShowSearch] = useState(false)
+  const [filtersOpen, setFiltersOpen] = useState(false)
   const [deleteId, setDeleteId] = useState(null)
   const [openRowId, setOpenRowId] = useState(null)
   const [footerExpanded, setFooterExpanded] = useState(false)
@@ -468,71 +471,93 @@ export default function I1Pagos() {
               </div>
             )}
 
-            <div className="income-summary-filter">
-              {/* Search input */}
-              {showSearch && (
-                <div className="i1-search-wrap">
-                  <svg className="i1-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                    <circle cx="11" cy="11" r="7.5" />
-                    <path d="M20 20l-3.5-3.5" />
-                  </svg>
-                  <input
-                    className="q-input"
-                    style={{ paddingLeft: 34 }}
-                    placeholder="Buscar cliente, método..."
-                    value={search}
-                    onChange={e => setSearch(e.target.value)}
-                    autoFocus
-                  />
-                  {search && (
-                    <button className="i1-search-clear" onClick={() => setSearch('')} aria-label="Limpiar búsqueda">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+            {(() => {
+              const activeFilterCount =
+                (groupBy !== 'fecha' ? 1 : 0) + (typeFilter !== 'todos' ? 1 : 0)
+              const hasActiveFilters = activeFilterCount > 0
+              return (
+                <div className="income-list-header">
+                  {showSearch && (
+                    <div className="i1-search-wrap" style={{ marginBottom: 'var(--s2)' }}>
+                      <svg className="i1-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                        <circle cx="11" cy="11" r="7.5" />
+                        <path d="M20 20l-3.5-3.5" />
                       </svg>
+                      <input
+                        className="q-input"
+                        style={{ paddingLeft: 34 }}
+                        placeholder="Buscar cliente, método..."
+                        value={search}
+                        onChange={e => setSearch(e.target.value)}
+                        autoFocus
+                      />
+                      {search && (
+                        <button className="i1-search-clear" onClick={() => setSearch('')} aria-label="Limpiar búsqueda">
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                            <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+                          </svg>
+                        </button>
+                      )}
+                    </div>
+                  )}
+
+                  <div className="income-list-header-row">
+                    <div className="seg-ctrl income-period-tabs">
+                      <button className={`seg-btn${period === 'mes' ? ' active' : ''}`} onClick={() => changePeriod('mes')}>Este mes</button>
+                      <button className={`seg-btn${period === 'anio' ? ' active' : ''}`} onClick={() => changePeriod('anio')}>Este año</button>
+                      <button className={`seg-btn${period === 'todo' ? ' active' : ''}`} onClick={() => changePeriod('todo')}>Todo</button>
+                    </div>
+
+                    <button
+                      type="button"
+                      className="filter-pill-btn"
+                      onClick={() => setFiltersOpen(true)}
+                      aria-label="Filtros"
+                    >
+                      <IconSliders size={13} />
+                      <span>Filtros</span>
+                      {activeFilterCount > 0 && (
+                        <span className="filter-pill-badge">{activeFilterCount}</span>
+                      )}
                     </button>
+
+                    <button
+                      type="button"
+                      className={`filter-icon-btn${showSearch ? ' is-active' : ''}`}
+                      onClick={() => { setShowSearch(v => !v); if (showSearch) setSearch('') }}
+                      aria-label="Buscar"
+                    >
+                      <IconSearch size={13} />
+                    </button>
+                  </div>
+
+                  {hasActiveFilters && (
+                    <div className="filter-active-chips">
+                      {groupBy === 'cliente' && (
+                        <button
+                          type="button"
+                          className="filter-active-chip"
+                          onClick={() => { setGroupBy('fecha'); setOpenRowId(null) }}
+                        >
+                          Por cliente
+                          <span className="chip-x" aria-hidden>×</span>
+                        </button>
+                      )}
+                      {typeFilter !== 'todos' && (
+                        <button
+                          type="button"
+                          className="filter-active-chip"
+                          onClick={() => changeTypeFilter('todos')}
+                        >
+                          {typeFilter === 'pila' ? 'Solo PILA' : 'Solo ingresos'}
+                          <span className="chip-x" aria-hidden>×</span>
+                        </button>
+                      )}
+                    </div>
                   )}
                 </div>
-              )}
-
-              {/* Period filter + search toggle */}
-              <div className="income-filter-period">
-                <div className="seg-ctrl">
-                  <button className={`seg-btn${period === 'mes'  ? ' active' : ''}`} onClick={() => changePeriod('mes')}>Este mes</button>
-                  <button className={`seg-btn${period === 'anio' ? ' active' : ''}`} onClick={() => changePeriod('anio')}>Este año</button>
-                  <button className={`seg-btn${period === 'todo' ? ' active' : ''}`} onClick={() => changePeriod('todo')}>Todo</button>
-                </div>
-                <button
-                  onClick={() => { setShowSearch(v => !v); if (showSearch) setSearch('') }}
-                  aria-label="Buscar"
-                  style={{
-                    width: 36, height: 36, borderRadius: 'var(--r-full)',
-                    background: showSearch ? 'var(--volt-dim)' : 'var(--surf-2)',
-                    border: `1px solid ${showSearch ? 'var(--volt-border)' : 'var(--border)'}`,
-                    color: showSearch ? 'var(--volt-text)' : 'var(--txt-m)',
-                    cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    flexShrink: 0,
-                  }}
-                >
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                    <circle cx="11" cy="11" r="7.5" />
-                    <path d="M20 20l-3.5-3.5" />
-                  </svg>
-                </button>
-              </div>
-
-              {/* Group + type filters — hidden when search active */}
-              <div className="income-filter-secondary" aria-hidden={!!search}>
-                <div className="seg-ctrl">
-                  <button className={`seg-btn${groupBy === 'fecha'   ? ' active' : ''}`} onClick={() => { setGroupBy('fecha');   setOpenRowId(null) }}>Por fecha</button>
-                  <button className={`seg-btn${groupBy === 'cliente' ? ' active' : ''}`} onClick={() => { setGroupBy('cliente'); setOpenRowId(null) }}>Por cliente</button>
-                </div>
-                <div className="seg-ctrl">
-                  <button className={`seg-btn${typeFilter === 'todos'    ? ' active' : ''}`} onClick={() => changeTypeFilter('todos')}>Todos</button>
-                  <button className={`seg-btn${typeFilter === 'ingresos' ? ' active' : ''}`} onClick={() => changeTypeFilter('ingresos')}>Ingresos</button>
-                  <button className={`seg-btn${typeFilter === 'pila'     ? ' active' : ''}`} onClick={() => changeTypeFilter('pila')}>PILA</button>
-                </div>
-              </div>
-            </div>
+              )
+            })()}
 
             {bySearch.length > 0 && (
               <div className="income-summary-helper">
@@ -666,6 +691,15 @@ export default function I1Pagos() {
           )}
         </>
       )}
+
+      <I1FilterSheet
+        open={filtersOpen}
+        onClose={() => setFiltersOpen(false)}
+        groupBy={groupBy}
+        setGroupBy={(val) => { setGroupBy(val); setOpenRowId(null) }}
+        typeFilter={typeFilter}
+        setTypeFilter={changeTypeFilter}
+      />
     </div>
   )
 }

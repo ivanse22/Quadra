@@ -1,4 +1,5 @@
 import { useMemo, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 import { useAppStore } from '../../../store/useAppStore'
 import { calcularPago } from '../../../lib/calculadoraFinanciera'
 import { formatDateButtonLabel, formatDateLabel, toDateInputValue } from '../../../lib/dateUtils'
@@ -87,11 +88,13 @@ export default function I2Registro() {
     }, 1200)
   }
 
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, position: 'relative' }}>
+  const phoneEl = document.querySelector('.q-phone')
 
-      {/* ── Dialog de confirmación ── */}
-      {showDialog && (
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+
+      {/* ── Dialog de confirmación — portado a .q-phone para cubrir exactamente el frame ── */}
+      {showDialog && phoneEl && createPortal(
         <div className="dialog-overlay">
           <div className="dialog">
             <div className="dialog-body">
@@ -117,7 +120,8 @@ export default function I2Registro() {
               <button className="dbtn dbtn-ghost" onClick={() => setShowDialog(false)}>Cancelar</button>
             </div>
           </div>
-        </div>
+        </div>,
+        phoneEl
       )}
 
       {/* ── Formulario ── */}

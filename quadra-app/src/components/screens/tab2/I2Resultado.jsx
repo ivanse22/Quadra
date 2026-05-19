@@ -183,20 +183,15 @@ export default function I2Resultado() {
 
           <div className="tx-drow stagger-item" style={{ animationDelay: '160ms', flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-              <div className="tx-drow-l" style={{ color: 'var(--txt-2)', flexDirection: 'column', alignItems: 'flex-start', gap: 2 }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <div className="drow-dot" style={{ background: 'var(--fin-deduct)' }} />
-                  <span>Retención en la fuente</span>
-                </div>
-                {retPctoBruto != null && (
-                  <span className="i2-legal-hint">~{String(retPctoBruto).replace(/\.0$/, '')}% del bruto de este pago (tu tarifa o 11% si aplica).</span>
-                )}
+              <div className="tx-drow-l" style={{ color: 'var(--txt-2)' }}>
+                <div className="drow-dot" style={{ background: 'var(--fin-deduct)' }} />
+                <span>Retención en la fuente</span>
               </div>
               <div className="tx-drow-v" style={{ color: 'var(--fin-deduct)' }}>−{fmt(retencion)}</div>
             </div>
             <ContextualHelp
               term="¿Qué es la retención?"
-              explanation="Es un anticipo del impuesto de renta que tu cliente te descuenta al pagarte. No es un gasto adicional — ya salió del bruto. Al declarar renta, este valor se abona como pago anticipado."
+              explanation={`Anticipo del impuesto de renta que tu cliente te descuenta al pagarte.${retPctoBruto != null ? ` Equivale a ~${String(retPctoBruto).replace(/\.0$/, '')}% de este pago.` : ''} Al declarar renta, este valor se abona como pago anticipado.`}
             />
           </div>
 
@@ -222,11 +217,6 @@ export default function I2Resultado() {
                       </span>
                     </div>
                   </button>
-                  {pila > 0 && pilaPctoBruto != null && !pilaDetailOpen && (
-                    <p className="i2-legal-hint" style={{ marginTop: 'var(--s1)', marginBottom: 0 }}>
-                      Reservado para seguridad social. Toca “Ver cálculo” si quieres revisar IBC, salud, pensión y ARL.
-                    </p>
-                  )}
                   {pilaDetailOpen && (
                     <div style={{ borderTop: '1px solid var(--border)', marginTop: 'var(--s2)', paddingTop: 'var(--s3)' }}>
                       <p className="i2-legal-hint" style={{ marginBottom: 'var(--s3)' }}>
@@ -292,20 +282,18 @@ export default function I2Resultado() {
                 <div className="tx-drow-v" style={{ color: 'var(--fin-reserve)' }}>−{fmt(reserva)}</div>
               </div>
             ) : (
-              <div className="card" style={{ marginTop: 'var(--s2)', padding: 'var(--s4)', border: '1px solid var(--border)', borderRadius: 'var(--r-lg)', background: 'var(--bg-subtle)' }}>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--s2)' }}>
-                  <div style={{ fontSize: 11, fontWeight: 800, fontFamily: 'var(--font-display)', color: 'var(--txt)' }}>RENTA — reserva declaración</div>
-                  <span style={{ fontWeight: 700, color: 'var(--fin-income)', fontSize: 'var(--t-sm)' }}>$0</span>
+              <div className="tx-drow">
+                <div className="tx-drow-l" style={{ color: 'var(--txt-2)', flexDirection: 'column', alignItems: 'flex-start', gap: 4 }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                    <div className="drow-dot" style={{ background: 'var(--volt-border)' }} />
+                    <span>Reserva renta</span>
+                  </div>
+                  <ContextualHelp
+                    term="¿Por qué $0?"
+                    explanation={`Tu proyección anual aún no supera el umbral de ~$${UMBRAL_DECLARANTE_COP.toLocaleString('es-CO')} (1.400 UVT). Si eres declarante voluntario, actívalo en tu perfil.`}
+                  />
                 </div>
-                <p className="i2-legal-hint" style={{ marginBottom: 'var(--s3)' }}>
-                  Tu proyección anual aún no supera el umbral de ~${UMBRAL_DECLARANTE_COP.toLocaleString('es-CO')} (1.400 UVT). No estás obligado a declarar renta por ahora.
-                </p>
-                <button
-                  onClick={() => navigate('C1')}
-                  style={{ fontSize: 'var(--t-xs)', fontWeight: 700, fontFamily: 'var(--font-body)', color: 'var(--txt-m)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, textDecoration: 'underline' }}
-                >
-                  Soy declarante voluntario → activar en perfil
-                </button>
+                <div className="tx-drow-v" style={{ color: 'var(--txt-m)' }}>$0</div>
               </div>
             )}
           </div>
@@ -329,13 +317,10 @@ export default function I2Resultado() {
           >
             Ver detalle completo
           </button>
-          <div className="seg-ctrl">
-            <button className="seg-btn" style={{ flex: 1 }} onClick={() => navigate('I2')}>
-              + Registrar otro
-            </button>
-            <button className="seg-btn" style={{ flex: 1 }} onClick={() => switchTab(0)}>
-              Ir al inicio
-            </button>
+          <div className="i2r-secondary-actions">
+            <button className="btn btn-ghost" onClick={() => navigate('I2')}>+ Registrar otro</button>
+            <span className="i2r-divider" aria-hidden />
+            <button className="btn btn-ghost" onClick={() => switchTab(0)}>Ir al inicio</button>
           </div>
         </div>
       )}

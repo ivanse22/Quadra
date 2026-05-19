@@ -404,24 +404,19 @@ export default function I1Pagos() {
       {loading ? <SkeletonList /> : (
         <>
           <div className="card income-summary-card">
-            <div className="income-summary-top">
-              <div>
-                <div className="income-summary-eyebrow">{periodEyebrow}</div>
-                <div className="income-summary-amount">{fmt(filteredBruto)}</div>
-                <div className="income-summary-sub">{periodLabel} · Ingreso bruto registrado</div>
-              </div>
+            <div className="income-summary-header">
+              <div className="income-summary-eyebrow">{periodEyebrow}</div>
+              <span className="trend-badge trend-up">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M18 15l-6-6-6 6" />
+                </svg>
+                +{fmtCompact(filteredBruto)}
+              </span>
+            </div>
 
-              <div className="income-summary-side">
-                <span className="trend-badge trend-up">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <path d="M18 15l-6-6-6 6" />
-                  </svg>
-                  +{fmtCompact(filteredBruto)}
-                </span>
-                <button className="btn btn-ghost btn-sm income-summary-link" onClick={() => navigate('I4')}>
-                  Ver KPIs →
-                </button>
-              </div>
+            <div className="income-summary-kpi">
+              <div className="income-summary-amount">{fmt(filteredBruto)}</div>
+              <div className="income-summary-sub">{periodLabel} · Ingreso bruto registrado</div>
             </div>
 
             <div className="income-summary-stats">
@@ -429,6 +424,7 @@ export default function I1Pagos() {
                 <div className="income-summary-stat-label">Movimientos</div>
                 <div className="income-summary-stat-value">{filteredCount}</div>
               </div>
+              <div className="income-summary-stat-divider" />
               <div className="income-summary-stat">
                 <div className="income-summary-stat-label">Disponible real</div>
                 <div className="income-summary-stat-value income-summary-stat-value--volt">{fmt(filteredDisponible)}</div>
@@ -470,6 +466,10 @@ export default function I1Pagos() {
                 </div>
               </div>
             )}
+
+            <div className="income-summary-footer">
+              <button className="btn btn-ghost btn-sm" onClick={() => navigate('I4')}>Ver KPIs →</button>
+            </div>
 
             {(() => {
               const activeFilterCount =

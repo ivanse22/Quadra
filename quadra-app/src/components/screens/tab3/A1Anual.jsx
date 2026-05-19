@@ -61,9 +61,29 @@ export default function A1Anual() {
           </div>
           <div className="hero-year-bar-wrap">
             <div className="hero-year-bar-track">
+              <div className="hero-year-bar-calendar" style={{ width: `${yearPct}%` }} />
               <div className="hero-year-bar-fill" style={{ width: `${realPct}%` }} />
               <div className="hero-year-bar-dot" style={{ left: `${yearPct}%` }} />
             </div>
+          </div>
+          <div className="hero-month-dots">
+            {monthlyData.map((m, i) => {
+              const hasFunds  = !m.projected && m.amount > 0
+              const isCurrent = i === currentMonth
+              const isFuture  = i > currentMonth
+              return (
+                <div
+                  key={i}
+                  className={[
+                    'hero-month-dot',
+                    hasFunds  ? 'hero-month-dot--filled'  : '',
+                    isCurrent ? 'hero-month-dot--current' : '',
+                    isFuture  ? 'hero-month-dot--future'  : '',
+                  ].filter(Boolean).join(' ')}
+                  title={`${MONTH_LABELS_SHORT[i]}${hasFunds ? ': ' + fmt(m.amount) : ''}`}
+                />
+              )
+            })}
           </div>
           <div className="hero-year-bar-labels">
             <span>Ene</span>
@@ -77,15 +97,22 @@ export default function A1Anual() {
           <div className="hero-stats-grid">
             <div className="hero-stat">
               <div className="hero-stat-lbl">Mejor mes</div>
-              <div className="hero-stat-val hero-stat-val--income">{bestLabel}</div>
+              <div className="hero-stat-val hero-stat-val--income">
+                {bestMonthIdx >= 0 ? MONTH_LABELS_SHORT[bestMonthIdx] : '—'}
+              </div>
+              {bestMonthIdx >= 0 && (
+                <div className="hero-stat-sub hero-stat-sub--income">
+                  {fmt(monthlyData[bestMonthIdx].amount)}
+                </div>
+              )}
             </div>
             <div className="hero-stat">
               <div className="hero-stat-lbl">Promedio</div>
               <div className="hero-stat-val">{fmt(promedio)}</div>
             </div>
-            <div className="hero-stat">
+            <div className="hero-stat hero-stat--highlight">
               <div className="hero-stat-lbl">Proyección</div>
-              <div className="hero-stat-val">{fmt(proyeccion)}</div>
+              <div className="hero-stat-val hero-stat-val--projection">{fmt(proyeccion)}</div>
             </div>
           </div>
         ) : (
@@ -93,35 +120,33 @@ export default function A1Anual() {
         )}
       </div>
 
-      <button className="year-projection-cta mb5" onClick={() => navigate('A6')}>
-        <div className="year-projection-cta-copy">
-          <span className="year-projection-cta-title">Proyectar mi ingreso</span>
-          <span className="year-projection-cta-sub">Simula tu disponible mensual y la proyección anual antes de cerrar el año.</span>
-        </div>
-        <span className="year-projection-cta-action" aria-hidden="true">
-          <IconTrendingUp />
-        </span>
-      </button>
-
-      <button className="year-projection-cta mb5" onClick={() => navigate('D4')}>
-        <div className="year-projection-cta-copy">
-          <span className="year-projection-cta-title">Ver reserva para renta</span>
-          <span className="year-projection-cta-sub">Revisa cuánto llevas separado para tu declaración de renta en agosto.</span>
-        </div>
-        <span className="year-projection-cta-action" aria-hidden="true">
-          <IconShield />
-        </span>
-      </button>
-
-      <button className="year-projection-cta mb5" onClick={() => navigate('A8')}>
-        <div className="year-projection-cta-copy">
-          <span className="year-projection-cta-title">Ver calendario</span>
-          <span className="year-projection-cta-sub">Visualiza pagos, PILA y fechas clave en una vista mensual mas clara.</span>
-        </div>
-        <span className="year-projection-cta-action" aria-hidden="true">
-          <IconCalendar />
-        </span>
-      </button>
+      <div className="cta-group mb5">
+        <div className="cta-group-label">Herramientas</div>
+        <button className="year-projection-cta year-projection-cta--compact" onClick={() => navigate('A6')}>
+          <div className="year-projection-cta-copy">
+            <span className="year-projection-cta-title">Proyectar mi ingreso</span>
+          </div>
+          <span className="year-projection-cta-action" aria-hidden="true">
+            <IconTrendingUp />
+          </span>
+        </button>
+        <button className="year-projection-cta year-projection-cta--compact" onClick={() => navigate('D4')}>
+          <div className="year-projection-cta-copy">
+            <span className="year-projection-cta-title">Ver reserva para renta</span>
+          </div>
+          <span className="year-projection-cta-action" aria-hidden="true">
+            <IconShield />
+          </span>
+        </button>
+        <button className="year-projection-cta year-projection-cta--compact" onClick={() => navigate('A8')}>
+          <div className="year-projection-cta-copy">
+            <span className="year-projection-cta-title">Ver calendario</span>
+          </div>
+          <span className="year-projection-cta-action" aria-hidden="true">
+            <IconCalendar />
+          </span>
+        </button>
+      </div>
 
       {/* Bar chart — redesigned card */}
       <div className="card mb5 year-chart-card">

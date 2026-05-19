@@ -449,7 +449,7 @@ textarea:focus-visible,
 /* Zone D — Stats grid */
 .hero-stats-grid{
   display:grid;
-  grid-template-columns:1fr 1fr 1fr;
+  grid-template-columns:1fr 1fr;
   gap:var(--s4);
   padding-top:var(--s4);
   border-top:1px solid var(--border);
@@ -464,7 +464,6 @@ textarea:focus-visible,
   font-size:var(--t-xs);font-weight:700;text-transform:uppercase;
   letter-spacing:.08em;color:var(--txt-m);
   margin-bottom:0;font-family:var(--font-body);
-  white-space:nowrap;
 }
 .hero-stat-val{
   font-size:var(--t-lg);font-weight:900;letter-spacing:-0.03em;
@@ -475,18 +474,28 @@ textarea:focus-visible,
 }
 .hero-stat-val--income{ color:var(--fin-income); }
 .hero-stat-sub{
-  font-size:var(--t-xs);font-weight:600;color:var(--txt-m);
+  font-size:var(--t-xs);font-weight:600;
   font-variant-numeric:tabular-nums;font-family:var(--font-display);
   margin-top:-2px;
 }
 .hero-stat-sub--income{ color:var(--fin-income); }
+/* Proyección — fila completa, layout horizontal */
 .hero-stat--highlight{
+  grid-column:1 / -1;
+  flex-direction:row;
+  align-items:center;
+  justify-content:space-between;
   background:color-mix(in srgb,var(--volt-text) 7%,transparent);
-  border-radius:var(--r-sm);padding:var(--s3);
-  align-items:stretch;gap:var(--s2);
+  border-radius:var(--r-md);
+  padding:var(--s3) var(--s4);
+  gap:var(--s4);
 }
 [data-theme="dark"] .hero-stat--highlight{ background:rgba(189,243,0,0.07); }
-.hero-stat-val--projection{ color:var(--volt-text);font-size:var(--t-2xl); }
+.hero-stat-val--projection{
+  color:var(--volt-text);
+  font-size:var(--t-2xl);
+  letter-spacing:-0.04em;
+}
 [data-theme="dark"] .hero-stat-val--projection{ color:var(--volt); }
 .hero-empty-hint{
   font-size:var(--t-sm);color:var(--txt-2);

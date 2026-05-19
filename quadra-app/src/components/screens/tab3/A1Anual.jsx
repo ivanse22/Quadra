@@ -9,48 +9,87 @@ export default function A1Anual() {
   const fmt = n => n >= 1000000 ? `$${(n/1000000).toFixed(1)}M` : n >= 1000 ? `$${(n/1000).toFixed(0)}k` : '$0'
   const fmtFull = n => '$' + Math.round(n).toLocaleString('es-CO')
 
-  // Cálculos anuales derivados del store
   const ytd = kpis?.ytd || 0
   const currentYear = new Date().getFullYear()
   const currentMonth = new Date().getMonth() // 0-11
 
-  // Meses con ingresos reales (excluye proyectados)
-  const realMonths = monthlyData.filter((m, i) => !m.projected && m.amount > 0)
+  const realMonths = monthlyData.filter(m => !m.projected && m.amount > 0)
   const mesesConIngresos = realMonths.length || 1
 
-  // Mejor mes
-  const bestMonth = monthlyData.reduce((best, m, i) => m.amount > (best?.amount || 0) ? { ...m, index: i } : best, null)
-  const bestLabel = bestMonth ? `${MONTH_LABELS_SHORT[monthlyData.indexOf(bestMonth)]} — ${fmt(bestMonth.amount)}` : '—'
+  const bestMonthIdx = monthlyData.reduce((bestIdx, m, i) => m.amount > (monthlyData[bestIdx]?.amount || 0) ? i : bestIdx, -1)
+  const bestLabel = bestMonthIdx >= 0 ? `${MONTH_LABELS_SHORT[bestMonthIdx]} — ${fmt(monthlyData[bestMonthIdx].amount)}` : '—'
 
-  // Promedio mensual (sobre meses con datos)
   const promedio = ytd / mesesConIngresos
-
-  // Proyección anual lineal
   const proyeccion = promedio * 12
 
-  // Rango de meses con datos
   const firstMonthIdx = monthlyData.findIndex(m => m.amount > 0)
   const rangoLabel = firstMonthIdx >= 0
     ? `${MONTH_LABELS_SHORT[firstMonthIdx]} – ${MONTH_LABELS_SHORT[currentMonth]} ${currentYear} · ${mesesConIngresos} ${mesesConIngresos === 1 ? 'mes' : 'meses'}`
     : `${currentYear}`
 
+  // Year progress (Zone C)
+  const yearPct   = Math.round(((currentMonth + 1) / 12) * 100)
+  const realPct   = Math.round((mesesConIngresos / 12) * 100)
+
   return (
     <div className="q-body-inner">
-      {/* Annual KPI */}
-      <div className="hero-card mb5">
-        <div className="hero-eye">Ingresos {currentYear}</div>
-        <div className="hero-amount hero-amount--lg">
-          {ytd > 0 ? fmtFull(ytd) : '$0'}
+      {/* Annual KPI Hero Card */}
+      <div className="hero-card hero-card--viewport mb5">
+
+        {/* Zone A — Eyebrow */}
+        <div className="hero-card-header">
+          <div className="hero-eye" style={{ marginBottom: 0 }}>Ingresos {currentYear}</div>
+          <span className="hero-year-tag">{currentYear}</span>
         </div>
-        <div className="hero-sub" style={{ fontSize: 'var(--t-md)', marginTop: 'var(--s2)' }}>{rangoLabel}</div>
+
+        {/* Zone B — KPI principal (grows to fill vertical space) */}
+        <div className="hero-card-kpi">
+          <div className="hero-amount hero-amount--lg">
+            {ytd > 0 ? fmtFull(ytd) : '$0'}
+          </div>
+          <div className="hero-kpi-sublabel">Ingreso bruto acumulado</div>
+          <div className="hero-sub" style={{ marginBottom: 0 }}>{rangoLabel}</div>
+        </div>
+
+        {/* Zone C — Year progress bar */}
+        <div className="hero-year-progress">
+          <div className="hero-year-progress-head">
+            <span className="hero-year-progress-lbl">Avance del año</span>
+            <span className="hero-year-progress-meta">
+              {MONTH_LABELS_SHORT[currentMonth]} · {currentMonth + 1}/12 meses
+            </span>
+          </div>
+          <div className="hero-year-bar-wrap">
+            <div className="hero-year-bar-track">
+              <div className="hero-year-bar-fill" style={{ width: `${realPct}%` }} />
+              <div className="hero-year-bar-dot" style={{ left: `${yearPct}%` }} />
+            </div>
+          </div>
+          <div className="hero-year-bar-labels">
+            <span>Ene</span>
+            <span>{yearPct}% del año</span>
+            <span>Dic</span>
+          </div>
+        </div>
+
+        {/* Zone D — Stats grid 3 columns */}
         {ytd > 0 ? (
-          <div className="hero-breakdown">
-            <div><div className="hero-bk-lbl">Mejor mes</div><div className="hero-bk-val" style={{ color: 'var(--fin-income)' }}>{bestLabel}</div></div>
-            <div><div className="hero-bk-lbl">Promedio</div><div className="hero-bk-val">{fmt(promedio)}</div></div>
-            <div><div className="hero-bk-lbl">Proyección</div><div className="hero-bk-val">{fmt(proyeccion)}</div></div>
+          <div className="hero-stats-grid">
+            <div className="hero-stat">
+              <div className="hero-stat-lbl">Mejor mes</div>
+              <div className="hero-stat-val hero-stat-val--income">{bestLabel}</div>
+            </div>
+            <div className="hero-stat">
+              <div className="hero-stat-lbl">Promedio</div>
+              <div className="hero-stat-val">{fmt(promedio)}</div>
+            </div>
+            <div className="hero-stat">
+              <div className="hero-stat-lbl">Proyección</div>
+              <div className="hero-stat-val">{fmt(proyeccion)}</div>
+            </div>
           </div>
         ) : (
-          <div className="hero-sub" style={{ fontSize: 'var(--t-sm)', marginTop: 'var(--s3)', color: 'var(--txt-2)' }}>Registra tu primer ingreso para ver estadísticas</div>
+          <div className="hero-empty-hint">Registra tu primer ingreso para ver estadísticas</div>
         )}
       </div>
 

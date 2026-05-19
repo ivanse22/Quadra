@@ -559,14 +559,6 @@ export default function I1Pagos() {
               )
             })()}
 
-            {bySearch.length > 0 && (
-              <div className="income-summary-helper">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M15 5l-6 7 6 7" />
-                </svg>
-                Desliza un movimiento para ver opciones rápidas
-              </div>
-            )}
           </div>
 
           {bySearch.length === 0 ? (

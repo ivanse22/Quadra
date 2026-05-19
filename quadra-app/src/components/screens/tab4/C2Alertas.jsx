@@ -23,7 +23,7 @@ export default function C2Alertas() {
             <div className="q-toggle-left">
               <div className="q-toggle-title">{alert.title}</div>
               <div className="q-toggle-desc">{alert.desc}</div>
-              <div style={{ fontSize: 10, color: 'var(--txt-f)', fontFamily: 'var(--font-body)', marginTop: 3, letterSpacing: '.04em' }}>
+              <div style={{ fontSize: 'var(--t-2xs)', color: 'var(--txt-f)', fontFamily: 'var(--font-body)', marginTop: 3, letterSpacing: '.04em' }}>
                 In-app{isPWA ? ' · Push' : ' · Push (instala la app)'}
               </div>
             </div>

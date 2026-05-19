@@ -381,10 +381,10 @@ export default function I2Registro() {
               {/* Advertencias */}
               {calc.warnings.some((w) => w.id === 'PILA_ALTA' || w.id === 'PILA_MIN') && (
                 <div style={{ marginTop: 'var(--s3)', padding: 'var(--s3)', background: 'var(--bg-subtle)', border: '1px solid var(--fin-reserve)', borderRadius: 'var(--r-md)' }}>
-                  <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--fin-reserve)', fontFamily: 'var(--font-body)', marginBottom: 2, display: 'flex', alignItems: 'center', gap: 4 }}>
+                  <div style={{ fontSize: 'var(--t-2xs)', fontWeight: 700, color: 'var(--fin-reserve)', fontFamily: 'var(--font-body)', marginBottom: 2, display: 'flex', alignItems: 'center', gap: 4 }}>
                     <IconAlertTriangle size={12} /> Seguridad social del mes
                   </div>
-                  <div style={{ fontSize: 10, color: 'var(--txt-2)', fontFamily: 'var(--font-body)', lineHeight: 1.5 }}>
+                  <div style={{ fontSize: 'var(--t-2xs)', color: 'var(--txt-2)', fontFamily: 'var(--font-body)', lineHeight: 1.5 }}>
                     Tus aportes de PILA para este mes superan el valor de este pago. El disponible hoy es $0. El balance se ajustará con tus próximos ingresos del mes.
                   </div>
                 </div>
@@ -394,7 +394,7 @@ export default function I2Registro() {
                   {calc.warnings
                     .filter((w) => w.id !== 'PILA_ALTA' && w.id !== 'PILA_MIN')
                     .map((w, i) => (
-                      <div key={i} style={{ fontSize: 10, color: 'var(--txt-2)', fontFamily: 'var(--font-body)' }}>• {w.msg}</div>
+                      <div key={i} style={{ fontSize: 'var(--t-2xs)', color: 'var(--txt-2)', fontFamily: 'var(--font-body)' }}>• {w.msg}</div>
                     ))}
                 </div>
               )}

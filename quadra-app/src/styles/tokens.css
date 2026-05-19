@@ -88,6 +88,7 @@
   --font: var(--font-display);
 
   /* ── Type scale — fluid (clamp) ── */
+  --t-2xs:    clamp(.5625rem,.54rem+.11vw,.625rem);  /* ~9–10px — microcopy, meta, trends */
   --t-xs:     clamp(.625rem,.60rem+.13vw,.6875rem);
   --t-sm:     clamp(.75rem,.72rem+.15vw,.8125rem);
   --t-base:   clamp(.8125rem,.78rem+.16vw,.875rem);

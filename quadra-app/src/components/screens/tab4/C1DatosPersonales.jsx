@@ -102,7 +102,7 @@ export default function C1DatosPersonales() {
   return (
     <div className="q-body-inner">
       <div style={{ marginBottom: 'var(--s5)' }}>
-        <div style={{ fontFamily: 'var(--font-body)', fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.12em', color: 'var(--txt-m)', marginBottom: 'var(--s2)' }}>
+        <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--t-2xs)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.12em', color: 'var(--txt-m)', marginBottom: 'var(--s2)' }}>
           Mi perfil fiscal
         </div>
         <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 'var(--t-lg)', fontWeight: 900, letterSpacing: '-0.03em', color: 'var(--txt)', lineHeight: 1.12, marginBottom: 'var(--s2)' }}>

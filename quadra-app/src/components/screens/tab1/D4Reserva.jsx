@@ -54,7 +54,7 @@ export default function D4Reserva() {
           <div style={{ height: 10, background: 'var(--surf-3)', border: '1px solid var(--border)', borderRadius: 5, overflow: 'hidden' }}>
             <div style={{ height: '100%', width: `${progressPercent}%`, background: 'var(--volt-text)', borderRadius: 5, transition: 'width .8s var(--ease-out)' }} />
           </div>
-          <p style={{ fontSize: 11, color: 'var(--txt-m)', marginTop: 8, fontFamily: 'var(--font-body)', lineHeight: 1.4 }}>
+          <p style={{ fontSize: 'var(--t-2xs)', color: 'var(--txt-m)', marginTop: 8, fontFamily: 'var(--font-body)', lineHeight: 1.4 }}>
             Meta estimada: {fmt(meta)}. Consulta con un contador para identificar deducciones y reducir esta cifra.
           </p>
         </div>

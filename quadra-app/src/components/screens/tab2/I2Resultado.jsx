@@ -212,7 +212,7 @@ export default function I2Resultado() {
                       <span style={{ color: pila > 0 ? 'var(--fin-reserve)' : 'var(--fin-income)', fontSize: 'var(--t-sm)', fontWeight: 800, fontFamily: 'var(--font-display)', fontVariantNumeric: 'tabular-nums' }}>
                         {pila > 0 ? `−${fmt(pila)}` : '$0'}
                       </span>
-                      <span style={{ fontSize: 11, color: 'var(--txt-m)', fontWeight: 700, fontFamily: 'var(--font-body)' }}>
+                      <span style={{ fontSize: 'var(--t-2xs)', color: 'var(--txt-m)', fontWeight: 700, fontFamily: 'var(--font-body)' }}>
                         {pilaDetailOpen ? 'Ocultar' : 'Ver cálculo'}
                       </span>
                     </div>

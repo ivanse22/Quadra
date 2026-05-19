@@ -13,7 +13,7 @@ export default function D2Entender() {
       {/* Desglose explicativo */}
       <div className="desglose" style={{ marginBottom: 'var(--s6)' }}>
         <div style={{ marginBottom: 'var(--s5)' }}>
-          <div style={{ fontSize: 'var(--t-2xs)', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.10em', color: 'var(--txt-m)', marginBottom: 'var(--s2)' }}>Ejemplo: pago de $2.000.000</div>
+          <div style={{ fontSize: 10, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '.10em', color: 'var(--txt-m)', marginBottom: 'var(--s2)' }}>Ejemplo: pago de $2.000.000</div>
         </div>
         <div className="drow">
           <div className="drow-l"><div className="drow-dot" style={{ background: 'var(--fin-income)' }} />Pago bruto recibido</div>

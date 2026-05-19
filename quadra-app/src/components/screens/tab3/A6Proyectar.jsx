@@ -119,7 +119,7 @@ export default function A6Proyectar() {
               {barSegments.map(seg => (
                 <div key={seg.label} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                   <span style={{ width: 8, height: 8, borderRadius: 2, background: seg.color, display: 'inline-block', flexShrink: 0 }} />
-                  <span style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--t-2xs)', color: 'var(--txt-m)' }}>{seg.label} {seg.pct}%</span>
+                  <span style={{ fontFamily: 'var(--font-body)', fontSize: 9, color: 'var(--txt-m)' }}>{seg.label} {seg.pct}%</span>
                 </div>
               ))}
             </div>
@@ -138,9 +138,9 @@ export default function A6Proyectar() {
                 Tu promedio real: <strong style={{ color: 'var(--txt)' }}>{fmt(avgMonthly)}/mes</strong>
               </span>
               {monthly >= avgMonthly ? (
-                <span className="badge badge-ok" style={{ fontSize: 'var(--t-2xs)', padding: '2px 8px' }}>Por encima de tu media</span>
+                <span className="badge badge-ok" style={{ fontSize: 9, padding: '2px 8px' }}>Por encima de tu media</span>
               ) : (
-                <span className="badge badge-warn" style={{ fontSize: 'var(--t-2xs)', padding: '2px 8px' }}>Por debajo de tu media</span>
+                <span className="badge badge-warn" style={{ fontSize: 9, padding: '2px 8px' }}>Por debajo de tu media</span>
               )}
             </div>
           )}

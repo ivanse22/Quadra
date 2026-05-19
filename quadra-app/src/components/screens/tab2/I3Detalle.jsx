@@ -281,7 +281,7 @@ export default function I3Detalle() {
               {p.pilaDetalle && p.pila > 0 ? (
                 <div className="card pila-mes-blk" style={{ margin: 'var(--s3) 0', padding: 'var(--s4)', border: '1px solid var(--border)', borderRadius: 'var(--r-lg)', background: 'var(--bg-subtle)' }}>
                   <div style={{ fontSize: 12, fontWeight: 800, fontFamily: 'var(--font-display)', marginBottom: 6 }}>PILA (seguridad social)</div>
-                  <p className="i3-legal-hint" style={{ fontSize: 'var(--t-2xs)', lineHeight: 1.5, color: 'var(--txt-2)', marginBottom: 10 }}>
+                  <p className="i3-legal-hint" style={{ fontSize: 10, lineHeight: 1.5, color: 'var(--txt-2)', marginBottom: 10 }}>
                     Salud 12,5% y pensión 16% se aplican sobre el <strong>IBC</strong>, no sobre el 100% de la factura. IBC del mes = 40% de ingresos (con ajustes legales).
                   </p>
                   {[

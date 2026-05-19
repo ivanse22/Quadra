@@ -49,7 +49,7 @@ export default function C4AgregarCuenta() {
             <span style={{ marginBottom: 'var(--s2)', color: 'var(--txt-m)', display: 'flex', alignItems: 'center' }}><b.Icon size={28} /></span>
             <div className="ob-option-title">{b.name}</div>
             {b.id === 'other' && (
-              <span style={{ position: 'absolute', top: 6, right: 6, fontSize: 'var(--t-2xs)', background: 'var(--surf-3)', color: 'var(--txt-m)', padding: '2px 5px', borderRadius: 'var(--r-full)', fontFamily: 'var(--font-body)', fontWeight: 700 }}>
+              <span style={{ position: 'absolute', top: 6, right: 6, fontSize: 9, background: 'var(--surf-3)', color: 'var(--txt-m)', padding: '2px 5px', borderRadius: 'var(--r-full)', fontFamily: 'var(--font-body)', fontWeight: 700 }}>
                 Próximo
               </span>
             )}

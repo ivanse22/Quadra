@@ -75,7 +75,7 @@ export default function A7Exportar() {
             </div>
             <div className="compact-row-side">
               <span className={`badge compact-row-status ${item.premium ? 'badge-neu' : 'badge-ok'}`}>{item.format}</span>
-              {item.premium && <span style={{ display: 'block', fontSize: 'var(--t-2xs)', color: 'var(--txt-f)', fontFamily: 'var(--font-body)', marginTop: 3, textAlign: 'right' }}>Premium</span>}
+              {item.premium && <span style={{ display: 'block', fontSize: 9, color: 'var(--txt-f)', fontFamily: 'var(--font-body)', marginTop: 3, textAlign: 'right' }}>Premium</span>}
             </div>
           </button>
         ))}

@@ -1,10 +1,20 @@
 import { createPortal } from 'react-dom'
 
-export default function I1FilterSheet({ open, onClose, groupBy, setGroupBy, typeFilter, setTypeFilter }) {
+export default function I1FilterSheet({
+  open,
+  onClose,
+  period,
+  setPeriod,
+  groupBy,
+  setGroupBy,
+  typeFilter,
+  setTypeFilter,
+}) {
   const phoneEl = typeof document !== 'undefined' ? document.querySelector('.q-phone') : null
   if (!open || !phoneEl) return null
 
   const handleReset = () => {
+    setPeriod('mes')
     setGroupBy('fecha')
     setTypeFilter('todos')
   }
@@ -14,6 +24,33 @@ export default function I1FilterSheet({ open, onClose, groupBy, setGroupBy, type
       <div className="filter-sheet" onClick={(e) => e.stopPropagation()} role="dialog" aria-label="Filtros">
         <div className="filter-sheet-handle" aria-hidden />
         <h3 className="filter-sheet-title">Filtros</h3>
+
+        <div className="filter-group">
+          <span className="filter-group-label">Período</span>
+          <div className="seg-ctrl">
+            <button
+              type="button"
+              className={`seg-btn${period === 'mes' ? ' active' : ''}`}
+              onClick={() => setPeriod('mes')}
+            >
+              Este mes
+            </button>
+            <button
+              type="button"
+              className={`seg-btn${period === 'anio' ? ' active' : ''}`}
+              onClick={() => setPeriod('anio')}
+            >
+              Este año
+            </button>
+            <button
+              type="button"
+              className={`seg-btn${period === 'todo' ? ' active' : ''}`}
+              onClick={() => setPeriod('todo')}
+            >
+              Todo
+            </button>
+          </div>
+        </div>
 
         <div className="filter-group">
           <span className="filter-group-label">Agrupar por</span>

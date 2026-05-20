@@ -194,12 +194,12 @@ export default function D1Home() {
           </button>
         </div>
       ) : (
-        <div className="q-body-inner" style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+        <div className="q-body-inner d1-home-stack">
 
           {/* ── Hero zone ── */}
-          <div style={{ paddingBottom: 'var(--s6)', borderBottom: '1px solid var(--border)', marginBottom: 'var(--s4)' }}>
+          <div className="d1-home-hero">
             {/* Eyebrow + help icon */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 'var(--s1)' }}>
+            <div className="d1-home-hero__eyebrow">
               <span className="hero-eye hero-eye--sm" style={{ margin: 0 }}>Lo que es tuyo hoy</span>
               <button
                 type="button"
@@ -221,12 +221,12 @@ export default function D1Home() {
               {fmt(kpis?.disponibleHoy || 0)}
             </button>
 
-            {/* Meta row: source + badge */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 'var(--s2)' }}>
-              <div style={{ fontFamily: 'var(--font-body)', fontSize: 'var(--t-sm)', color: 'var(--txt-m)' }}>
+            {/* Meta: fecha + badge apilados */}
+            <div className="d1-home-hero__meta">
+              <div className="d1-home-hero__date">
                 {latestPayment ? getPaymentDateLabel(latestPayment) : 'Sin fecha'}
               </div>
-              <span className="badge badge-neu">Disponible actualizado</span>
+              <span className="d1-home-hero__badge">Disponible actualizado</span>
             </div>
           </div>
 
@@ -250,14 +250,11 @@ export default function D1Home() {
           {insight && (
             <button
               type="button"
+              className="home-insight-card"
               onClick={() => navigate(insight.screen)}
               style={{
-                display: 'flex', alignItems: 'center', gap: 'var(--s3)',
-                width: '100%', textAlign: 'left', marginBottom: 'var(--s4)',
-                padding: 'var(--s3) var(--s4)',
                 background: insight.type === 'best' ? 'var(--volt-dim)' : insight.type === 'pila' ? 'var(--fin-reserve-dim)' : 'var(--surf-1)',
                 border: `1px solid ${insight.type === 'best' ? 'var(--volt-border)' : insight.type === 'pila' ? 'var(--fin-reserve-border)' : 'var(--border)'}`,
-                borderRadius: 'var(--r-xl)', cursor: 'pointer',
               }}
             >
               <span style={{ flexShrink: 0, display: 'flex', alignItems: 'center' }}>
@@ -278,7 +275,7 @@ export default function D1Home() {
           )}
 
           {/* ── KPI row — 2 cards ── */}
-          <div style={{ display: 'flex', gap: 'var(--s2)', marginBottom: 'var(--s6)' }}>
+          <div className="home-kpi-row">
             {/* M2.1 + M2.2 — YTD con trend y progress */}
             <button type="button" className="home-kpi-card" onClick={() => navigate('I4')}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 5, marginBottom: 'var(--s2)' }}>

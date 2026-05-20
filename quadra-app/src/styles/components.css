@@ -529,7 +529,83 @@ textarea:focus-visible,
 [data-theme="dark"] .hero-amount--neutral{color:var(--txt);}
 .hero-eye--sm{font-size:var(--t-xs);font-family:var(--font-body);}
 /* D1 hero (full-width, no card wrapper) */
-.d1-hero-amount{display:block;background:none;border:none;padding:0;cursor:pointer;text-align:left;font-family:var(--font-display);font-size:clamp(3.5rem,14vw,5rem);font-weight:900;letter-spacing:-0.05em;line-height:0.9;color:var(--volt-text);font-variant-numeric:tabular-nums;margin-bottom:var(--s2);animation:slideInUp var(--motion-slow) var(--ease-out) both;}
+/* D1 Home — espaciado uniforme entre módulos */
+.d1-home-stack{
+  display:flex;
+  flex-direction:column;
+  gap:var(--s5);
+}
+.d1-home-hero{
+  background:rgba(200,241,53,0.10);
+  border-radius:var(--r-2xl);
+  padding:var(--s6) var(--space-card);
+  display:flex;
+  flex-direction:column;
+  gap:var(--s5);
+}
+.home-kpi-row{
+  display:flex;
+  gap:var(--s2);
+}
+.home-insight-card{
+  display:flex;
+  align-items:center;
+  gap:var(--s3);
+  width:100%;
+  text-align:left;
+  padding:var(--s3) var(--s4);
+  border-radius:var(--r-xl);
+  cursor:pointer;
+  border:none;
+}
+.d1-home-hero__eyebrow{
+  display:flex;
+  align-items:center;
+  gap:var(--s2);
+}
+.d1-home-hero__eyebrow button{
+  color:var(--txt-f);
+}
+.d1-home-hero__meta{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:var(--s2);
+}
+.d1-home-hero__date{
+  font-family:var(--font-body);
+  font-size:var(--t-sm);
+  font-weight:500;
+  color:var(--txt-m);
+}
+.d1-home-hero__badge{
+  display:inline-flex;
+  align-items:center;
+  font-family:var(--font-body);
+  font-size:var(--t-xs);
+  font-weight:700;
+  color:var(--volt-text);
+  background:rgba(200,241,53,0.18);
+  border:1px solid rgba(200,241,53,0.35);
+  border-radius:var(--r-full);
+  padding:5px 12px;
+  letter-spacing:0.01em;
+}
+.d1-hero-amount{
+  display:block;background:none;border:none;padding:0;cursor:pointer;text-align:left;
+  font-family:var(--font-display);font-size:clamp(3.5rem,14vw,5rem);font-weight:900;
+  letter-spacing:-0.05em;line-height:0.95;color:var(--volt-text);
+  font-variant-numeric:tabular-nums;margin:0;
+  animation:slideInUp var(--motion-slow) var(--ease-out) both;
+}
+[data-theme="dark"] .d1-home-hero{
+  background:rgba(200,241,53,0.10);
+}
+[data-theme="dark"] .d1-home-hero__badge{
+  color:var(--volt);
+  background:rgba(200,241,53,0.12);
+  border-color:rgba(200,241,53,0.22);
+}
 [data-theme="dark"] .d1-hero-amount{color:var(--volt);}
 /* I2Resultado hero count-up */
 .i2r-hero-amount{font-family:var(--font-display);font-size:clamp(3rem,10vw,3.8rem);font-weight:900;letter-spacing:-0.05em;line-height:0.9;color:var(--volt-text);font-variant-numeric:tabular-nums;margin-bottom:8px;}
@@ -694,13 +770,14 @@ textarea:focus-visible,
 .income-page{
   display:flex;
   flex-direction:column;
-  gap:var(--space-section);
+  gap:var(--s3);
 }
 .income-summary-card{
   padding:var(--space-card);
   display:flex;
   flex-direction:column;
   gap:var(--s4);
+  overflow:hidden;
 }
 /* Header: eyebrow + badge inline */
 .income-summary-header{
@@ -726,9 +803,9 @@ textarea:focus-visible,
 }
 .income-summary-amount{
   font-family:var(--font-display);
-  font-size:var(--t-3xl);
+  font-size:clamp(1.75rem,8vw,var(--t-3xl));
   font-weight:900;
-  letter-spacing:-0.05em;
+  letter-spacing:-0.04em;
   line-height:.92;
   color:var(--volt-text);
   font-variant-numeric:tabular-nums;
@@ -737,53 +814,56 @@ textarea:focus-visible,
 .income-summary-sub{
   font-family:var(--font-body);
   font-size:var(--t-sm);
+  font-weight:400;
   color:var(--txt-m);
 }
-/* Stats row con divisor y bordes */
-.income-summary-stats{
-  display:flex;
-  align-items:center;
-  gap:0;
-  border-top:1px solid var(--border);
-  border-bottom:1px solid var(--border);
-  padding:var(--s3) 0;
-}
-.income-summary-stat{
+.income-summary-available-block{
   display:flex;
   flex-direction:column;
-  align-items:center;
-  text-align:center;
-  flex:1;
-  min-width:0;
+  gap:var(--s1);
+  padding-top:var(--s2);
+  border-top:1px solid var(--border);
 }
-.income-summary-stat-divider{
-  width:1px;background:var(--border);
-  align-self:stretch;margin:var(--s1) 0;flex-shrink:0;
+.income-summary-available{
+  font-family:var(--font-display);
+  font-size:var(--t-2xl);
+  font-weight:800;
+  letter-spacing:-0.04em;
+  line-height:1;
+  color:var(--volt-text);
+  font-variant-numeric:tabular-nums;
 }
-.income-summary-stat-label{
+[data-theme="dark"] .income-summary-available{ color:var(--volt); }
+.income-summary-available-sub{
+  font-family:var(--font-body);
+  font-size:var(--t-xs);
+  font-weight:500;
+  color:var(--txt-m);
+}
+.income-breakdown-title{
   font-family:var(--font-body);
   font-size:var(--t-xs);
   font-weight:600;
+  text-transform:uppercase;
+  letter-spacing:.1em;
   color:var(--txt-m);
-  margin-bottom:var(--s1);
+  margin-bottom:var(--s2);
 }
-.income-summary-stat-value{
-  font-family:var(--font-display);
-  font-size:var(--t-xl);
-  font-weight:900;
-  color:var(--txt);
-  letter-spacing:-0.03em;
-  font-variant-numeric:tabular-nums;
-  white-space:nowrap;
+.income-breakdown-link{
+  display:inline-flex;
+  align-items:center;
+  margin-top:var(--s3);
+  padding:0;
+  border:none;
+  background:none;
+  font-family:var(--font-body);
+  font-size:var(--t-xs);
+  font-weight:600;
+  color:var(--volt-text);
+  cursor:pointer;
 }
-.income-summary-stat-value--volt{color:var(--volt-text);}
-[data-theme="dark"] .income-summary-stat-value--volt{color:var(--volt);}
-/* Footer: Ver KPIs alineado a la derecha */
-.income-summary-footer{
-  display:flex;
-  justify-content:flex-end;
-  padding-top:var(--s1);
-}
+[data-theme="dark"] .income-breakdown-link{ color:var(--volt); }
+.income-breakdown-link:hover{ text-decoration:underline; }
 .income-summary-filter{
   padding-top:0;
   display:flex;
@@ -796,8 +876,8 @@ textarea:focus-visible,
   top:0;
   background:var(--bg);
   z-index:5;
-  padding:var(--s3) 0 var(--s2);
-  margin-bottom:var(--s3);
+  padding:0;
+  margin:0;
   border-bottom:1px solid var(--border);
 }
 [data-theme="dark"] .income-list-header{background:var(--surf-1);}
@@ -806,6 +886,10 @@ textarea:focus-visible,
   align-items:center;
   gap:var(--s2);
   overflow:hidden;
+  padding-bottom:var(--s2);
+}
+.income-list-header-row--tools{
+  justify-content:flex-end;
 }
 .income-period-tabs{
   flex:1 1 0;
@@ -813,6 +897,10 @@ textarea:focus-visible,
   border-bottom:none;
   gap:var(--s3);
   overflow:hidden;
+  margin-bottom:0;
+}
+.income-list-header .income-period-tabs.seg-ctrl{
+  border-bottom:none;
 }
 
 /* Filters button con badge */
@@ -820,8 +908,9 @@ textarea:focus-visible,
   display:inline-flex;
   align-items:center;
   gap:6px;
-  height:32px;
-  padding:0 var(--s3);
+  min-height:36px;
+  height:auto;
+  padding:var(--s2) var(--s4);
   background:var(--surf-2);
   border:1px solid var(--border);
   border-radius:var(--r-full);
@@ -847,7 +936,7 @@ textarea:focus-visible,
 
 /* Icon-only button (search) */
 .filter-icon-btn{
-  width:32px;height:32px;
+  width:36px;height:36px;
   border-radius:var(--r-full);
   background:var(--surf-2);
   border:1px solid var(--border);
@@ -950,10 +1039,96 @@ textarea:focus-visible,
 .income-breakdown-section{
   display:flex;
   flex-direction:column;
-  gap:var(--s1);
+  gap:var(--s2);
+  padding-top:var(--s4);
+  border-top:1px solid var(--border);
+  min-width:0;
+  overflow:hidden;
 }
 .income-breakdown-section .i1-breakdown-bar{margin:0;}
-.income-breakdown-section .i1-breakdown-legend{margin-bottom:0;}
+/* I1 summary — distribution carousel */
+.income-breakdown-section .i1-dist-carousel{
+  display:flex;
+  gap:var(--s3);
+  overflow-x:auto;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+  margin:0;
+  padding:var(--s1) 0 var(--s2);
+  max-width:100%;
+}
+.income-breakdown-section .i1-dist-carousel::-webkit-scrollbar{display:none;}
+.income-breakdown-section .i1-dist-slide{
+  flex:0 0 auto;
+  min-width:132px;
+  max-width:42%;
+  scroll-snap-align:start;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:0;
+  padding:var(--s3);
+  background:var(--surf-2);
+  border:1px solid var(--border);
+  border-radius:var(--r-lg);
+}
+[data-theme="dark"] .income-breakdown-section .i1-dist-slide{
+  background:var(--surf-1);
+  border-color:var(--border-s);
+}
+.income-breakdown-section .i1-dist-slide-head{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  min-width:0;
+  width:100%;
+}
+.income-breakdown-section .i1-dist-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  flex-shrink:0;
+}
+/* Category title on distribution slides — sentence case, micro */
+.i1-dist-cat-title{
+  font-family:var(--font-body);
+  font-size:9px;
+  font-weight:400;
+  line-height:1.2;
+  letter-spacing:0.01em;
+  color:var(--txt-f);
+  text-transform:none;
+}
+.income-breakdown-section .i1-dist-cat-title{
+  flex:1;
+  min-width:0;
+}
+.income-breakdown-section .i1-dist-value{
+  font-family:var(--font-display);
+  font-size:var(--t-lg);
+  font-weight:800;
+  letter-spacing:-0.03em;
+  line-height:1;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+  margin-top:var(--s2);
+  color:var(--txt);
+}
+[data-theme="dark"] .income-breakdown-section .i1-dist-value{color:var(--txt);}
+.income-breakdown-section .i1-dist-dots{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:6px;
+  margin-top:var(--s1);
+}
+.income-breakdown-section .i1-dist-dot-indicator{
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:var(--border-m);
+  flex-shrink:0;
+}
 .income-summary-helper{
   display:flex;
   justify-content:center;
@@ -1344,10 +1519,34 @@ textarea:focus-visible,
   border-radius:var(--r-full);
   font-size:var(--t-sm);font-weight:700;color:var(--txt-2);font-family:var(--font-body);
   cursor:pointer;transition:all var(--motion-fast) var(--ease-out);
-  margin-bottom:var(--s3);
 }
 .amount-currency-pill:hover{border-color:var(--volt-border);color:var(--volt-text);}
+.amount-currency-pill.is-open{border-color:var(--volt-text);color:var(--volt-text);background:var(--volt-dim);}
 .amount-currency-pill svg{width:14px;height:14px;color:var(--txt-m);}
+.amount-currency-wrap{position:relative;display:inline-block;margin-bottom:var(--s3);}
+.amount-currency-menu{
+  position:absolute;top:calc(100% + 6px);left:0;z-index:20;
+  min-width:120px;padding:var(--s2);
+  background:var(--bg);border:1px solid var(--border-s);
+  border-radius:var(--r-lg);box-shadow:var(--shadow-md);
+  display:flex;flex-direction:column;gap:2px;
+}
+[data-theme="dark"] .amount-currency-menu{background:var(--surf-1);}
+.amount-currency-option{
+  display:flex;align-items:center;justify-content:flex-start;
+  width:100%;height:40px;padding:0 var(--s3);
+  border-radius:var(--r-md);border:none;background:transparent;
+  font-family:var(--font-display);font-size:var(--t-sm);font-weight:700;
+  color:var(--txt-2);cursor:pointer;
+  transition:background var(--motion-fast) var(--ease-out),color var(--motion-fast) var(--ease-out);
+}
+.amount-currency-option:hover{background:var(--surf-1);color:var(--txt);}
+.amount-currency-option.active{background:var(--volt-dim);color:var(--volt-text);}
+[data-theme="dark"] .amount-currency-option.active{color:var(--volt);}
+.amount-fx-hint{
+  font-size:var(--t-xs);color:var(--txt-m);font-weight:500;
+  margin-top:var(--s2);font-family:var(--font-body);
+}
 .amount-input-wrap{display:flex;align-items:center;gap:var(--s2);}
 .amount-prefix{font-size:var(--t-xl);font-weight:700;color:var(--txt-m);flex-shrink:0;padding-bottom:6px;font-family:var(--font-display);}
 .amount-number{
@@ -1609,11 +1808,27 @@ textarea:focus-visible,
   letter-spacing:.10em;color:var(--txt-f);font-family:var(--font-body);
   margin-bottom:var(--s1);
 }
-.year-projection-cta--compact{ padding:var(--s3) var(--s4);border-radius:var(--r-xl); }
+.year-projection-cta--compact{
+  justify-content:center;
+  align-items:center;
+  padding:var(--s4) var(--s5);
+  border-radius:var(--r-xl);
+}
 .year-projection-cta--compact .year-projection-cta-sub{ display:none; }
-.year-projection-cta--compact .year-projection-cta-action{ width:36px;height:36px; }
-.year-projection-cta--compact .year-projection-cta-action svg{ width:16px;height:16px; }
-.year-projection-cta--compact .year-projection-cta-title{ font-size:var(--t-sm); }
+.year-projection-cta--compact .year-projection-cta-action{ display:none; }
+.year-projection-cta--compact .year-projection-cta-copy{
+  align-items:center;
+  text-align:center;
+  width:100%;
+}
+.year-projection-cta--compact .year-projection-cta-title{
+  width:100%;
+  text-align:center;
+  font-size:var(--t-md);
+  font-weight:500;
+  letter-spacing:-0.01em;
+  font-family:var(--font-body);
+}
 
 /* ── KPI chips ── */
 .kpi-lbl{font-family:var(--font-body);font-size:var(--t-xs);font-weight:600;letter-spacing:.02em;color:var(--txt-m);margin-bottom:var(--s2);line-height:1.3;}
@@ -2768,10 +2983,54 @@ textarea:focus-visible,
 .income-row--income::before{background:var(--fin-income);}
 .income-row--pila::before{background:var(--fin-reserve);}
 .income-row--renta::before{background:var(--fin-deduct);}
-.i1-breakdown-bar{height:12px;border-radius:var(--r-full);display:flex;gap:3px;margin:var(--s3) 0 var(--s2);}
+.i1-breakdown-bar{height:16px;border-radius:var(--r-full);display:flex;gap:2px;margin:var(--s3) 0 0;}
 .i1-breakdown-seg{height:100%;border-radius:var(--r-full);transition:width 400ms var(--ease-out);}
-.i1-breakdown-legend{display:grid;grid-template-columns:1fr 1fr;gap:var(--s2) var(--s4);margin-bottom:var(--s3);}
-.i1-breakdown-item{display:flex;align-items:center;gap:6px;font-size:var(--t-xs);color:var(--txt-2);font-family:var(--font-body);font-weight:500;}
+.i1-breakdown-legend{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:var(--s3) var(--s4);
+  margin:0;
+}
+.i1-breakdown-cell{
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  gap:var(--s1);
+  min-width:0;
+}
+.i1-breakdown-cell-head{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  min-width:0;
+}
+.i1-breakdown-lbl{
+  font-family:var(--font-body);
+  font-size:var(--t-2xs);
+  font-weight:500;
+  line-height:1.25;
+  color:var(--txt-m);
+}
+.i1-breakdown-val{
+  font-family:var(--font-display);
+  font-size:var(--t-sm);
+  font-weight:700;
+  font-variant-numeric:tabular-nums;
+  white-space:nowrap;
+  color:var(--txt);
+}
+.i1-breakdown-val--income{ color:var(--fin-income); }
+.i1-breakdown-val--deduct{ color:var(--fin-deduct); }
+.i1-breakdown-val--reserve{ color:var(--fin-reserve); }
+.i1-breakdown-item{
+  display:flex;
+  align-items:center;
+  gap:6px;
+  font-size:var(--t-xs);
+  color:var(--txt-2);
+  font-family:var(--font-body);
+  font-weight:500;
+}
 .i1-breakdown-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
 .i1-search-wrap{position:relative;margin-bottom:var(--s3);}
 .i1-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--txt-m);pointer-events:none;}
@@ -2837,7 +3096,6 @@ textarea:focus-visible,
 /* ── Home Quick Actions Strip ── */
 .home-qa-strip{
   display:flex;gap:var(--s2);overflow-x:auto;
-  padding-bottom:var(--s5);margin-bottom:var(--s4);
   scrollbar-width:none;
 }
 .home-qa-strip::-webkit-scrollbar{display:none;}

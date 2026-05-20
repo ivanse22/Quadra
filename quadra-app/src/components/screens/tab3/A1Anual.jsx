@@ -1,6 +1,4 @@
 import { useAppStore } from '../../../store/useAppStore'
-import { IconCalendar, IconTrendingUp, IconShield } from '../../ui/Icons'
-
 const MONTH_LABELS_SHORT = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic']
 
 export default function A1Anual() {
@@ -122,29 +120,14 @@ export default function A1Anual() {
 
       <div className="cta-group mb5">
         <div className="cta-group-label">Herramientas</div>
-        <button className="year-projection-cta year-projection-cta--compact" onClick={() => navigate('A6')}>
-          <div className="year-projection-cta-copy">
-            <span className="year-projection-cta-title">Proyectar mi ingreso</span>
-          </div>
-          <span className="year-projection-cta-action" aria-hidden="true">
-            <IconTrendingUp />
-          </span>
+        <button type="button" className="year-projection-cta year-projection-cta--compact" onClick={() => navigate('A6')}>
+          <span className="year-projection-cta-title">Proyectar mi ingreso</span>
         </button>
-        <button className="year-projection-cta year-projection-cta--compact" onClick={() => navigate('D4')}>
-          <div className="year-projection-cta-copy">
-            <span className="year-projection-cta-title">Ver reserva para renta</span>
-          </div>
-          <span className="year-projection-cta-action" aria-hidden="true">
-            <IconShield />
-          </span>
+        <button type="button" className="year-projection-cta year-projection-cta--compact" onClick={() => navigate('D4')}>
+          <span className="year-projection-cta-title">Ver reserva para renta</span>
         </button>
-        <button className="year-projection-cta year-projection-cta--compact" onClick={() => navigate('A8')}>
-          <div className="year-projection-cta-copy">
-            <span className="year-projection-cta-title">Ver calendario</span>
-          </div>
-          <span className="year-projection-cta-action" aria-hidden="true">
-            <IconCalendar />
-          </span>
+        <button type="button" className="year-projection-cta year-projection-cta--compact" onClick={() => navigate('A8')}>
+          <span className="year-projection-cta-title">Ver calendario</span>
         </button>
       </div>
 

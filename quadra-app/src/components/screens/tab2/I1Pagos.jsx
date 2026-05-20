@@ -270,6 +270,19 @@ export default function I1Pagos() {
   const pctPila = filteredBruto > 0 ? (totalPila      / filteredBruto) * 100 : 0
   const pctRes  = filteredBruto > 0 ? (totalReserva   / filteredBruto) * 100 : 0
 
+  const breakdownSlides = [
+    { key: 'disp', label: 'Disponible', value: fmtCompact(totalDisp), color: 'var(--fin-income)' },
+    ...(totalRetencion > 0
+      ? [{ key: 'ret', label: 'Retención', value: fmtCompact(totalRetencion), color: 'var(--fin-deduct)' }]
+      : []),
+    ...(totalPila > 0
+      ? [{ key: 'pila', label: 'Pila', value: fmtCompact(totalPila), color: 'var(--fin-reserve)' }]
+      : []),
+    ...(totalReserva > 0
+      ? [{ key: 'res', label: 'Reserva', value: fmtCompact(totalReserva), color: 'var(--volt-border)' }]
+      : []),
+  ]
+
   const periodEyebrow =
     period === 'mes' ? 'Período actual' :
     period === 'anio' ? 'Año en curso' :
@@ -403,78 +416,14 @@ export default function I1Pagos() {
 
       {loading ? <SkeletonList /> : (
         <>
-          <div className="card income-summary-card">
-            <div className="income-summary-header">
-              <div className="income-summary-eyebrow">{periodEyebrow}</div>
-              <span className="trend-badge trend-up">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M18 15l-6-6-6 6" />
-                </svg>
-                +{fmtCompact(filteredBruto)}
-              </span>
-            </div>
-
-            <div className="income-summary-kpi">
-              <div className="income-summary-amount">{fmt(filteredBruto)}</div>
-              <div className="income-summary-sub">{periodLabel} · Ingreso bruto registrado</div>
-            </div>
-
-            <div className="income-summary-stats">
-              <div className="income-summary-stat">
-                <div className="income-summary-stat-label">Movimientos</div>
-                <div className="income-summary-stat-value">{filteredCount}</div>
-              </div>
-              <div className="income-summary-stat-divider" />
-              <div className="income-summary-stat">
-                <div className="income-summary-stat-label">Disponible real</div>
-                <div className="income-summary-stat-value income-summary-stat-value--volt">{fmt(filteredDisponible)}</div>
-              </div>
-            </div>
-
-            {/* Stacked bar — distribución del ingreso en el período */}
-            {incomePayments.length > 0 && filteredBruto > 0 && (
-              <div className="income-breakdown-section">
-                <div className="i1-breakdown-bar">
-                  <div className="i1-breakdown-seg" style={{ width: `${pctDisp}%`, background: 'var(--fin-income)' }} />
-                  <div className="i1-breakdown-seg" style={{ width: `${pctRet}%`,  background: 'var(--fin-deduct)' }} />
-                  <div className="i1-breakdown-seg" style={{ width: `${pctPila}%`, background: 'var(--fin-reserve)' }} />
-                  <div className="i1-breakdown-seg" style={{ width: `${pctRes}%`,  background: 'var(--volt-border)' }} />
-                </div>
-                <div className="i1-breakdown-legend">
-                  <div className="i1-breakdown-item">
-                    <div className="i1-breakdown-dot" style={{ background: 'var(--fin-income)' }} />
-                    Disponible {fmtCompact(totalDisp)}
-                  </div>
-                  {totalRetencion > 0 && (
-                    <div className="i1-breakdown-item">
-                      <div className="i1-breakdown-dot" style={{ background: 'var(--fin-deduct)' }} />
-                      Retención {fmtCompact(totalRetencion)}
-                    </div>
-                  )}
-                  {totalPila > 0 && (
-                    <div className="i1-breakdown-item">
-                      <div className="i1-breakdown-dot" style={{ background: 'var(--fin-reserve)' }} />
-                      PILA {fmtCompact(totalPila)}
-                    </div>
-                  )}
-                  {totalReserva > 0 && (
-                    <div className="i1-breakdown-item">
-                      <div className="i1-breakdown-dot" style={{ background: 'var(--volt-border)' }} />
-                      Reserva {fmtCompact(totalReserva)}
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-
-            <div className="income-summary-footer">
-              <button className="btn btn-ghost btn-sm" onClick={() => navigate('I4')}>Ver KPIs →</button>
-            </div>
-
-            {(() => {
-              const activeFilterCount =
-                (groupBy !== 'fecha' ? 1 : 0) + (typeFilter !== 'todos' ? 1 : 0)
-              const hasActiveFilters = activeFilterCount > 0
+          {(() => {
+            const activeFilterCount =
+              (period !== 'mes' ? 1 : 0) +
+              (groupBy !== 'fecha' ? 1 : 0) +
+              (typeFilter !== 'todos' ? 1 : 0)
+            const hasActiveFilters = activeFilterCount > 0
+            const periodChipLabel =
+              period === 'anio' ? 'Este año' : period === 'todo' ? 'Todo' : null
               return (
                 <div className="income-list-header">
                   {showSearch && (
@@ -501,13 +450,7 @@ export default function I1Pagos() {
                     </div>
                   )}
 
-                  <div className="income-list-header-row">
-                    <div className="seg-ctrl income-period-tabs">
-                      <button className={`seg-btn${period === 'mes' ? ' active' : ''}`} onClick={() => changePeriod('mes')}>Este mes</button>
-                      <button className={`seg-btn${period === 'anio' ? ' active' : ''}`} onClick={() => changePeriod('anio')}>Este año</button>
-                      <button className={`seg-btn${period === 'todo' ? ' active' : ''}`} onClick={() => changePeriod('todo')}>Todo</button>
-                    </div>
-
+                  <div className="income-list-header-row income-list-header-row--tools">
                     <button
                       type="button"
                       className="filter-pill-btn"
@@ -533,6 +476,16 @@ export default function I1Pagos() {
 
                   {hasActiveFilters && (
                     <div className="filter-active-chips">
+                      {periodChipLabel && (
+                        <button
+                          type="button"
+                          className="filter-active-chip"
+                          onClick={() => changePeriod('mes')}
+                        >
+                          {periodChipLabel}
+                          <span className="chip-x" aria-hidden>×</span>
+                        </button>
+                      )}
                       {groupBy === 'cliente' && (
                         <button
                           type="button"
@@ -559,6 +512,63 @@ export default function I1Pagos() {
               )
             })()}
 
+          <div className="card income-summary-card">
+            <div className="income-summary-header">
+              <div className="income-summary-eyebrow">{periodEyebrow}</div>
+              {filteredBruto > 0 && (
+                <span className="trend-badge trend-up">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" aria-hidden>
+                    <path d="M18 15l-6-6-6 6" />
+                  </svg>
+                  +{fmtCompact(filteredBruto)}
+                </span>
+              )}
+            </div>
+
+            <div className="income-summary-kpi">
+              <div className="income-summary-amount">{fmt(filteredBruto)}</div>
+              <div className="income-summary-sub">{periodLabel} · Ingreso bruto registrado</div>
+            </div>
+
+            <div className="income-summary-available-block">
+              <div className="income-summary-available">{fmt(filteredDisponible)}</div>
+              <div className="income-summary-available-sub">
+                Disponible real · {incomePayments.length} {incomePayments.length === 1 ? 'movimiento' : 'movimientos'}
+              </div>
+            </div>
+
+            {incomePayments.length > 0 && filteredBruto > 0 && (
+              <div className="income-breakdown-section">
+                <div className="income-breakdown-title">Distribución del ingreso</div>
+                <div className="i1-breakdown-bar">
+                  <div className="i1-breakdown-seg" style={{ width: `${pctDisp}%`, background: 'var(--fin-income)' }} />
+                  <div className="i1-breakdown-seg" style={{ width: `${pctRet}%`, background: 'var(--fin-deduct)' }} />
+                  <div className="i1-breakdown-seg" style={{ width: `${pctPila}%`, background: 'var(--fin-reserve)' }} />
+                  <div className="i1-breakdown-seg" style={{ width: `${pctRes}%`, background: 'var(--volt-border)' }} />
+                </div>
+                <div className="i1-dist-carousel" role="list" aria-label="Distribución del ingreso">
+                  {breakdownSlides.map((slide) => (
+                    <div key={slide.key} className="i1-dist-slide" role="listitem">
+                      <div className="i1-dist-slide-head">
+                        <span className="i1-dist-dot" style={{ background: slide.color }} />
+                        <span className="i1-dist-cat-title">{slide.label}</span>
+                      </div>
+                      <span className="i1-dist-value">{slide.value}</span>
+                    </div>
+                  ))}
+                </div>
+                {breakdownSlides.length > 1 && (
+                  <div className="i1-dist-dots" aria-hidden>
+                    {breakdownSlides.map((slide) => (
+                      <span key={slide.key} className="i1-dist-dot-indicator" />
+                    ))}
+                  </div>
+                )}
+                <button type="button" className="income-breakdown-link" onClick={() => navigate('I4')}>
+                  Ver desglose completo →
+                </button>
+              </div>
+            )}
           </div>
 
           {bySearch.length === 0 ? (
@@ -687,6 +697,8 @@ export default function I1Pagos() {
       <I1FilterSheet
         open={filtersOpen}
         onClose={() => setFiltersOpen(false)}
+        period={period}
+        setPeriod={changePeriod}
         groupBy={groupBy}
         setGroupBy={(val) => { setGroupBy(val); setOpenRowId(null) }}
         typeFilter={typeFilter}

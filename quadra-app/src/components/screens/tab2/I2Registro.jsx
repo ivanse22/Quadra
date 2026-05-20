@@ -126,26 +126,20 @@ export default function I2Registro() {
 
       {/* ── Formulario ── */}
       <div style={{ flex: 1, padding: 'var(--screen-pt) var(--screen-px) 0' }}>
-        <AmountField onChange={setAmount} showCalculatingHint={btnState === 'loading'} />
+        <AmountField
+          onChange={setAmount}
+          currency={currency}
+          onCurrencyChange={setCurrency}
+          exchangeRates={tasasCambio}
+          showCalculatingHint={btnState === 'loading'}
+        />
         <p style={{ fontSize: 'var(--t-xs)', color: 'var(--txt-f)', fontFamily: 'var(--font-body)', marginTop: 4 }}>
           Ingresa el valor bruto de tu factura o pago recibido.
+          {currency !== 'COP' && ' El cálculo se hace en COP con la tasa de referencia del día.'}
         </p>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--s5)', marginTop: 'var(--s6)' }}>
 
-          {/* Moneda */}
-          <div className="field">
-            <label className="field-label">Moneda</label>
-            <div className="currency-group" style={{ marginTop: 'var(--s1)' }}>
-              {['COP', 'USD', 'EUR'].map((c) => (
-                <button key={c} className={`currency-btn${currency === c ? ' active' : ''}`} onClick={() => setCurrency(c)}>
-                  {c}
-                  {c !== 'COP' && <span className="currency-rate">${c === 'USD' ? '4.000' : '4.560'}</span>}
-                </button>
-              ))}
-            </div>
-            <span className="field-helper">Tasa aproximada — se usa la del día del pago</span>
-          </div>
 
           {/* Método de pago */}
           <div className="field">

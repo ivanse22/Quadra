@@ -1,0 +1,39 @@
+import { Meta } from '@storybook/addon-docs/blocks';
+import * as IncomeStories from './IncomeSummary.stories';
+
+<Meta title="Patterns/Income (I1)/Documentación" />
+
+# Patrones I1 — Mis Ingresos
+
+Documentación de los patrones actuales de la pantalla **Mis Ingresos** (I1Pagos).
+
+---
+
+## Tarjeta resumen
+
+Tres zonas de lectura vertical:
+
+1. **Contexto** — eyebrow + badge de tendencia (`fmtCompact`)
+2. **Resultado** — bruto (`--t-3xl`) + disponible (`--t-2xl`)
+3. **Explicación** — barra 16px + carrusel `.i1-dist-*` + enlace a I4
+
+---
+
+## Jerarquía tipográfica (carrusel)
+
+| Rol | Clase | Token | Peso |
+|-----|-------|-------|------|
+| Label categoría | `.i1-dist-cat-title` | 9px | 400 |
+| Valor slide | `.i1-dist-value` | `--t-lg` | 800 |
+| Título sección | `.income-breakdown-title` | `--t-xs` uppercase | 600 |
+
+El color semántico va **solo en el punto** (`.i1-dist-dot`), no en el valor.
+
+---
+
+## Filtros
+
+- Período, agrupación y tipo viven en **Filtros** (sheet), no en tabs visibles.
+- Barra superior: pill Filtros + búsqueda + chips activos.
+
+Ver stories **Summary Card**, **Filter Bar** y **Filter Sheet** en el sidebar.

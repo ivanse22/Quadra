@@ -7,6 +7,7 @@ export const TypeScale = () => (
   <div style={{ fontFamily: 'var(--font-display)', color: 'var(--txt)' }}>
     <h3 style={{ fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--txt-m)', marginBottom: 24 }}>Type Scale</h3>
     {[
+      { token: '--t-2xs', label: '2XS — Labels micro (I1 carrusel)' },
       { token: '--t-xs', label: 'XS — Metadata, badges' },
       { token: '--t-sm', label: 'SM — Labels, captions' },
       { token: '--t-base', label: 'Base — Body text' },

@@ -41,5 +41,18 @@ export const AllButtons = () => (
       </div>
     </div>
 
+    <div>
+      <p style={{ fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--txt-m)', marginBottom: 16 }}>Filter pill</p>
+      <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+        <button type="button" className="filter-pill-btn">
+          <span>Filtros</span>
+          <span className="filter-pill-badge">2</span>
+        </button>
+        <button type="button" className="filter-icon-btn" aria-label="Buscar">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        </button>
+      </div>
+    </div>
+
   </div>
 );

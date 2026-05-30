@@ -26,9 +26,9 @@ export const AllFormElements = () => (
     <div>
       <p style={{ fontFamily: 'var(--font-body)', fontSize: 11, fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.1em', color: 'var(--txt-m)', marginBottom: 16 }}>Segmented Control</p>
       <div className="seg-ctrl">
-        <button className="seg-opt on">Mensual</button>
-        <button className="seg-opt">Anual</button>
-        <button className="seg-opt">Total</button>
+        <button type="button" className="seg-btn active">Mensual</button>
+        <button type="button" className="seg-btn">Anual</button>
+        <button type="button" className="seg-btn">Total</button>
       </div>
     </div>
 

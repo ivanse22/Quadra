@@ -1,10 +1,29 @@
 # Quadra Design System
 
-**Version:** v7  
-**Sources:**
-- Codebase: `DS/quadra-ds-v7.html` (attached via File System Access API at `DS/`)
-- GitHub: https://github.com/ivanse22/Quadra (branch: `main`, file: `quadra-ds-v7.html`)
-- Logo assets: `uploads/Group 26–34.svg` → copied to `assets/`
+**Version:** v12 (Storybook)  
+**Fuente de verdad:** [`quadra-app`](../quadra-app/) — tokens y componentes compartidos con la app.
+
+## Documentación viva (Storybook)
+
+```bash
+cd quadra-app
+npm run storybook      # http://localhost:6006
+npm run build-storybook # export estático → storybook-static/
+```
+
+**Publicado en GitHub Pages:** https://ivanse22.github.io/Quadra/
+
+(Requiere que en el repo **Settings → Pages → Build and deployment** esté en **GitHub Actions**.)
+
+El catálogo incluye tokens, componentes, patrones de pantalla (I1, D1, A1) y toggle light/dark + marco 390px.
+
+**Histórico:** [`quadra-ds-v11.html`](quadra-ds-v11.html) — referencia estática anterior; ya no se mantiene en paralelo.
+
+---
+
+**Versiones anteriores:**
+- v11: `quadra-ds-v11.html`
+- v7: preview HTML en `preview/`
 
 ---
 

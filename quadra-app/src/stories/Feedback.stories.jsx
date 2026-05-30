@@ -60,15 +60,35 @@ export const SkeletonLoaders = () => (
   </div>
 );
 
-export const Badges = () => (
-  <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
-    <span className="badge">Default</span>
-    <span className="badge badge-income">Ingreso</span>
-    <span className="badge badge-deduct">Gasto</span>
-    <span className="badge badge-reserve">Reserva</span>
-    <span className="badge badge-volt">Nuevo</span>
+export const BadgesAndChips = () => (
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+      <span className="badge">Default</span>
+      <span className="badge badge-income">Ingreso</span>
+      <span className="badge badge-deduct">Gasto</span>
+      <span className="badge badge-reserve">Reserva</span>
+      <span className="badge badge-volt">Nuevo</span>
+      <span className="trend-badge trend-up">↑ +$12 M</span>
+    </div>
+    <div className="filter-active-chips">
+      <button type="button" className="filter-active-chip">Este año <span className="chip-x">×</span></button>
+      <button type="button" className="filter-active-chip">Solo ingresos <span className="chip-x">×</span></button>
+    </div>
   </div>
-);
+)
+
+export const Dialog = () => (
+  <div className="dialog" style={{ position: 'relative', transform: 'none', maxWidth: 340 }}>
+    <div className="dialog-body">
+      <div className="dialog-title">¿Eliminar este pago?</div>
+      <div className="dialog-desc">Esta acción no se puede deshacer.</div>
+    </div>
+    <div className="dialog-actions">
+      <button type="button" className="dbtn dbtn-destructive">Sí, eliminar</button>
+      <button type="button" className="dbtn dbtn-ghost">Cancelar</button>
+    </div>
+  </div>
+)
 
 export const ProgressBar = () => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: 24, maxWidth: 360 }}>

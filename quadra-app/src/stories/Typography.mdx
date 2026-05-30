@@ -32,6 +32,7 @@ Todos los tamaños usan `clamp()` para escalar fluidamente entre un mínimo y m�
 
 | Token | Valor clamp | Uso recomendado |
 |-------|-------------|-----------------|
+| `--t-2xs` | `clamp(.5625rem, .54rem + .11vw, .625rem)` | Labels micro (carrusel I1, metadatos densos) |
 | `--t-xs` | `clamp(.625rem, .60rem + .13vw, .6875rem)` | Metadata, badges, timestamps |
 | `--t-sm` | `clamp(.75rem, .72rem + .15vw, .8125rem)` | Labels, captions, hints |
 | `--t-base` | `clamp(.8125rem, .78rem + .16vw, .875rem)` | Cuerpo de texto principal |
@@ -44,7 +45,18 @@ Todos los tamaños usan `clamp()` para escalar fluidamente entre un mínimo y m�
 
 ---
 
-## Pesos
+## Roles tipográficos (I1 summary)
+
+| Nivel | Token | Uso |
+|-------|-------|-----|
+| L0 | `--t-xs` | Contexto, eyebrow, badge |
+| L1 | `--t-3xl` + clamp | Héroe — ingreso bruto |
+| L2 | `--t-2xl` | Secundario — disponible |
+| L3 | `--t-sm` | Subtítulos de apoyo |
+| L4 | 9px / `.i1-dist-cat-title` | Labels de carrusel |
+| L5 | `--t-lg` | Valores de carrusel |
+
+---
 
 | Valor | Uso |
 |-------|-----|

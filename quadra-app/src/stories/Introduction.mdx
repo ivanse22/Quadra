@@ -37,7 +37,22 @@ Los estilos se aplican mediante clases CSS globales (`.btn`, `.card`, `.field`, 
 | PWA | vite-plugin-pwa |
 | Fuente display | Satoshi |
 | Fuente body | DM Sans |
-| Documentación | Storybook 7 |
+| Documentación | Storybook 10 |
+
+---
+
+## Cómo arrancar Storybook
+
+```bash
+cd quadra-app
+npm run storybook
+```
+
+Abre `http://localhost:6006`. Usa la toolbar **Tema** (light/dark) y **Phone** (marco 390px) para previsualizar componentes como en la app.
+
+**Versión publicada:** https://ivanse22.github.io/Quadra/
+
+Build estático: `npm run build-storybook` → carpeta `storybook-static/`.
 
 ---
 
@@ -62,5 +77,6 @@ src/
 |---------|-----------|
 | **Design Tokens** | Colores, tipografía, espaciado, motion |
 | **App Components** | Botones, formularios, cards, feedback |
+| **Patterns** | I1 ingresos, D1 hero, A1 anual |
 | **App Shell** | Headers, bottom nav, phone shell |
 | **Guidelines** | Guía de inicio, dark mode, accesibilidad |
